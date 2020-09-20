@@ -1,0 +1,202 @@
+import React, { useEffect, useCallback } from "react";
+import TrackStyles from "./Track.module.css";
+import DropdownStyles from "../Dropdown/Dropdown.module.css";
+import { BsPlayFill, BsMusicNote, BsThreeDots } from "react-icons/bs";
+import { FaRegHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+import { ArtistSimplified } from "../../store/types/artist";
+
+import Dropdown from "../Dropdown/Dropdown";
+
+interface TrackProps {
+  title: string;
+  artists: ArtistSimplified[];
+  album?: string;
+  style?: any;
+  index?: number;
+  duration: number;
+  explicit: boolean;
+  popularity?: number;
+  type: string;
+  hidePopularity?: boolean;
+}
+
+const Track: React.FC<TrackProps> = React.memo(
+  ({
+    title,
+    artists,
+    album,
+    style,
+    index,
+    duration,
+    explicit,
+    popularity,
+    type,
+    hidePopularity,
+  }) => {
+    //   useEffect(() => {
+    //     console.log("rendered!", index);
+    //   });
+
+    const getArtists = useCallback(() => {
+      let artistsString = "";
+      if (!artists) {
+        return "";
+      }
+      artists.forEach((artist, i) => {
+        if (i === artists!.length - 1) {
+          artistsString += artist.name;
+        } else {
+          artistsString += artist.name + ", ";
+        }
+      });
+      return artistsString;
+    }, [artists]);
+
+    const definePopularity = useCallback(() => {
+      if (typeof popularity === "number") {
+        const percentage = popularity;
+        const lines = (percentage * 8) / 100;
+        return Math.round(lines);
+      }
+      return 0;
+    }, [popularity]);
+
+    const renderPopularityLines = useCallback(() => {
+      const lineElements: JSX.Element[] = [];
+      const linesNumber = definePopularity();
+      for (let i = 1; i < 9; i++) {
+        if (i <= linesNumber) {
+          const lineElement = (
+            <div key={i} className={TrackStyles.fullLine}>
+              {" "}
+            </div>
+          );
+          lineElements.push(lineElement);
+        } else {
+          const lineElement = (
+            <div key={i} className={TrackStyles.emptyLine}>
+              {" "}
+            </div>
+          );
+          lineElements.push(lineElement);
+        }
+      }
+      return lineElements;
+    }, [definePopularity]);
+
+    const getSongDuration = useCallback((millis: number | undefined) => {
+      if (!millis) return "";
+      const minutes = Math.floor(millis / 60000);
+      const seconds = ((millis % 60000) / 1000).toFixed(0);
+      return minutes + ":" + (parseInt(seconds) < 10 ? "0" : "") + seconds;
+    }, []);
+
+    return (
+      <div className={TrackStyles["datagrid-row"]} style={style}>
+        <div
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
+        >
+          <button className={TrackStyles.btn}>
+            <BsPlayFill />
+          </button>
+          <BsMusicNote />
+        </div>
+        <div
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-love"]}`}
+        >
+          <span className={TrackStyles.like}>
+            <FaRegHeart />
+          </span>
+        </div>
+        <div
+          title={title}
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-title"]}`}
+        >
+          {title}
+        </div>
+        <div
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-explicit"]}`}
+        >
+          {explicit && <span>Explicit</span>}
+        </div>
+        {type === "playlist" && (
+          <div
+            title={getArtists()}
+            className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-artist"]}`}
+          >
+            {getArtists()}
+          </div>
+        )}
+        <div
+          title={album}
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-album"]} `}
+        >
+          {album}
+        </div>
+        <div
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-options"]}`}
+        >
+          <Dropdown>
+            <div className={TrackStyles.dots}>
+              <BsThreeDots />
+            </div>
+            <div className={DropdownStyles.dropdown}>
+              <ul>
+                <li>
+                  <Link className={DropdownStyles.link} to="/">
+                    Save to your Liked Songs
+                  </Link>
+                </li>
+                <li>
+                  <Link className={DropdownStyles.link} to="/">
+                    Add to Queue
+                  </Link>
+                </li>
+                <li>
+                  <Link className={DropdownStyles.link} to="/">
+                    Add to Playlist
+                  </Link>
+                </li>
+                <li>
+                  <Link className={DropdownStyles.link} to="/">
+                    Show Credits
+                  </Link>
+                </li>
+                <li>
+                  <Link className={DropdownStyles.link} to="/">
+                    Go to Artist
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </Dropdown>
+        </div>
+        <div
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-duration"]}`}
+        >
+          {getSongDuration(duration)}
+        </div>
+        {!hidePopularity && (
+          <div
+            className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-popularity"]}`}
+          >
+            {renderPopularityLines()}
+          </div>
+        )}
+      </div>
+    );
+  },
+  function areEqual(prevProps, nextProps) {
+    let isEqual = true;
+
+    if (JSON.stringify(prevProps) !== JSON.stringify(nextProps)) {
+      isEqual = false;
+    }
+
+    return isEqual;
+  }
+);
+
+export default Track;

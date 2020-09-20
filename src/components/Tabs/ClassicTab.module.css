@@ -1,0 +1,25 @@
+.classic-tab {
+  background: transparent;
+  list-style-type: none;
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+.item {
+  margin-right: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 6px 15px;
+  border-radius: 3px;
+}
+.item:hover {
+  background: rgb(70, 69, 69);
+}
+
+.item--active {
+  background: rgb(29, 185, 84);
+}
+.item--active:hover {
+  background: rgb(29, 185, 84);
+}

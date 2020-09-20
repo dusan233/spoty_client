@@ -1,0 +1,22 @@
+.container {
+  padding: 35px;
+  overflow-y: scroll;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.container::-webkit-scrollbar {
+  width: 0.6em;
+  background: transparent;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 50px;
+}
+.heading {
+  color: white;
+  font-size: 45px;
+}

@@ -1,0 +1,266 @@
+.card {
+  width: 12.57%;
+  margin: 1%;
+}
+
+.search-card {
+  display: flex;
+  height: 85px;
+  padding: 10px 0px;
+  color: white;
+  border-radius: 3px;
+}
+.search-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.search-card:hover .search-btn {
+  display: flex;
+}
+
+.search-btn {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  outline: 0;
+  border: 2px solid #989898;
+  cursor: pointer;
+  background: black;
+  color: white;
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.search-card__action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  font-size: 19px;
+  color: #989898;
+  position: relative;
+}
+
+.search-card__info {
+  padding-left: 20px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex: 1;
+}
+.search-card__name {
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.search-card__name:hover {
+  text-decoration: underline;
+}
+.search-card__desc {
+  color: #989898;
+  font-size: 14px;
+  margin: 3px 0px;
+}
+.search-card__genres {
+  color: #989898;
+  font-size: 14px;
+  margin: 3px 0px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.search-card__genre {
+  background: #1db954;
+  background: rgb(60, 61, 61);
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 11px;
+  margin-right: 10px;
+  margin-top: 3px;
+  color: white;
+}
+.search-card__songs {
+  font-size: 14px;
+  color: #686767;
+}
+.search-card__options {
+  width: 150px;
+  height: 100%;
+  padding: 0px 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.search-card__like {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #989898;
+  cursor: pointer;
+}
+
+.search-card__like:hover {
+  color: white;
+}
+.search-card__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.search-card__img {
+  width: 75px;
+  display: block;
+  height: 100%;
+}
+.search-card__img-container {
+  padding-left: 20px;
+}
+.search-card__img-wrap {
+  width: 70px;
+  display: block;
+  height: 100%;
+  border-radius: 50%;
+  background-position: center center;
+  background-size: cover;
+}
+
+.card:nth-of-type(7n) {
+  margin-right: 0px;
+}
+
+.card:nth-of-type(7n + 1) {
+  margin-left: 0px;
+}
+.card__image_container {
+  width: 100%;
+  position: relative;
+}
+.card__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+}
+.card__image_container::before {
+  position: absolute;
+  content: "";
+  background: #252525;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-bottom: 100%;
+}
+.card__info {
+  padding: 7px 0px;
+}
+.card__name {
+  text-decoration: none;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  width: 100%;
+  overflow: hidden;
+  display: block;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.card__name:hover {
+  text-decoration: underline;
+}
+.card__owner {
+  font-size: 15px;
+  color: #989898;
+  margin-top: 3px;
+  overflow: hidden;
+  display: block;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.card__owner a {
+  color: #1db954;
+}
+.card__overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  cursor: pointer;
+}
+.card__overlay__content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+}
+.card__image_container:hover .card__overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn {
+  border: 0;
+  outline: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  color: white;
+  border-radius: 50%;
+}
+.btn--side {
+  width: 35px;
+  height: 35px;
+  font-size: 17px;
+}
+.btn--play {
+  border: 2px solid white;
+  width: 56px;
+  font-size: 30px;
+  height: 56px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 1550px) {
+  .card {
+    width: 18.4%;
+    margin: 1%;
+  }
+  .card:nth-of-type(7n) {
+    margin-right: 1%;
+  }
+
+  .card:nth-of-type(7n + 1) {
+    margin-left: 1%;
+  }
+  .card:nth-of-type(5n) {
+    margin-right: 0px;
+  }
+
+  .card:nth-of-type(5n + 1) {
+    margin-left: 0px;
+  }
+}

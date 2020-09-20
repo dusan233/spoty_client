@@ -1,0 +1,25 @@
+.home {
+  padding: 35px;
+  overflow-y: scroll;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.home::-webkit-scrollbar {
+  width: 0.6em;
+  background: transparent;
+}
+
+.home::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 50px;
+}
+.home__list_heading {
+  color: white;
+}
+.home__list_heading h1 {
+  font-size: 28px;
+}

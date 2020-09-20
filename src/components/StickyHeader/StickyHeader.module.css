@@ -1,0 +1,44 @@
+.sticky-header {
+  display: flex;
+}
+.sticky-header-wrap {
+  width: 100%;
+  position: fixed;
+  top: 60px;
+  left: 232px;
+  right: 10px;
+  height: 160px;
+  display: flex;
+  padding: 15px;
+  background: black;
+  z-index: 100;
+}
+.sticky-header__img {
+  width: 150px;
+  height: 100%;
+  display: block;
+}
+.sticky-header__content {
+  flex: 1;
+  padding-left: 30px;
+  color: white;
+  font-size: 13px;
+}
+.sticky-header__content div:nth-child(2) {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+.sticky-header__content div:nth-child(3) {
+  font-weight: 600;
+}
+.sticky-header__title {
+  color: white;
+  font-size: 27px;
+  font-weight: bold;
+}
+.sticky-header__controlls {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}

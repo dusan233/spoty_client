@@ -1,0 +1,79 @@
+.dropdown-container {
+  position: relative;
+}
+.dropdown {
+  position: absolute;
+  left: -190px;
+  top: 30px;
+  z-index: 100;
+  width: 225px;
+  border-radius: 3px;
+  background: #2f2f2f;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  animation-name: dropdown;
+  animation-duration: 0.2s;
+}
+.dropdown--playlist {
+  top: 47px;
+  left: 20px;
+  animation-name: dropdown--playlist;
+  animation-duration: 0.2s;
+}
+.dropdown--card {
+  top: 47px;
+  left: -160px;
+  animation-name: dropdown--card;
+  animation-duration: 0.2s;
+}
+.dropdown ul {
+  list-style-type: none;
+  padding: 10px;
+}
+
+.link {
+  display: block;
+  text-decoration: none;
+  color: #b3b3b3;
+  padding: 8px 15px;
+  font-size: 15px;
+  border-radius: 3px;
+  font-weight: normal;
+}
+.link:hover {
+  color: white;
+  background: #1db954;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes dropdown--playlist {
+  from {
+    left: 40px;
+    opacity: 0;
+  }
+  to {
+    left: 20px;
+    opacity: 1;
+  }
+}
+
+@keyframes dropdown--card {
+  from {
+    left: -180px;
+    opacity: 0;
+  }
+  to {
+    left: -160px;
+    opacity: 1;
+  }
+}
+
+@keyframes dropdown {
+  from {
+    left: -210px;
+    opacity: 0;
+  }
+  to {
+    left: -190px;
+    opacity: 1;
+  }
+}
