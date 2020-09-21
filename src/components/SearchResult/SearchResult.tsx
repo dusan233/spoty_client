@@ -149,7 +149,7 @@ const SearchResult: React.FC<Props> = ({
 
   useEffect(() => {
     setSearchTerm(match.params.searchTerm);
-  }, []);
+  }, [match.params.searchTerm]);
 
   const renderLinks = () => {
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState, useRef } from "react";
 import TrackStyles from "./Track.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import { BsPlayFill, BsMusicNote, BsThreeDots } from "react-icons/bs";
@@ -6,7 +6,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 import { ArtistSimplified } from "../../store/types/artist";
-
+import useSelected from "../../hooks/useSelected";
 import Dropdown from "../Dropdown/Dropdown";
 
 interface TrackProps {
@@ -35,9 +35,7 @@ const Track: React.FC<TrackProps> = React.memo(
     type,
     hidePopularity,
   }) => {
-    //   useEffect(() => {
-    //     console.log("rendered!", index);
-    //   });
+    const [selected, rowRef] = useSelected();
 
     const getArtists = useCallback(() => {
       let artistsString = "";
@@ -94,11 +92,19 @@ const Track: React.FC<TrackProps> = React.memo(
     }, []);
 
     return (
-      <div className={TrackStyles["datagrid-row"]} style={style}>
+      <div
+        className={TrackStyles["datagrid-row"]}
+        style={{ ...style, background: selected && "#ffffff29" }}
+        ref={rowRef}
+      >
         <div
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
         >
-          <button className={TrackStyles.btn}>
+          <button
+            className={
+              selected ? `${TrackStyles["btn--selected"]}` : TrackStyles.btn
+            }
+          >
             <BsPlayFill />
           </button>
           <BsMusicNote />
@@ -117,7 +123,11 @@ const Track: React.FC<TrackProps> = React.memo(
           {title}
         </div>
         <div
-          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-explicit"]}`}
+          className={`${TrackStyles["datagrid-cell"]} ${
+            selected
+              ? TrackStyles["datagrid-cell-explicit--selected"]
+              : TrackStyles["datagrid-cell-explicit"]
+          }`}
         >
           {explicit && <span>Explicit</span>}
         </div>
@@ -139,7 +149,11 @@ const Track: React.FC<TrackProps> = React.memo(
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-options"]}`}
         >
           <Dropdown>
-            <div className={TrackStyles.dots}>
+            <div
+              className={
+                selected ? `${TrackStyles["dots--selected"]}` : TrackStyles.dots
+              }
+            >
               <BsThreeDots />
             </div>
             <div className={DropdownStyles.dropdown}>

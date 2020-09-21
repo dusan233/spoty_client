@@ -90,7 +90,7 @@ const Playlist: React.FC<Props> = ({
         }
       });
     };
-  });
+  }, []);
 
   const loadMoreTracks = ({ startIndex }: { startIndex: number }) => {
     return getMoreTracks(startIndex, match.params.playlistId, accessToken).then(

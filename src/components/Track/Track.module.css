@@ -12,8 +12,13 @@
 
 .datagrid-row:hover {
   background: rgba(255, 255, 255, 0.07);
+  /* background: #ffffff29; */
 }
 .datagrid-row:hover .btn {
+  display: flex;
+}
+.datagrid-row:hover .dots,
+.datagrid-row:hover .dots--selected {
   display: flex;
 }
 .datagrid-row.datagrid-row-header:hover {
@@ -44,12 +49,24 @@
   -webkit-box-orient: vertical;
 }
 
-.datagrid-cell-explicit {
+.datagrid-cell-explicit,
+.datagrid-cell-explicit--selected {
   width: 80px;
   padding-left: 20px;
   font-size: 13px;
   font-weight: 600;
   color: #989898;
+}
+.datagrid-cell-explicit--selected span {
+  border: 1px solid grey;
+  width: 55px;
+  padding: 2px 0px;
+  font-size: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  color: grey;
 }
 .datagrid-row:hover .datagrid-cell-explicit span {
   border-color: grey;
@@ -109,6 +126,14 @@
 }
 
 .dots {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+.dots--selected {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -144,6 +169,24 @@
 
 .btn {
   display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  outline: 0;
+  border: 2px solid #989898;
+  cursor: pointer;
+  background: black;
+  color: white;
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.btn--selected {
+  display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;

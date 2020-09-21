@@ -34,7 +34,7 @@
   outline: none;
   /* border: 1px solid rgb(250, 250, 250); */
   border: none;
-  box-shadow: 0 0 0 1px rgb(250, 248, 248);
+  box-shadow: 0 0 0 0.07em rgb(250, 248, 248);
   border-radius: 50%;
   width: 36px;
   padding: 7px 0px;
@@ -81,6 +81,7 @@
 .root__sidebar {
   flex-basis: 232px;
   background: #040404;
+  background: #0e0d0d;
 }
 .root__content-container {
   flex: 1;
@@ -91,6 +92,7 @@
 .root__searchbar {
   flex-basis: 60px;
   background: #040404;
+  background: #0e0d0d;
   color: white;
   display: flex;
   padding: 0 30px;

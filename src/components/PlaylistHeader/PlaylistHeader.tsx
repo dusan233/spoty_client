@@ -100,4 +100,5 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
     </div>
   );
 };
+
 export default PlaylistHeader;

@@ -66,7 +66,9 @@ const StickyHeader: React.FC<Props> = ({
           <div className={`${StickyHeaderStyles["sticky-header__title"]}`}>
             {title}
           </div>
-          <div>
+          <div
+            className={`${StickyHeaderStyles["sticky-header__description"]}`}
+          >
             By {owner} - {description}
           </div>
           <div>

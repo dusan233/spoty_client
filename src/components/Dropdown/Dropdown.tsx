@@ -21,7 +21,7 @@ const DropdownBtn: React.FC<Props> = ({ children }) => {
     return () => {
       window.removeEventListener("click", closeDropdown);
     };
-  });
+  }, []);
 
   return (
     <div className={DropdownStyles["dropdown-container"]}>
