@@ -5,12 +5,14 @@ const initialState: HomeState = {
   featuredPlaylistsPrew: [],
   newReleases: [],
   loading: true,
+  error: false,
 };
 
 const reducer = (state = initialState, action: HomeActions) => {
   switch (action.type) {
     case HomeActionTypes.SET_LOADING:
       return { ...state, loading: action.payload };
+
     case HomeActionTypes.SET_DATA:
       return {
         ...state,

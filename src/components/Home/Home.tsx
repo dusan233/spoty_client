@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { getHomeData, setHomeLoading } from "../../store/actions/home";
 import { RootState } from "../../store/reducers/index";
+import { setError } from "../../store/actions/error";
 
 import HomeStyles from "./Home.module.css";
 import Spinner from "../Spinner/Spinner";
@@ -12,10 +13,13 @@ const mapStateToProps = (state: RootState) => ({
   featuredPlaylists: state.home.featuredPlaylistsPrew,
   newReleases: state.home.newReleases,
   loading: state.home.loading,
+  error: state.error.errorMsg,
+  subErrorMsg: state.error.subMsg,
 });
 const mapDispatchToProps = {
   getHomeData,
   setHomeLoading,
+  setError,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -26,16 +30,31 @@ type Props = ReduxProps;
 const Home: React.FC<Props> = ({
   getHomeData,
   setHomeLoading,
+  setError,
   loading,
   featuredPlaylists,
   newReleases,
+  error,
+  subErrorMsg,
 }) => {
   useEffect(() => {
     getHomeData();
     return () => {
       setHomeLoading(true);
+      setError("", "");
     };
   }, [getHomeData, setHomeLoading]);
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <div>
+          <h1 className="error-heading">{error}</h1>
+          <h3 className="error-text">{subErrorMsg}</h3>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={HomeStyles.home}>

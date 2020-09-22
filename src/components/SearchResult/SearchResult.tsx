@@ -16,13 +16,8 @@ import SearchResultStyles from "./SearchResult.module.css";
 import ClassicTabStyles from "../Tabs/ClassicTab.module.css";
 import { RouteComponentProps, NavLink } from "react-router-dom";
 import ClassicTab from "../Tabs/ClassicTab";
-import SearchPlaylistCard from "../Card/SearchPlaylist";
 import Spinner from "../Spinner/Spinner";
 import InfiniteVirtualizedList from "../InfiniteVirtualizedList/InfiniteVirtualizedList";
-import { PlaylistSimplified } from "../../store/types/playlist";
-import { AlbumSimplified } from "../../store/types/album";
-import { TrackFull } from "../../store/types";
-import { ArtistFull } from "../../store/types/artist";
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.search.loading,
@@ -145,11 +140,23 @@ const SearchResult: React.FC<Props> = ({
         fetchSearchData(match.params.type, match.params.searchTerm);
       }
     }
-  }, [match.params.type, match.params.searchTerm, fetchSearchData]);
+  }, [
+    match.params.type,
+    match.params.searchTerm,
+    fetchSearchData,
+    albums.length,
+    albumsTerm,
+    artists.length,
+    artistsTerm,
+    playlists.length,
+    playlistsTerm,
+    tracks.length,
+    tracksTerm,
+  ]);
 
   useEffect(() => {
     setSearchTerm(match.params.searchTerm);
-  }, [match.params.searchTerm]);
+  }, [match.params.searchTerm, setSearchTerm]);
 
   const renderLinks = () => {
     return (

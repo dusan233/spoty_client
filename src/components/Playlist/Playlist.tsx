@@ -12,9 +12,11 @@ import {
   addMoreTracks,
   getMoreTracks,
 } from "../../store/actions/playlist";
+import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
 
+import { BsMusicNoteBeamed } from "react-icons/bs";
 import PlaylistStyles from "./Playlist.module.css";
 import Spinner from "../Spinner/Spinner";
 import PlaylistHeader from "../PlaylistHeader/PlaylistHeader";
@@ -33,11 +35,14 @@ const mapStateToProps = (state: RootState) => ({
   accessToken: state.auth.accessToken,
   total: state.playlist.total,
   type: state.playlist.type,
+  error: state.error.errorMsg,
+  subErrorMsg: state.error.subMsg,
 });
 const mapDispatchToProps = {
   getPlaylistData,
   setPlaylistLoading,
   addMoreTracks,
+  setError,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -51,6 +56,7 @@ const Playlist: React.FC<Props> = ({
   getPlaylistData,
   setPlaylistLoading,
   addMoreTracks,
+  setError,
   match,
   loading,
   name,
@@ -61,34 +67,43 @@ const Playlist: React.FC<Props> = ({
   tracks,
   accessToken,
   total,
+  error,
+  subErrorMsg,
 }) => {
   const [showSticky, setShowSticky] = useState(false);
   let containerEl = useRef<HTMLDivElement>(null);
   let itemsCount = total === tracks.length ? tracks.length : tracks.length + 1;
+
   useEffect(() => {
     getPlaylistData(match.params.playlistId);
 
     return () => {
       setPlaylistLoading(true);
+      setError("", "");
     };
-  }, [getPlaylistData, match.params.playlistId]);
+  }, [getPlaylistData, match.params.playlistId, setPlaylistLoading]);
 
   useEffect(() => {
-    containerEl.current!.addEventListener("scroll", function () {
-      if (this.scrollTop >= 150) {
-        setShowSticky(true);
-      } else {
-        setShowSticky(false);
-      }
-    });
-    return () => {
-      containerEl.current!.removeEventListener("scroll", function () {
+    let refEl = containerEl.current;
+    if (refEl) {
+      refEl!.addEventListener("scroll", function () {
         if (this.scrollTop >= 150) {
           setShowSticky(true);
         } else {
           setShowSticky(false);
         }
       });
+    }
+    return () => {
+      if (refEl) {
+        refEl!.removeEventListener("scroll", function () {
+          if (this.scrollTop >= 150) {
+            setShowSticky(true);
+          } else {
+            setShowSticky(false);
+          }
+        });
+      }
     };
   }, []);
 
@@ -130,6 +145,21 @@ const Playlist: React.FC<Props> = ({
       );
     }
   };
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <div>
+          <div className="error-icon">
+            <BsMusicNoteBeamed />
+          </div>
+          <h1 className="error-heading">{error}</h1>
+          <h3 className="error-text">{subErrorMsg}</h3>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div ref={containerEl} className={PlaylistStyles.container}>
       {loading ? (

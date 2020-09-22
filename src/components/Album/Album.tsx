@@ -69,7 +69,7 @@ const Album: React.FC<Props> = ({
     return () => {
       setAlbumLoading(true);
     };
-  }, [getAlbumData, match.params.albumId]);
+  }, [getAlbumData, match.params.albumId, setAlbumLoading]);
 
   const isRowLoaded = ({ index }: { index: number }) => {
     return !!tracks[index];

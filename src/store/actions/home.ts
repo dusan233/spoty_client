@@ -9,6 +9,7 @@ import { batch } from "react-redux";
 import { NewReleases } from "../types/album";
 import { AlbumSimplified } from "../types/album";
 import { PlaylistSimplified } from "../types/playlist";
+import { setError } from "./error";
 
 export const getNewReleases = (accessToken: string | undefined) => {
   return api.get<NewReleases>("/browse/new-releases", {
@@ -42,18 +43,28 @@ export const setHomeData: ActionCreator<ISetHomeData> = (
 export const getHomeData: ActionCreator<AppThunk> = () => {
   return (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
-    dispatch(setHomeLoading(true));
-
+    batch(() => {
+      dispatch(setHomeLoading(true));
+    });
     Promise.all([
       fetchFeaturedPlaylists(accessToken),
       getNewReleases(accessToken),
-    ]).then((results) => {
-      const featuredPlaylists = results[0].data.playlists.items;
-      const newReleases = results[1].data.albums.items;
-      batch(() => {
-        dispatch(setHomeData(featuredPlaylists, newReleases));
-        dispatch(setHomeLoading(false));
+    ])
+      .then((results) => {
+        const featuredPlaylists = results[0].data.playlists.items;
+        const newReleases = results[1].data.albums.items;
+        batch(() => {
+          dispatch(setHomeData(featuredPlaylists, newReleases));
+          dispatch(setHomeLoading(false));
+        });
+      })
+      .catch((err) => {
+        let errMsg = "Opps! Something went wrong!";
+        let subMsg = "Please refresh the page and try again";
+        batch(() => {
+          dispatch(setHomeLoading(false));
+          dispatch(setError(errMsg, subMsg));
+        });
       });
-    });
   };
 };

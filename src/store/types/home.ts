@@ -6,6 +6,7 @@ export interface HomeState {
   featuredPlaylistsPrew: PlaylistSimplified[];
   newReleases: AlbumSimplified[];
   loading: boolean;
+  error: boolean;
 }
 
 //actions

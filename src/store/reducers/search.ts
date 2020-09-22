@@ -1,6 +1,5 @@
 import { SearchActionTypes } from "../actions/actionTypes";
 import { ISearchState, SearchActions } from "../types/search";
-import { setPlaylistLoading } from "../actions/playlist";
 
 const initialState: ISearchState = {
   loading: false,

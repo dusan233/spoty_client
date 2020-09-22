@@ -72,26 +72,31 @@ export const getAlbumData: ActionCreator<AppThunk> = (
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
     dispatch(setAlbumLoading(true));
-    const data = await api.get<AlbumFull>(`/albums/${albumId}`, {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    });
-    console.log(data);
-    batch(() => {
-      dispatch(
-        setAlbumData(
-          data.data.images[1]?.url,
-          data.data.name,
-          data.data.artists,
-          data.data.tracks.items,
-          data.data.id,
-          data.data.tracks.total,
-          data.data.album_type,
-          data.data.release_date
-        )
-      );
-      dispatch(setAlbumLoading(false));
-    });
+
+    try {
+      const data = await api.get<AlbumFull>(`/albums/${albumId}`, {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+      console.log(data);
+      batch(() => {
+        dispatch(
+          setAlbumData(
+            data.data.images[1]?.url,
+            data.data.name,
+            data.data.artists,
+            data.data.tracks.items,
+            data.data.id,
+            data.data.tracks.total,
+            data.data.album_type,
+            data.data.release_date
+          )
+        );
+        dispatch(setAlbumLoading(false));
+      });
+    } catch (err) {
+      console.log(err.response);
+    }
   };
 };

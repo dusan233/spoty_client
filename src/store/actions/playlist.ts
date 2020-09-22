@@ -1,6 +1,7 @@
 import { PlaylistActionTypes } from "./actionTypes";
 import { Dispatch, ActionCreator } from "redux";
 import { batch } from "react-redux";
+import { setError } from "./error";
 import { RootState } from "../reducers/index";
 import { api } from "../../axios";
 import {
@@ -73,28 +74,47 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
-    dispatch(setPlaylistLoading(true));
-    const response = await api.get<PlaylistFull>(`/playlists/${playlistId}`, {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    });
-    console.log(response);
     batch(() => {
-      dispatch(
-        setPlaylistData(
-          response.data.description,
-          response.data.images[0]?.url,
-          response.data.name,
-          response.data.followers.total,
-          response.data.owner.display_name,
-          response.data.tracks.items,
-          response.data.id,
-          response.data.tracks.total,
-          response.data.type
-        )
-      );
-      dispatch(setPlaylistLoading(false));
+      dispatch(setPlaylistLoading(true));
+      dispatch(setError("", ""));
     });
+    try {
+      const response = await api.get<PlaylistFull>(`/playlists/${playlistId}`, {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+      console.log(response);
+      batch(() => {
+        dispatch(
+          setPlaylistData(
+            response.data.description,
+            response.data.images[0]?.url,
+            response.data.name,
+            response.data.followers.total,
+            response.data.owner.display_name,
+            response.data.tracks.items,
+            response.data.id,
+            response.data.tracks.total,
+            response.data.type
+          )
+        );
+        dispatch(setPlaylistLoading(false));
+      });
+    } catch (err) {
+      let errorMsg: string;
+      let subMsg: string;
+      if (err.response.status === 404) {
+        errorMsg = "Couldn't find that playlist";
+        subMsg = "Search for something else?";
+      } else {
+        errorMsg = "Opps! Something went wrong!";
+        subMsg = "Please refresh the page and try again";
+      }
+      batch(() => {
+        dispatch(setPlaylistLoading(false));
+        dispatch(setError(errorMsg, subMsg));
+      });
+    }
   };
 };

@@ -2,9 +2,13 @@ export enum AuthActionTypes {
   StoreAuthState,
   ClearAuthState,
 }
+export enum ErrorActionTypes {
+  SET_ERROR = "SET_ERROR",
+}
 export enum HomeActionTypes {
   SET_LOADING = "SET_LOADING",
   SET_DATA = "SET_DATA",
+  SET_HOME_ERROR = "SET_HOME_ERROR",
 }
 export enum PlaylistActionTypes {
   SET_PLAYLIST_LOADING = "SET_PLAYLIST_LOADING",

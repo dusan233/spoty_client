@@ -167,7 +167,8 @@
   color: white;
 }
 
-.btn {
+.btn,
+.btn--selected {
   display: none;
   justify-content: center;
   align-items: center;
@@ -176,8 +177,10 @@
   height: 30px;
   outline: 0;
   border: 2px solid #989898;
+  border: 2px solid #1db954;
   cursor: pointer;
   background: black;
+  background: #1db954;
   color: white;
   font-size: 18px;
   position: absolute;
@@ -187,21 +190,6 @@
 }
 .btn--selected {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  outline: 0;
-  border: 2px solid #989898;
-  cursor: pointer;
-  background: black;
-  color: white;
-  font-size: 18px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 .fullLine {
   width: 2px;

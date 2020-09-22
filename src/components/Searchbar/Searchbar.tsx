@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { setSearchTerm } from "../../store/actions/search";
 import { history } from "../..";
 import { connect, ConnectedProps } from "react-redux";

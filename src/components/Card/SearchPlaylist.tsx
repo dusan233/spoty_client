@@ -42,7 +42,7 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
           {index + 1}
         </div>
         <img
-          alt="Playlist cover image"
+          alt="Playlist cover "
           src={img || NoImage}
           className={`${CardStyles["search-card__img"]}`}
         ></img>

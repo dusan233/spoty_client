@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useRef } from "react";
+import React, { useCallback } from "react";
 import TrackStyles from "./Track.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import { BsPlayFill, BsMusicNote, BsThreeDots } from "react-icons/bs";

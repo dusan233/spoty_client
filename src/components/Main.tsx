@@ -8,7 +8,6 @@ import Playlist from "./Playlist/Playlist";
 import Album from "./Album/Album";
 import Searchbar from "./Searchbar/Searchbar";
 import SearchResult from "./SearchResult/SearchResult";
-import { RouteComponentProps } from "react-router-dom";
 
 const Main = () => {
   return (
