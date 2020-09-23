@@ -13,6 +13,7 @@ import {
   ISetSearchTracks,
   ISetSearchTerm,
 } from "../types/search";
+import { setError } from "./error";
 import { ArtistFull } from "../types/artist";
 import { PlaylistSimplified } from "../types/playlist";
 import { AlbumSimplified } from "../types/album";
@@ -120,7 +121,6 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
     try {
       const searchResponse = await getSearchData(type, term, accessToken, 0);
       console.log(searchResponse);
-
       if ("playlists" in searchResponse.data) {
         batch(() => {
           dispatch(
@@ -171,7 +171,16 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
         });
       }
     } catch (err) {
-      console.log(err);
+      let errorMsg: string;
+      let subMsg: string;
+
+      errorMsg = "Opps! Something went wrong!";
+      subMsg = "Please refresh the page and try again";
+
+      batch(() => {
+        dispatch(setSearchLoading(false));
+        dispatch(setError(errorMsg, subMsg));
+      });
     }
   };
 };

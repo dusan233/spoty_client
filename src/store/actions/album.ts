@@ -10,6 +10,7 @@ import {
   MoreAlbumTracks,
   IAddMoreAlbumTracks,
 } from "../types/album";
+import { setError } from "./error";
 import { AppThunk, TrackSimplified } from "../types/index";
 import { ArtistSimplified } from "../types/artist";
 
@@ -96,7 +97,19 @@ export const getAlbumData: ActionCreator<AppThunk> = (
         dispatch(setAlbumLoading(false));
       });
     } catch (err) {
-      console.log(err.response);
+      let errorMsg: string;
+      let subMsg: string;
+      if (err.response.status === 400) {
+        errorMsg = "Couldn't find that album";
+        subMsg = "Search for something else?";
+      } else {
+        errorMsg = "Opps! Something went wrong!";
+        subMsg = "Please refresh the page and try again";
+      }
+      batch(() => {
+        dispatch(setAlbumLoading(false));
+        dispatch(setError(errorMsg, subMsg));
+      });
     }
   };
 };

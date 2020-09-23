@@ -12,9 +12,11 @@ import {
   addMoreAlbumTracks,
   getMoreAlbumTracks,
 } from "../../store/actions/album";
+import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
 
+import { BsMusicNoteBeamed } from "react-icons/bs";
 import AlbumStyles from "./Album.module.css";
 import Spinner from "../Spinner/Spinner";
 import AlbumHeader from "../PlaylistHeader/AlbumHeader";
@@ -31,12 +33,15 @@ const mapStateToProps = (state: RootState) => ({
   date: state.album.date,
   artists: state.album.owner,
   tracks: state.album.tracks,
+  error: state.error.errorMsg,
+  subErrorMsg: state.error.subMsg,
 });
 
 const mapDispatchToProps = {
   getAlbumData,
   setAlbumLoading,
   addMoreAlbumTracks,
+  setError,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -51,6 +56,7 @@ const Album: React.FC<Props> = ({
   accessToken,
   getAlbumData,
   setAlbumLoading,
+  setError,
   addMoreAlbumTracks,
   loading,
   artists,
@@ -60,14 +66,20 @@ const Album: React.FC<Props> = ({
   total,
   type,
   tracks,
+  error,
+  subErrorMsg,
 }) => {
   let containerEl = useRef<HTMLDivElement>(null);
   let itemsCount = total === tracks.length ? tracks.length : tracks.length + 1;
+  useEffect(() => {
+    console.log("album");
+  });
   useEffect(() => {
     getAlbumData(match.params.albumId);
 
     return () => {
       setAlbumLoading(true);
+      setError("", "");
     };
   }, [getAlbumData, match.params.albumId, setAlbumLoading]);
 
@@ -76,14 +88,14 @@ const Album: React.FC<Props> = ({
   };
 
   const loadMoreTracks = ({ startIndex }: { startIndex: number }) => {
-    return getMoreAlbumTracks(
-      startIndex,
-      match.params.albumId,
-      accessToken
-    ).then((response) => {
-      const tracks = response.data.items;
-      addMoreAlbumTracks(tracks);
-    });
+    return getMoreAlbumTracks(startIndex, match.params.albumId, accessToken)
+      .then((response) => {
+        const tracks = response.data.items;
+        addMoreAlbumTracks(tracks);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const renderRow = ({ key, index, style }: any) => {
@@ -109,6 +121,20 @@ const Album: React.FC<Props> = ({
       );
     }
   };
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <div>
+          <div className="error-icon">
+            <BsMusicNoteBeamed />
+          </div>
+          <h1 className="error-heading">{error}</h1>
+          <h3 className="error-text">{subErrorMsg}</h3>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerEl} className={AlbumStyles.container}>

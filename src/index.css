@@ -276,14 +276,19 @@
   }
 }
 .loader-container,
-.error-container {
+.error-container,
+.error-container--small {
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.error-container div {
+.error-container--small {
+  height: 350px;
+}
+.error-container div,
+.error-container--small div {
   color: white;
   text-align: center;
 }

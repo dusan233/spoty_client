@@ -11,6 +11,7 @@ import {
   setSearchTracks,
   setSearchArtists,
 } from "../../store/actions/search";
+import { setError } from "../../store/actions/error";
 
 import SearchResultStyles from "./SearchResult.module.css";
 import ClassicTabStyles from "../Tabs/ClassicTab.module.css";
@@ -34,6 +35,8 @@ const mapStateToProps = (state: RootState) => ({
   artists: state.search.searchArtists,
   artistsTerm: state.search.artistsTerm,
   totalArtists: state.search.artistsTotal,
+  error: state.error.errorMsg,
+  subErrorMsg: state.error.subMsg,
 });
 const mapDispatchToProps = {
   fetchSearchData,
@@ -42,6 +45,7 @@ const mapDispatchToProps = {
   setSearchTerm,
   setSearchTracks,
   setSearchArtists,
+  setError,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -63,6 +67,7 @@ const SearchResult: React.FC<Props> = ({
   setSearchTerm,
   setSearchTracks,
   setSearchArtists,
+  setError,
   accessToken,
   playlists,
   totalPlaylists,
@@ -76,74 +81,41 @@ const SearchResult: React.FC<Props> = ({
   artists,
   artistsTerm,
   totalArtists,
+  error,
+  subErrorMsg,
 }) => {
   let containerEl = useRef<HTMLDivElement>(null);
 
-  // let rowHeight = 85;
-  // let type: string = "playlists";
-  // let items:
-  //   | PlaylistSimplified[]
-  //   | AlbumSimplified[]
-  //   | TrackFull[]
-  //   | ArtistFull[] = [];
-  // let total: number = 0;
-  // if (match.params.type === "playlist") {
-  //   type = "playlists";
-  //   items = playlists;
-  //   total = totalPlaylists;
-  // } else if (match.params.type === "album") {
-  //   type = "albums";
-  //   items = albums;
-  //   total = totalAlbums;
-  // } else if (match.params.type === "track") {
-  //   type = "tracks";
-  //   items = tracks;
-  //   total = totalTracks;
-  //   rowHeight = 44;
-  // } else if (match.params.type === "artist") {
-  //   type = "artists";
-  //   items = artists;
-  //   total = totalArtists;
-  // }
-
   useEffect(() => {
     if (match.params.type === "playlist") {
-      if (playlists.length !== 0) {
-        if (match.params.searchTerm !== playlistsTerm) {
-          fetchSearchData(match.params.type, match.params.searchTerm);
-        }
-      } else {
+      // fetchSearchData(match.params.type, match.params.searchTerm);
+      if (match.params.searchTerm !== playlistsTerm) {
         fetchSearchData(match.params.type, match.params.searchTerm);
       }
     } else if (match.params.type === "album") {
-      if (albums.length !== 0) {
-        if (match.params.searchTerm !== albumsTerm) {
-          fetchSearchData(match.params.type, match.params.searchTerm);
-        }
-      } else {
+      // fetchSearchData(match.params.type, match.params.searchTerm);
+      if (match.params.searchTerm !== albumsTerm) {
         fetchSearchData(match.params.type, match.params.searchTerm);
       }
     } else if (match.params.type === "track") {
-      if (tracks.length !== 0) {
-        if (match.params.searchTerm !== tracksTerm) {
-          fetchSearchData(match.params.type, match.params.searchTerm);
-        }
-      } else {
+      // fetchSearchData(match.params.type, match.params.searchTerm);
+      if (match.params.searchTerm !== tracksTerm) {
         fetchSearchData(match.params.type, match.params.searchTerm);
       }
     } else if (match.params.type === "artist") {
-      if (artists.length !== 0) {
-        if (match.params.searchTerm !== artistsTerm) {
-          fetchSearchData(match.params.type, match.params.searchTerm);
-        }
-      } else {
+      // fetchSearchData(match.params.type, match.params.searchTerm);
+      if (match.params.searchTerm !== artistsTerm) {
         fetchSearchData(match.params.type, match.params.searchTerm);
       }
     }
+    return () => {
+      setError("", "");
+    };
   }, [
     match.params.type,
     match.params.searchTerm,
     fetchSearchData,
+    setError,
     albums.length,
     albumsTerm,
     artists.length,
@@ -153,6 +125,10 @@ const SearchResult: React.FC<Props> = ({
     tracks.length,
     tracksTerm,
   ]);
+
+  useEffect(() => {
+    console.log("search");
+  });
 
   useEffect(() => {
     setSearchTerm(match.params.searchTerm);
@@ -207,43 +183,62 @@ const SearchResult: React.FC<Props> = ({
       match.params.searchTerm,
       accessToken,
       startIndex
-    ).then((response) => {
-      if ("playlists" in response.data) {
-        setSearchPlaylists(
-          response.data.playlists.items,
-          response.data.playlists.total,
-          "add",
-          match.params.searchTerm
-        );
-      } else if ("albums" in response.data) {
-        setSearchAlbums(
-          response.data.albums.items,
-          response.data.albums.total,
-          "add",
-          match.params.searchTerm
-        );
-      } else if ("tracks" in response.data) {
-        setSearchTracks(
-          response.data.tracks.items,
-          response.data.tracks.total,
-          "add",
-          match.params.searchTerm
-        );
-      } else if ("artists" in response.data) {
-        setSearchArtists(
-          response.data.artists.items,
-          response.data.artists.total,
-          "add",
-          match.params.searchTerm
-        );
-      }
-    });
+    )
+      .then((response) => {
+        if ("playlists" in response.data) {
+          setSearchPlaylists(
+            response.data.playlists.items,
+            response.data.playlists.total,
+            "add",
+            match.params.searchTerm
+          );
+        } else if ("albums" in response.data) {
+          setSearchAlbums(
+            response.data.albums.items,
+            response.data.albums.total,
+            "add",
+            match.params.searchTerm
+          );
+        } else if ("tracks" in response.data) {
+          setSearchTracks(
+            response.data.tracks.items,
+            response.data.tracks.total,
+            "add",
+            match.params.searchTerm
+          );
+        } else if ("artists" in response.data) {
+          setSearchArtists(
+            response.data.artists.items,
+            response.data.artists.total,
+            "add",
+            match.params.searchTerm
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const renderLists = () => {
     if (match.params.type === "playlist") {
       if (match.params.searchTerm !== playlistsTerm) {
         return null;
+      }
+      if (!playlists.length) {
+        return (
+          <div className="error-container--small">
+            <div>
+              <h1 className="error-heading">
+                No results found for " {match.params.searchTerm} "
+              </h1>
+              <h3 className="error-text">
+                Please make sure your words are spelled correctly or use less or
+                different keywords.
+              </h3>
+            </div>
+          </div>
+        );
       }
       return (
         <InfiniteVirtualizedList
@@ -259,6 +254,21 @@ const SearchResult: React.FC<Props> = ({
       if (match.params.searchTerm !== albumsTerm) {
         return null;
       }
+      if (!albums.length) {
+        return (
+          <div className="error-container--small">
+            <div>
+              <h1 className="error-heading">
+                No results found for " {match.params.searchTerm} "
+              </h1>
+              <h3 className="error-text">
+                Please make sure your words are spelled correctly or use less or
+                different keywords.
+              </h3>
+            </div>
+          </div>
+        );
+      }
       return (
         <InfiniteVirtualizedList
           items={albums}
@@ -273,6 +283,21 @@ const SearchResult: React.FC<Props> = ({
       if (match.params.searchTerm !== tracksTerm) {
         return null;
       }
+      if (!tracks.length) {
+        return (
+          <div className="error-container--small">
+            <div>
+              <h1 className="error-heading">
+                No results found for " {match.params.searchTerm} "
+              </h1>
+              <h3 className="error-text">
+                Please make sure your words are spelled correctly or use less or
+                different keywords.
+              </h3>
+            </div>
+          </div>
+        );
+      }
       return (
         <InfiniteVirtualizedList
           items={tracks}
@@ -286,6 +311,21 @@ const SearchResult: React.FC<Props> = ({
     } else if (match.params.type === "artist") {
       if (match.params.searchTerm !== artistsTerm) {
         return null;
+      }
+      if (!artists.length) {
+        return (
+          <div className="error-container--small">
+            <div>
+              <h1 className="error-heading">
+                No results found for " {match.params.searchTerm} "
+              </h1>
+              <h3 className="error-text">
+                Please make sure your words are spelled correctly or use less or
+                different keywords.
+              </h3>
+            </div>
+          </div>
+        );
       }
       return (
         <InfiniteVirtualizedList
@@ -306,22 +346,19 @@ const SearchResult: React.FC<Props> = ({
         Showing {match.params.type + "s"} for " {match.params.searchTerm} "
       </h1>
       <ClassicTab renderLinks={renderLinks} />
-      {loading ? (
+      {error ? (
+        <div className="error-container--small">
+          <div>
+            <h1 className="error-heading">{error}</h1>
+            <h3 className="error-text">{subErrorMsg}</h3>
+          </div>
+        </div>
+      ) : loading ? (
         <div className="container-spinner">
           <Spinner />
         </div>
       ) : (
-        <div>
-          {renderLists()}
-          {/* <InfiniteVirtualizedList
-            items={items}
-            totalItems={total}
-            rowHeight={rowHeight}
-            containerEl={containerEl}
-            type={type}
-            loadMoreItems={loadMoreResults}
-          /> */}
-        </div>
+        <div>{renderLists()}</div>
       )}
     </div>
   );

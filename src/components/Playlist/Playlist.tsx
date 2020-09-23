@@ -108,12 +108,14 @@ const Playlist: React.FC<Props> = ({
   }, []);
 
   const loadMoreTracks = ({ startIndex }: { startIndex: number }) => {
-    return getMoreTracks(startIndex, match.params.playlistId, accessToken).then(
-      (response) => {
+    return getMoreTracks(startIndex, match.params.playlistId, accessToken)
+      .then((response) => {
         const tracks = response.data.items;
         addMoreTracks(tracks);
-      }
-    );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const isRowLoaded = ({ index }: { index: number }) => {
