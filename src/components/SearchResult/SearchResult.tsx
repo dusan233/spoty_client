@@ -17,6 +17,7 @@ import SearchResultStyles from "./SearchResult.module.css";
 import ClassicTabStyles from "../Tabs/ClassicTab.module.css";
 import { RouteComponentProps, NavLink } from "react-router-dom";
 import ClassicTab from "../Tabs/ClassicTab";
+import TrackHeader from "../Track/TrackHeader";
 import Spinner from "../Spinner/Spinner";
 import InfiniteVirtualizedList from "../InfiniteVirtualizedList/InfiniteVirtualizedList";
 
@@ -299,14 +300,17 @@ const SearchResult: React.FC<Props> = ({
         );
       }
       return (
-        <InfiniteVirtualizedList
-          items={tracks}
-          totalItems={totalTracks}
-          rowHeight={44}
-          containerEl={containerEl}
-          type="tracks"
-          loadMoreItems={loadMoreResults}
-        />
+        <React.Fragment>
+          <TrackHeader />
+          <InfiniteVirtualizedList
+            items={tracks}
+            totalItems={totalTracks}
+            rowHeight={44}
+            containerEl={containerEl}
+            type="tracks"
+            loadMoreItems={loadMoreResults}
+          />
+        </React.Fragment>
       );
     } else if (match.params.type === "artist") {
       if (match.params.searchTerm !== artistsTerm) {
