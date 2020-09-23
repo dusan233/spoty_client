@@ -1,10 +1,30 @@
 .searchbar {
-  background: rgb(4, 4, 4);
-  padding: 10px 20px;
-  color: white;
-  border-radius: 50px;
-  outline: none;
-  width: 300px;
   border: 3px solid #282828;
+  border-radius: 50px;
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon {
+  width: 40px;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+}
+.searchbar-input {
+  padding: 10px 20px;
+  padding-left: 10px;
+  border-radius: 50px;
+  background: rgb(4, 4, 4);
+  border: none;
+  outline: none;
+  color: white;
+  width: 300px;
+  font-weight: 600;
+}
+.searchbar-input::placeholder {
+  color: #b3b3b3;
 }

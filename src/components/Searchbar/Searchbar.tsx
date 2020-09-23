@@ -4,6 +4,7 @@ import { history } from "../..";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
 import SearchbarStyles from "./Searchbar.module.css";
+import { RiSearchLine } from "react-icons/ri";
 
 const mapStateToProps = (state: RootState) => ({
   term: state.search.searchTerm,
@@ -37,13 +38,18 @@ const Searchbar: React.FC<Props> = ({ term, setSearchTerm }) => {
   return (
     <div>
       <form onSubmit={onSearchSubmit}>
-        <input
-          onChange={onSearchValueChange}
-          className={SearchbarStyles.searchbar}
-          placeholder="Search for Artists, Songs, Playlists..."
-          type="text"
-          value={searchValue}
-        />
+        <div className={SearchbarStyles.searchbar}>
+          <div className={SearchbarStyles.icon}>
+            <RiSearchLine />
+          </div>
+          <input
+            onChange={onSearchValueChange}
+            className={`${SearchbarStyles["searchbar-input"]}`}
+            placeholder="Search for Artists, Songs, Playlists..."
+            type="text"
+            value={searchValue}
+          />
+        </div>
       </form>
     </div>
   );
