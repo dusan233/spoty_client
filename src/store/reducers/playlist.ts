@@ -26,6 +26,7 @@ const reducer = (state = initialState, action: PlaylistActions) => {
         ...state,
         ...action.payload,
       };
+
     case PlaylistActionTypes.ADD_MORE_TRACKS:
       return {
         ...state,

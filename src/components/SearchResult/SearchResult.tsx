@@ -11,6 +11,7 @@ import {
   setSearchTracks,
   setSearchArtists,
 } from "../../store/actions/search";
+import { saveTracksForCurrentUser } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 
 import SearchResultStyles from "./SearchResult.module.css";
@@ -38,6 +39,7 @@ const mapStateToProps = (state: RootState) => ({
   totalArtists: state.search.artistsTotal,
   error: state.error.errorMsg,
   subErrorMsg: state.error.subMsg,
+  trackLikes: state.user.trackLikes,
 });
 const mapDispatchToProps = {
   fetchSearchData,
@@ -47,6 +49,7 @@ const mapDispatchToProps = {
   setSearchTracks,
   setSearchArtists,
   setError,
+  saveTracksForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -69,6 +72,8 @@ const SearchResult: React.FC<Props> = ({
   setSearchTracks,
   setSearchArtists,
   setError,
+  saveTracksForCurrentUser,
+  trackLikes,
   accessToken,
   playlists,
   totalPlaylists,
@@ -126,10 +131,6 @@ const SearchResult: React.FC<Props> = ({
     tracks.length,
     tracksTerm,
   ]);
-
-  useEffect(() => {
-    console.log("search");
-  });
 
   useEffect(() => {
     setSearchTerm(match.params.searchTerm);
@@ -309,6 +310,8 @@ const SearchResult: React.FC<Props> = ({
             containerEl={containerEl}
             type="tracks"
             loadMoreItems={loadMoreResults}
+            itemLikes={trackLikes}
+            saveItem={saveTracksForCurrentUser}
           />
         </React.Fragment>
       );

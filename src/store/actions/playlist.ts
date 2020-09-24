@@ -4,6 +4,9 @@ import { batch } from "react-redux";
 import { setError } from "./error";
 import { RootState } from "../reducers/index";
 import { api } from "../../axios";
+import { AxiosResponse } from "axios";
+import { checkCurrentUserSavedTracks } from "./user";
+import { setTrackLikes } from "./user";
 import {
   ISetPlaylistLoading,
   ISetPlaylistData,
@@ -74,10 +77,7 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
-    batch(() => {
-      dispatch(setPlaylistLoading(true));
-      dispatch(setError("", ""));
-    });
+    dispatch(setPlaylistLoading(true));
     try {
       const response = await api.get<PlaylistFull>(`/playlists/${playlistId}`, {
         headers: {
@@ -85,6 +85,37 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
         },
       });
       console.log(response);
+
+      let trackIds = "";
+      let trackIds2 = "";
+      response.data.tracks.items.slice(0, 50).forEach((track) => {
+        if (trackIds === " ") {
+          trackIds += track.track.id;
+        } else {
+          trackIds += "," + track.track.id;
+        }
+      });
+
+      const savedTracksRes = await checkCurrentUserSavedTracks(
+        trackIds,
+        accessToken
+      );
+
+      response.data.tracks.items.slice(50, 100).forEach((track) => {
+        if (trackIds2 === " ") {
+          trackIds2 += track.track.id;
+        } else {
+          trackIds2 += "," + track.track.id;
+        }
+      });
+
+      const savedTracksRes2 =
+        trackIds2.length > 0
+          ? await checkCurrentUserSavedTracks(trackIds2, accessToken)
+          : { data: [] };
+
+     
+
       batch(() => {
         dispatch(
           setPlaylistData(
@@ -98,6 +129,9 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
             response.data.tracks.total,
             response.data.type
           )
+        );
+        dispatch(
+          setTrackLikes([...savedTracksRes.data, ...savedTracksRes2.data])
         );
         dispatch(setPlaylistLoading(false));
       });

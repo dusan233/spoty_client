@@ -12,6 +12,7 @@ import {
   addMoreTracks,
   getMoreTracks,
 } from "../../store/actions/playlist";
+import { saveTracksForCurrentUser } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
@@ -37,12 +38,14 @@ const mapStateToProps = (state: RootState) => ({
   type: state.playlist.type,
   error: state.error.errorMsg,
   subErrorMsg: state.error.subMsg,
+  tracksLikes: state.user.trackLikes,
 });
 const mapDispatchToProps = {
   getPlaylistData,
   setPlaylistLoading,
   addMoreTracks,
   setError,
+  saveTracksForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -57,6 +60,7 @@ const Playlist: React.FC<Props> = ({
   setPlaylistLoading,
   addMoreTracks,
   setError,
+  saveTracksForCurrentUser,
   match,
   loading,
   name,
@@ -69,6 +73,7 @@ const Playlist: React.FC<Props> = ({
   total,
   error,
   subErrorMsg,
+  tracksLikes,
 }) => {
   const [showSticky, setShowSticky] = useState(false);
   let containerEl = useRef<HTMLDivElement>(null);
@@ -124,6 +129,7 @@ const Playlist: React.FC<Props> = ({
 
   const renderRow = ({ key, index, style }: any) => {
     const track = tracks[index];
+    const liked = tracksLikes[index];
     if (!tracks[index]) {
       return (
         <div style={{ ...style }} key={key} className="loader-container">
@@ -143,6 +149,10 @@ const Playlist: React.FC<Props> = ({
           duration={track.track.duration_ms}
           explicit={track.track.explicit}
           popularity={track.track.popularity}
+          albumId={track.track.album.id}
+          liked={liked}
+          trackId={track.track.id}
+          saveTrack={saveTracksForCurrentUser}
         />
       );
     }

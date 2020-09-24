@@ -6,7 +6,7 @@
   width: 100%;
   padding: 0 6px;
   position: relative;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   color: white;
 }
 
@@ -117,6 +117,15 @@
   font-size: 13px;
   font-weight: 600;
 }
+.datagrid-cell-album a {
+  color: white;
+  text-decoration: none;
+  text-decoration-color: white;
+}
+.datagrid-cell-album a:hover {
+  text-decoration: underline;
+  text-decoration-color: white;
+}
 .datagrid-cell-duration {
   width: 60px;
   padding-left: 20px;
@@ -155,7 +164,8 @@
   color: #989898;
   font-size: 20px;
 }
-.like {
+.like,
+.like--filled {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -163,6 +173,12 @@
   color: #989898;
   cursor: pointer;
 }
+
+.like--filled {
+  color: rgb(180, 68, 68);
+  color: #1db954;
+}
+
 .like:hover {
   color: white;
 }

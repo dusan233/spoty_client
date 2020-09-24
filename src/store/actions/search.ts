@@ -13,6 +13,7 @@ import {
   ISetSearchTracks,
   ISetSearchTerm,
 } from "../types/search";
+import { checkCurrentUserSavedTracks, setTrackLikes } from "./user";
 import { setError } from "./error";
 import { ArtistFull } from "../types/artist";
 import { PlaylistSimplified } from "../types/playlist";
@@ -121,6 +122,7 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
     try {
       const searchResponse = await getSearchData(type, term, accessToken, 0);
       console.log(searchResponse);
+
       if ("playlists" in searchResponse.data) {
         batch(() => {
           dispatch(
@@ -134,6 +136,34 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
           dispatch(setSearchLoading(false));
         });
       } else if ("tracks" in searchResponse.data) {
+        let trackIds = "";
+        let trackIds2 = "";
+        searchResponse.data.tracks.items.slice(0, 50).forEach((track) => {
+          if (trackIds === " ") {
+            trackIds += track.id;
+          } else {
+            trackIds += "," + track.id;
+          }
+        });
+
+        const savedTracksRes = await checkCurrentUserSavedTracks(
+          trackIds,
+          accessToken
+        );
+
+        searchResponse.data.tracks.items.slice(50, 100).forEach((track) => {
+          if (trackIds2 === " ") {
+            trackIds2 += track.id;
+          } else {
+            trackIds2 += "," + track.id;
+          }
+        });
+
+        const savedTracksRes2 =
+          trackIds2.length > 0
+            ? await checkCurrentUserSavedTracks(trackIds2, accessToken)
+            : { data: [] };
+
         batch(() => {
           dispatch(
             setSearchTracks(
@@ -142,6 +172,9 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
               "reset",
               term
             )
+          );
+          dispatch(
+            setTrackLikes([...savedTracksRes.data, ...savedTracksRes2.data])
           );
           dispatch(setSearchLoading(false));
         });

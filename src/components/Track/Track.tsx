@@ -2,8 +2,9 @@ import React, { useCallback } from "react";
 import TrackStyles from "./Track.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import { BsPlayFill, BsMusicNote, BsThreeDots } from "react-icons/bs";
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { saveTracksForCurrentUser } from "../../store/actions/user";
 
 import { ArtistSimplified } from "../../store/types/artist";
 import useSelected from "../../hooks/useSelected";
@@ -13,13 +14,17 @@ interface TrackProps {
   title: string;
   artists: ArtistSimplified[];
   album?: string;
+  albumId?: string;
   style?: any;
-  index?: number;
+  index: number;
   duration: number;
   explicit: boolean;
   popularity?: number;
   type: string;
   hidePopularity?: boolean;
+  liked?: boolean;
+  trackId: string;
+  saveTrack: (trackIds: string, index: number) => Promise<void>;
 }
 
 const Track: React.FC<TrackProps> = React.memo(
@@ -34,6 +39,10 @@ const Track: React.FC<TrackProps> = React.memo(
     popularity,
     type,
     hidePopularity,
+    albumId,
+    liked,
+    trackId,
+    saveTrack,
   }) => {
     const [selected, rowRef] = useSelected();
 
@@ -51,6 +60,10 @@ const Track: React.FC<TrackProps> = React.memo(
       });
       return artistsString;
     }, [artists]);
+
+    const saveUserTracks = () => {
+      saveTrack(trackId, index);
+    };
 
     const definePopularity = useCallback(() => {
       if (typeof popularity === "number") {
@@ -112,9 +125,22 @@ const Track: React.FC<TrackProps> = React.memo(
         <div
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-love"]}`}
         >
-          <span className={TrackStyles.like}>
-            <FaRegHeart />
-          </span>
+          {liked ? (
+            <span
+              title="Remove from your liked songs"
+              className={`${TrackStyles["like--filled"]}`}
+            >
+              <FaHeart />
+            </span>
+          ) : (
+            <span
+              onClick={saveUserTracks}
+              title="Save to your liked songs"
+              className={TrackStyles.like}
+            >
+              <FaRegHeart />
+            </span>
+          )}
         </div>
         <div
           title={title}
@@ -140,10 +166,11 @@ const Track: React.FC<TrackProps> = React.memo(
           </div>
         )}
         <div
-          title={album}
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-album"]} `}
         >
-          {album}
+          <Link title={album} to={`/album/${albumId}`}>
+            {album}
+          </Link>
         </div>
         <div
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-options"]}`}

@@ -24,6 +24,8 @@ type Props = {
   containerEl: RefObject<HTMLDivElement>;
   loadMoreItems: (obj: any) => Promise<void>;
   type: string;
+  itemLikes?: boolean[];
+  saveItem?: (itemIds: string, index: number) => Promise<void>;
 };
 
 const InfiniteVirtualizedList: React.FC<Props> = ({
@@ -32,6 +34,8 @@ const InfiniteVirtualizedList: React.FC<Props> = ({
   rowHeight,
   containerEl,
   loadMoreItems,
+  saveItem,
+  itemLikes,
   type,
 }) => {
   const nekiRef = useRef<any>();
@@ -47,6 +51,7 @@ const InfiniteVirtualizedList: React.FC<Props> = ({
 
   const renderRow = ({ key, index, style }: any) => {
     const itemr = items[index];
+
     if (!items[index]) {
       return (
         <div style={{ ...style }} key={key} className="loader-container">
@@ -87,6 +92,7 @@ const InfiniteVirtualizedList: React.FC<Props> = ({
           );
         case "tracks":
           let track = itemr as TrackFull;
+          const liked = itemLikes![index];
           return (
             <Track
               title={track.name}
@@ -98,6 +104,11 @@ const InfiniteVirtualizedList: React.FC<Props> = ({
               album={track.album.name}
               style={style}
               key={track.id}
+              trackId={track.id}
+              index={index}
+              saveTrack={saveItem!}
+              liked={liked}
+              albumId={track.album.id}
             />
           );
         case "artists":

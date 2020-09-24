@@ -3,6 +3,7 @@ import { Dispatch, ActionCreator } from "redux";
 import { batch } from "react-redux";
 import { RootState } from "../reducers/index";
 import { api } from "../../axios";
+import { checkCurrentUserSavedTracks, setTrackLikes } from "./user";
 import {
   ISetAlbumLoading,
   ISetAlbumData,
@@ -81,6 +82,35 @@ export const getAlbumData: ActionCreator<AppThunk> = (
         },
       });
       console.log(data);
+
+      let trackIds = "";
+      let trackIds2 = "";
+      data.data.tracks.items.slice(0, 50).forEach((track) => {
+        if (trackIds === " ") {
+          trackIds += track.id;
+        } else {
+          trackIds += "," + track.id;
+        }
+      });
+
+      const savedTracksRes = await checkCurrentUserSavedTracks(
+        trackIds,
+        accessToken
+      );
+
+      data.data.tracks.items.slice(50, 100).forEach((track) => {
+        if (trackIds === " ") {
+          trackIds += track.id;
+        } else {
+          trackIds += "," + track.id;
+        }
+      });
+
+      const savedTracksRes2 =
+        trackIds2.length > 0
+          ? await checkCurrentUserSavedTracks(trackIds2, accessToken)
+          : { data: [] };
+
       batch(() => {
         dispatch(
           setAlbumData(
@@ -93,6 +123,9 @@ export const getAlbumData: ActionCreator<AppThunk> = (
             data.data.album_type,
             data.data.release_date
           )
+        );
+        dispatch(
+          setTrackLikes([...savedTracksRes.data, ...savedTracksRes2.data])
         );
         dispatch(setAlbumLoading(false));
       });

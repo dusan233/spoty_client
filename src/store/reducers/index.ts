@@ -5,6 +5,7 @@ import PlaylistReducer from "./playlist";
 import AlbumReducer from "./album";
 import SearchReducer from "./search";
 import ErrorReducer from "./error";
+import UserReducer from "./user";
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   album: AlbumReducer,
   search: SearchReducer,
   error: ErrorReducer,
+  user: UserReducer,
 });

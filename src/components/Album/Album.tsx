@@ -12,6 +12,7 @@ import {
   addMoreAlbumTracks,
   getMoreAlbumTracks,
 } from "../../store/actions/album";
+import { saveTracksForCurrentUser } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
@@ -35,6 +36,7 @@ const mapStateToProps = (state: RootState) => ({
   tracks: state.album.tracks,
   error: state.error.errorMsg,
   subErrorMsg: state.error.subMsg,
+  trackLikes: state.user.trackLikes,
 });
 
 const mapDispatchToProps = {
@@ -42,6 +44,7 @@ const mapDispatchToProps = {
   setAlbumLoading,
   addMoreAlbumTracks,
   setError,
+  saveTracksForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -58,6 +61,8 @@ const Album: React.FC<Props> = ({
   setAlbumLoading,
   setError,
   addMoreAlbumTracks,
+  saveTracksForCurrentUser,
+  trackLikes,
   loading,
   artists,
   name,
@@ -71,9 +76,7 @@ const Album: React.FC<Props> = ({
 }) => {
   let containerEl = useRef<HTMLDivElement>(null);
   let itemsCount = total === tracks.length ? tracks.length : tracks.length + 1;
-  useEffect(() => {
-    console.log("album");
-  });
+
   useEffect(() => {
     getAlbumData(match.params.albumId);
 
@@ -100,6 +103,7 @@ const Album: React.FC<Props> = ({
 
   const renderRow = ({ key, index, style }: any) => {
     const track = tracks[index];
+    const liked = trackLikes[index];
     if (!tracks[index]) {
       return (
         <div style={{ ...style }} key={key} className="loader-container">
@@ -117,6 +121,10 @@ const Album: React.FC<Props> = ({
           duration={track.duration_ms}
           explicit={track.explicit}
           hidePopularity={true}
+          trackId={track.id}
+          index={index}
+          liked={liked}
+          saveTrack={saveTracksForCurrentUser}
         />
       );
     }
@@ -155,16 +163,21 @@ const Album: React.FC<Props> = ({
           <div style={{ padding: "30px" }}>
             <TrackHeader type="album" hidePopularity={true} />
             {type === "single" ? (
-              tracks.map((track) => {
+              tracks.map((track, index) => {
                 return (
                   <Track
                     type="album"
+                    index={index}
                     key={track.id}
                     title={track.name}
                     artists={track.artists}
                     duration={track.duration_ms}
                     explicit={track.explicit}
                     hidePopularity={true}
+                    trackId={track.id}
+                    saveTrack={(smt: string, index: number) => {
+                      return new Promise((resolve) => resolve());
+                    }}
                   />
                 );
               })
