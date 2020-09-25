@@ -12,7 +12,7 @@ import {
   addMoreTracks,
   getMoreTracks,
 } from "../../store/actions/playlist";
-import { saveTracksForCurrentUser } from "../../store/actions/user";
+import { saveRemoveTracksForCurrentUser } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
@@ -45,7 +45,7 @@ const mapDispatchToProps = {
   setPlaylistLoading,
   addMoreTracks,
   setError,
-  saveTracksForCurrentUser,
+  saveRemoveTracksForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -60,7 +60,7 @@ const Playlist: React.FC<Props> = ({
   setPlaylistLoading,
   addMoreTracks,
   setError,
-  saveTracksForCurrentUser,
+  saveRemoveTracksForCurrentUser,
   match,
   loading,
   name,
@@ -152,7 +152,7 @@ const Playlist: React.FC<Props> = ({
           albumId={track.track.album.id}
           liked={liked}
           trackId={track.track.id}
-          saveTrack={saveTracksForCurrentUser}
+          saveTrack={saveRemoveTracksForCurrentUser}
         />
       );
     }

@@ -12,7 +12,7 @@ import {
   addMoreAlbumTracks,
   getMoreAlbumTracks,
 } from "../../store/actions/album";
-import { saveTracksForCurrentUser } from "../../store/actions/user";
+import { saveRemoveTracksForCurrentUser } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
@@ -44,7 +44,7 @@ const mapDispatchToProps = {
   setAlbumLoading,
   addMoreAlbumTracks,
   setError,
-  saveTracksForCurrentUser,
+  saveRemoveTracksForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -61,7 +61,7 @@ const Album: React.FC<Props> = ({
   setAlbumLoading,
   setError,
   addMoreAlbumTracks,
-  saveTracksForCurrentUser,
+  saveRemoveTracksForCurrentUser,
   trackLikes,
   loading,
   artists,
@@ -124,7 +124,7 @@ const Album: React.FC<Props> = ({
           trackId={track.id}
           index={index}
           liked={liked}
-          saveTrack={saveTracksForCurrentUser}
+          saveTrack={saveRemoveTracksForCurrentUser}
         />
       );
     }
@@ -164,6 +164,7 @@ const Album: React.FC<Props> = ({
             <TrackHeader type="album" hidePopularity={true} />
             {type === "single" ? (
               tracks.map((track, index) => {
+                const liked = trackLikes[index];
                 return (
                   <Track
                     type="album"
@@ -175,9 +176,8 @@ const Album: React.FC<Props> = ({
                     explicit={track.explicit}
                     hidePopularity={true}
                     trackId={track.id}
-                    saveTrack={(smt: string, index: number) => {
-                      return new Promise((resolve) => resolve());
-                    }}
+                    liked={liked}
+                    saveTrack={saveRemoveTracksForCurrentUser}
                   />
                 );
               })

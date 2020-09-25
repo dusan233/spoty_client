@@ -26,14 +26,20 @@ export const setTrackLikes: ActionCreator<ISetTrackLikes> = (
   payload: tracksLikes,
 });
 
-export const saveTracksForCurrentUser = (trackIds: string, index: number) => {
+export const saveRemoveTracksForCurrentUser = (
+  trackIds: string,
+  index: number,
+  action: string
+) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
     const tracksLikes = getState().user.trackLikes;
-    console.log(accessToken);
-    console.log(index);
     try {
-      const response = await api.put("/me/tracks", null, {
+      const method = action === "save" ? "PUT" : "DELETE";
+      console.log(method);
+      const response = await api({
+        method,
+        url: "/me/tracks",
         params: {
           ids: trackIds,
         },

@@ -15,7 +15,7 @@ import { PlaylistSimplified } from "../../store/types/playlist";
 import { AlbumSimplified } from "../../store/types/album";
 import { TrackFull } from "../../store/types/index";
 import { ArtistFull } from "../../store/types/artist";
-import { saveTracksForCurrentUser } from "../../store/actions/user";
+import { saveRemoveTracksForCurrentUser } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 
 import SearchResultStyles from "./SearchResult.module.css";
@@ -56,7 +56,7 @@ const mapDispatchToProps = {
   setSearchTracks,
   setSearchArtists,
   setError,
-  saveTracksForCurrentUser,
+  saveRemoveTracksForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -79,7 +79,7 @@ const SearchResult: React.FC<Props> = ({
   setSearchTracks,
   setSearchArtists,
   setError,
-  saveTracksForCurrentUser,
+  saveRemoveTracksForCurrentUser,
   trackLikes,
   accessToken,
   playlists,
@@ -405,7 +405,7 @@ const SearchResult: React.FC<Props> = ({
                     key={track.id}
                     trackId={track.id}
                     index={index}
-                    saveTrack={saveTracksForCurrentUser}
+                    saveTrack={saveRemoveTracksForCurrentUser}
                     liked={liked}
                     albumId={track.album.id}
                   />

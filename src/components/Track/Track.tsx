@@ -4,7 +4,6 @@ import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import { BsPlayFill, BsMusicNote, BsThreeDots } from "react-icons/bs";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { saveTracksForCurrentUser } from "../../store/actions/user";
 
 import { ArtistSimplified } from "../../store/types/artist";
 import useSelected from "../../hooks/useSelected";
@@ -24,7 +23,7 @@ interface TrackProps {
   hidePopularity?: boolean;
   liked?: boolean;
   trackId: string;
-  saveTrack: (trackIds: string, index: number) => Promise<void>;
+  saveTrack: (trackIds: string, index: number, action: string) => Promise<void>;
 }
 
 const Track: React.FC<TrackProps> = React.memo(
@@ -61,8 +60,9 @@ const Track: React.FC<TrackProps> = React.memo(
       return artistsString;
     }, [artists]);
 
-    const saveUserTracks = () => {
-      saveTrack(trackId, index);
+    const saveRemoveUserTracks = () => {
+      const action = liked ? "remove" : "save";
+      saveTrack(trackId, index, action);
     };
 
     const definePopularity = useCallback(() => {
@@ -127,6 +127,7 @@ const Track: React.FC<TrackProps> = React.memo(
         >
           {liked ? (
             <span
+              onClick={saveRemoveUserTracks}
               title="Remove from your liked songs"
               className={`${TrackStyles["like--filled"]}`}
             >
@@ -134,7 +135,7 @@ const Track: React.FC<TrackProps> = React.memo(
             </span>
           ) : (
             <span
-              onClick={saveUserTracks}
+              onClick={saveRemoveUserTracks}
               title="Save to your liked songs"
               className={TrackStyles.like}
             >
