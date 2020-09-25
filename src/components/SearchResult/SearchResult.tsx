@@ -11,6 +11,10 @@ import {
   setSearchTracks,
   setSearchArtists,
 } from "../../store/actions/search";
+import { PlaylistSimplified } from "../../store/types/playlist";
+import { AlbumSimplified } from "../../store/types/album";
+import { TrackFull } from "../../store/types/index";
+import { ArtistFull } from "../../store/types/artist";
 import { saveTracksForCurrentUser } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 
@@ -18,6 +22,9 @@ import SearchResultStyles from "./SearchResult.module.css";
 import ClassicTabStyles from "../Tabs/ClassicTab.module.css";
 import { RouteComponentProps, NavLink } from "react-router-dom";
 import ClassicTab from "../Tabs/ClassicTab";
+import SearchPlaylistCard from "../Card/SearchPlaylist";
+import Track from "../Track/Track";
+import SearchArtistCard from "../Card/ArtistSearch";
 import TrackHeader from "../Track/TrackHeader";
 import Spinner from "../Spinner/Spinner";
 import InfiniteVirtualizedList from "../InfiniteVirtualizedList/InfiniteVirtualizedList";
@@ -250,6 +257,37 @@ const SearchResult: React.FC<Props> = ({
           containerEl={containerEl}
           type="playlists"
           loadMoreItems={loadMoreResults}
+          renderRow={({ key, index, style }: any) => {
+            const item = playlists[index];
+            let playlist = item as PlaylistSimplified;
+            if (!playlists[index]) {
+              return (
+                <div
+                  style={{ ...style }}
+                  key={key}
+                  className="loader-container"
+                >
+                  <Spinner />
+                </div>
+              );
+            } else {
+              return (
+                <SearchPlaylistCard
+                  img={playlist.images[0] && playlist.images[0].url}
+                  description={
+                    (playlist as PlaylistSimplified).owner.display_name
+                  }
+                  name={playlist.name}
+                  itemId={playlist.id}
+                  index={index}
+                  style={style}
+                  key={playlist.id}
+                  totalTracks={(playlist as PlaylistSimplified).tracks.total}
+                  type="playlist"
+                />
+              );
+            }
+          }}
         />
       );
     } else if (match.params.type === "album") {
@@ -279,6 +317,35 @@ const SearchResult: React.FC<Props> = ({
           containerEl={containerEl}
           type="albums"
           loadMoreItems={loadMoreResults}
+          renderRow={({ key, index, style }: any) => {
+            const item = albums[index];
+            let album = item as AlbumSimplified;
+            if (!albums[index]) {
+              return (
+                <div
+                  style={{ ...style }}
+                  key={key}
+                  className="loader-container"
+                >
+                  <Spinner />
+                </div>
+              );
+            } else {
+              return (
+                <SearchPlaylistCard
+                  img={album.images[0] && album.images[0].url}
+                  description={(album as AlbumSimplified).artists[0].name}
+                  name={album.name}
+                  itemId={album.id}
+                  index={index}
+                  style={style}
+                  key={album.id}
+                  totalTracks={(album as AlbumSimplified).total_tracks}
+                  type="album"
+                />
+              );
+            }
+          }}
         />
       );
     } else if (match.params.type === "track") {
@@ -310,8 +377,41 @@ const SearchResult: React.FC<Props> = ({
             containerEl={containerEl}
             type="tracks"
             loadMoreItems={loadMoreResults}
-            itemLikes={trackLikes}
-            saveItem={saveTracksForCurrentUser}
+            renderRow={({ key, index, style }: any) => {
+              const item = tracks[index];
+              let track = item as TrackFull;
+              const liked = trackLikes![index];
+              if (!tracks[index]) {
+                return (
+                  <div
+                    style={{ ...style }}
+                    key={key}
+                    className="loader-container"
+                  >
+                    <Spinner />
+                  </div>
+                );
+              } else {
+                return (
+                  <Track
+                    title={track.name}
+                    artists={track.artists}
+                    duration={track.duration_ms}
+                    explicit={track.explicit}
+                    type="playlist"
+                    popularity={track.popularity}
+                    album={track.album.name}
+                    style={style}
+                    key={track.id}
+                    trackId={track.id}
+                    index={index}
+                    saveTrack={saveTracksForCurrentUser}
+                    liked={liked}
+                    albumId={track.album.id}
+                  />
+                );
+              }
+            }}
           />
         </React.Fragment>
       );
@@ -342,6 +442,32 @@ const SearchResult: React.FC<Props> = ({
           containerEl={containerEl}
           type="artists"
           loadMoreItems={loadMoreResults}
+          renderRow={({ key, index, style }: any) => {
+            const item = artists[index];
+            let artist = item as ArtistFull;
+            if (!artists[index]) {
+              return (
+                <div
+                  style={{ ...style }}
+                  key={key}
+                  className="loader-container"
+                >
+                  <Spinner />
+                </div>
+              );
+            } else {
+              return (
+                <SearchArtistCard
+                  name={artist.name}
+                  style={style}
+                  img={artist.images[0] && artist.images[0].url}
+                  artistId={artist.id}
+                  genres={artist.genres}
+                  key={artist.id}
+                />
+              );
+            }
+          }}
         />
       );
     }
