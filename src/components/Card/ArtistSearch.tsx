@@ -3,6 +3,7 @@ import CardStyles from "./Card.module.css";
 import { Link } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa";
 import NoImage from "../../assets/noimageartist.jpg";
+import useSelected from "../../hooks/useSelected";
 
 interface IProps {
   img: string | undefined;
@@ -14,6 +15,7 @@ interface IProps {
 
 const ArtistSearch: React.FC<IProps> = React.memo(
   ({ style, img, name, genres }) => {
+    const [selected, rowRef] = useSelected();
     const getGenres = () => {
       return genres.map((genre) => {
         return (
@@ -25,13 +27,12 @@ const ArtistSearch: React.FC<IProps> = React.memo(
     };
 
     return (
-      <div style={style} className={`${CardStyles["search-card"]}`}>
+      <div
+        ref={rowRef}
+        style={{ ...style, background: selected && "#ffffff29" }}
+        className={`${CardStyles["search-card"]}`}
+      >
         <div className={`${CardStyles["search-card__img-container"]}`}>
-          {/* <img
-            alt="Playlist cover image"
-            src={img}
-            className={`${CardStyles["search-card__img--artist"]}`}
-          /> */}
           <div
             className={`${CardStyles["search-card__img-wrap"]}`}
             style={{ backgroundImage: `url(${img || NoImage})` }}
@@ -51,7 +52,13 @@ const ArtistSearch: React.FC<IProps> = React.memo(
           </div>
         </div>
         <div className={`${CardStyles["search-card__options"]}`}>
-          <div className={`${CardStyles["search-card__like"]}`}>
+          <div
+            className={`${
+              selected
+                ? CardStyles["search-card__like--selected"]
+                : CardStyles["search-card__like"]
+            }`}
+          >
             <FaRegHeart />
           </div>
         </div>
