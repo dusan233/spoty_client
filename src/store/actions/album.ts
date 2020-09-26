@@ -3,7 +3,12 @@ import { Dispatch, ActionCreator } from "redux";
 import { batch } from "react-redux";
 import { RootState } from "../reducers/index";
 import { api } from "../../axios";
-import { checkCurrentUserSavedTracks, setTrackLikes } from "./user";
+import {
+  checkCurrentUserSavedTracks,
+  checkCurrentUserSavedAlbums,
+  setTrackLikes,
+  setAlbumLikes,
+} from "./user";
 import {
   ISetAlbumLoading,
   ISetAlbumData,
@@ -83,6 +88,11 @@ export const getAlbumData: ActionCreator<AppThunk> = (
       });
       console.log(data);
 
+      const savedAlbumResponse = await checkCurrentUserSavedAlbums(
+        albumId ? albumId : "",
+        accessToken
+      );
+
       let trackIds = "";
       let trackIds2 = "";
       data.data.tracks.items.slice(0, 50).forEach((track) => {
@@ -127,6 +137,7 @@ export const getAlbumData: ActionCreator<AppThunk> = (
         dispatch(
           setTrackLikes([...savedTracksRes.data, ...savedTracksRes2.data])
         );
+        dispatch(setAlbumLikes([...savedAlbumResponse.data]));
         dispatch(setAlbumLoading(false));
       });
     } catch (err) {

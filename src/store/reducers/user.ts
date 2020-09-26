@@ -3,6 +3,7 @@ import { UserState, UserActions } from "../types/user";
 
 const initialState: UserState = {
   trackLikes: [],
+  albumLikes: [],
 };
 
 const reducer = (state = initialState, action: UserActions) => {
@@ -11,6 +12,11 @@ const reducer = (state = initialState, action: UserActions) => {
       return {
         ...state,
         trackLikes: action.payload,
+      };
+    case UserActionTypes.SET_ALBUM_LIKES:
+      return {
+        ...state,
+        albumLikes: action.payload,
       };
     default:
       return state;

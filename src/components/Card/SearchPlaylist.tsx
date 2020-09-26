@@ -3,7 +3,7 @@ import CardStyles from "./Card.module.css";
 import { Link } from "react-router-dom";
 import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
 import { BsPlayFill, BsThreeDots } from "react-icons/bs";
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 import useSelected from "../../hooks/useSelected";
@@ -17,11 +17,29 @@ interface IProps {
   style?: any;
   totalTracks: number;
   type: string;
+  liked: boolean;
+  saveItem: (albumIds: string, index: number, action: string) => Promise<void>;
 }
 
 const SearchPlaylist: React.FC<IProps> = React.memo(
-  ({ img, name, description, itemId, index, style, totalTracks, type }) => {
+  ({
+    img,
+    name,
+    description,
+    itemId,
+    index,
+    style,
+    totalTracks,
+    type,
+    liked,
+    saveItem,
+  }) => {
     const [selected, rowRef] = useSelected();
+
+    const saveItemUser = () => {
+      const action = liked ? "remove" : "save";
+      saveItem(itemId, index, action);
+    };
 
     return (
       <div
@@ -64,13 +82,18 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
         </div>
         <div className={`${CardStyles["search-card__options"]}`}>
           <div
+            onClick={saveItemUser}
             className={` ${
               selected
-                ? CardStyles["search-card__like--selected"]
+                ? liked
+                  ? CardStyles["search-card__like--liked"]
+                  : CardStyles["search-card__like--selected"]
+                : liked
+                ? CardStyles["search-card__like--liked"]
                 : CardStyles["search-card__like"]
             }`}
           >
-            <FaRegHeart />
+            {liked ? <FaHeart /> : <FaRegHeart />}
           </div>
           <div>
             <Dropdown>

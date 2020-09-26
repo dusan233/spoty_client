@@ -18,6 +18,7 @@ export enum PlaylistActionTypes {
 }
 export enum UserActionTypes {
   SET_TRACKS_LIKES = "SET_TRACKS_LIKES",
+  SET_ALBUM_LIKES = "SET_ALBUM_LIKES",
 }
 export enum AlbumActionTypes {
   SET_ALBUM_LOADING = "SET_ALBUM_LOADING",

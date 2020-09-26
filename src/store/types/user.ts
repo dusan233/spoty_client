@@ -2,6 +2,7 @@ import { UserActionTypes } from "../actions/actionTypes";
 
 export interface UserState {
   trackLikes: boolean[];
+  albumLikes: boolean[];
 }
 
 export interface ISetTrackLikes {
@@ -9,4 +10,9 @@ export interface ISetTrackLikes {
   payload: boolean[];
 }
 
-export type UserActions = ISetTrackLikes;
+export interface ISetAlbumLikes {
+  type: UserActionTypes.SET_ALBUM_LIKES;
+  payload: boolean[];
+}
+
+export type UserActions = ISetTrackLikes | ISetAlbumLikes;

@@ -91,7 +91,6 @@
   margin-right: 10px;
   margin-top: 3px;
   color: white;
-  font-weight: bold;
 }
 .search-card__songs {
   font-size: 14px;
@@ -106,13 +105,18 @@
   align-items: center;
 }
 .search-card__like,
-.search-card__like--selected {
+.search-card__like--selected,
+.search-card__like--liked {
   display: none;
   justify-content: center;
   align-items: center;
   font-size: 18px;
   color: #989898;
   cursor: pointer;
+}
+.search-card__like--liked {
+  display: flex;
+  color: #1db954;
 }
 .search-card__like--selected {
   display: flex;

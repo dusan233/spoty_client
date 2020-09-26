@@ -12,7 +12,10 @@ import {
   addMoreAlbumTracks,
   getMoreAlbumTracks,
 } from "../../store/actions/album";
-import { saveRemoveTracksForCurrentUser } from "../../store/actions/user";
+import {
+  saveRemoveTracksForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
+} from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
@@ -37,6 +40,7 @@ const mapStateToProps = (state: RootState) => ({
   error: state.error.errorMsg,
   subErrorMsg: state.error.subMsg,
   trackLikes: state.user.trackLikes,
+  albumLikes: state.user.albumLikes,
 });
 
 const mapDispatchToProps = {
@@ -45,6 +49,7 @@ const mapDispatchToProps = {
   addMoreAlbumTracks,
   setError,
   saveRemoveTracksForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -62,7 +67,9 @@ const Album: React.FC<Props> = ({
   setError,
   addMoreAlbumTracks,
   saveRemoveTracksForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
   trackLikes,
+  albumLikes,
   loading,
   artists,
   name,
@@ -153,12 +160,15 @@ const Album: React.FC<Props> = ({
       ) : (
         <React.Fragment>
           <AlbumHeader
+            albumId={match.params.albumId}
+            liked={albumLikes[0]}
             name={name}
             artists={artists}
             img={img}
             totalSongs={total}
             type={type}
             dateAdded={date}
+            saveAlbum={saveRemoveAlbumsForCurrentUser}
           />
           <div style={{ padding: "30px" }}>
             <TrackHeader type="album" hidePopularity={true} />

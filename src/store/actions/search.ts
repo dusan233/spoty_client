@@ -13,7 +13,12 @@ import {
   ISetSearchTracks,
   ISetSearchTerm,
 } from "../types/search";
-import { checkCurrentUserSavedTracks, setTrackLikes } from "./user";
+import {
+  checkCurrentUserSavedTracks,
+  checkCurrentUserSavedAlbums,
+  setTrackLikes,
+  setAlbumLikes,
+} from "./user";
 import { setError } from "./error";
 import { ArtistFull } from "../types/artist";
 import { PlaylistSimplified } from "../types/playlist";
@@ -137,7 +142,6 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
         });
       } else if ("tracks" in searchResponse.data) {
         let trackIds = "";
-        let trackIds2 = "";
         searchResponse.data.tracks.items.slice(0, 50).forEach((track) => {
           if (trackIds === " ") {
             trackIds += track.id;
@@ -151,19 +155,6 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
           accessToken
         );
 
-        searchResponse.data.tracks.items.slice(50, 100).forEach((track) => {
-          if (trackIds2 === " ") {
-            trackIds2 += track.id;
-          } else {
-            trackIds2 += "," + track.id;
-          }
-        });
-
-        const savedTracksRes2 =
-          trackIds2.length > 0
-            ? await checkCurrentUserSavedTracks(trackIds2, accessToken)
-            : { data: [] };
-
         batch(() => {
           dispatch(
             setSearchTracks(
@@ -173,12 +164,25 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
               term
             )
           );
-          dispatch(
-            setTrackLikes([...savedTracksRes.data, ...savedTracksRes2.data])
-          );
+          dispatch(setTrackLikes([...savedTracksRes.data]));
           dispatch(setSearchLoading(false));
         });
       } else if ("albums" in searchResponse.data) {
+        let albumIds = "";
+
+        searchResponse.data.albums.items.slice(0, 50).forEach((album) => {
+          if (albumIds === " ") {
+            albumIds += album.id;
+          } else {
+            albumIds += "," + album.id;
+          }
+        });
+
+        const savedAlbumsRes = await checkCurrentUserSavedAlbums(
+          albumIds,
+          accessToken
+        );
+
         batch(() => {
           dispatch(
             setSearchAlbums(
@@ -188,6 +192,7 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
               term
             )
           );
+          dispatch(setAlbumLikes([...savedAlbumsRes.data]));
           dispatch(setSearchLoading(false));
         });
       } else if ("artists" in searchResponse.data) {

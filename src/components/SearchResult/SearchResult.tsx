@@ -15,7 +15,10 @@ import { PlaylistSimplified } from "../../store/types/playlist";
 import { AlbumSimplified } from "../../store/types/album";
 import { TrackFull } from "../../store/types/index";
 import { ArtistFull } from "../../store/types/artist";
-import { saveRemoveTracksForCurrentUser } from "../../store/actions/user";
+import {
+  saveRemoveTracksForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
+} from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 
 import SearchResultStyles from "./SearchResult.module.css";
@@ -47,6 +50,7 @@ const mapStateToProps = (state: RootState) => ({
   error: state.error.errorMsg,
   subErrorMsg: state.error.subMsg,
   trackLikes: state.user.trackLikes,
+  albumLikes: state.user.albumLikes,
 });
 const mapDispatchToProps = {
   fetchSearchData,
@@ -57,6 +61,7 @@ const mapDispatchToProps = {
   setSearchArtists,
   setError,
   saveRemoveTracksForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -80,7 +85,9 @@ const SearchResult: React.FC<Props> = ({
   setSearchArtists,
   setError,
   saveRemoveTracksForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
   trackLikes,
+  albumLikes,
   accessToken,
   playlists,
   totalPlaylists,
@@ -284,6 +291,8 @@ const SearchResult: React.FC<Props> = ({
                   key={playlist.id}
                   totalTracks={(playlist as PlaylistSimplified).tracks.total}
                   type="playlist"
+                  liked={false}
+                  saveItem={saveRemoveAlbumsForCurrentUser}
                 />
               );
             }
@@ -319,6 +328,7 @@ const SearchResult: React.FC<Props> = ({
           loadMoreItems={loadMoreResults}
           renderRow={({ key, index, style }: any) => {
             const item = albums[index];
+            const liked = albumLikes[index];
             let album = item as AlbumSimplified;
             if (!albums[index]) {
               return (
@@ -342,6 +352,8 @@ const SearchResult: React.FC<Props> = ({
                   key={album.id}
                   totalTracks={(album as AlbumSimplified).total_tracks}
                   type="album"
+                  liked={liked}
+                  saveItem={saveRemoveAlbumsForCurrentUser}
                 />
               );
             }

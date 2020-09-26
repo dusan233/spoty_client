@@ -1,6 +1,6 @@
 import React from "react";
 import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
-import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 
 import { Link } from "react-router-dom";
@@ -8,12 +8,15 @@ import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 
 interface AlbumProps {
+  albumId: string | undefined;
   name: string | undefined;
   artists: any[];
   img: string | undefined;
   totalSongs: number | undefined;
   type: string | undefined;
   dateAdded: string | undefined;
+  liked: boolean;
+  saveAlbum: (albumIds: string, index: number, action: string) => Promise<void>;
 }
 
 const AlbumHeader: React.FC<AlbumProps> = ({
@@ -23,6 +26,9 @@ const AlbumHeader: React.FC<AlbumProps> = ({
   totalSongs,
   type,
   dateAdded,
+  liked,
+  saveAlbum,
+  albumId,
 }) => {
   const returnType = () => {
     switch (type) {
@@ -30,6 +36,13 @@ const AlbumHeader: React.FC<AlbumProps> = ({
         return "SINGLE";
       case "album":
         return "ALBUM";
+    }
+  };
+
+  const saveRemoveAlbum = () => {
+    const action = liked ? "remove" : "save";
+    if (albumId) {
+      saveAlbum(albumId, 0, action);
     }
   };
 
@@ -69,8 +82,13 @@ const AlbumHeader: React.FC<AlbumProps> = ({
           </div>
           <div className={PlaylistHeaderStyles.controlls}>
             <button className="btn btn--green btn--circle">Play</button>
-            <button className="btn-round margin-left">
-              <IoMdHeartEmpty />
+            <button
+              onClick={saveRemoveAlbum}
+              className={
+                liked ? "btn-round--liked margin-left" : "btn-round margin-left"
+              }
+            >
+              {liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
             </button>
 
             <Dropdown>

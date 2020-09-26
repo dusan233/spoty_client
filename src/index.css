@@ -28,7 +28,8 @@
   transition: background 0.2s, color 0.2s;
   height: 40px;
 }
-.btn-round {
+.btn-round,
+.btn-round--liked {
   background: transparent;
   color: white;
   outline: none;
@@ -45,7 +46,11 @@
   font-weight: bold;
   font-size: 20px;
 }
-.btn-round:hover {
+.btn-round--liked {
+  color: #1db954;
+}
+.btn-round:hover,
+.btn-round--liked:hover {
   transition: 0s;
   transform: scale(1.05);
 }
