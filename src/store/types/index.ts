@@ -31,6 +31,11 @@ export interface TrackSimplified {
   preview_url: string | null;
 }
 
+export interface SavedTrack {
+  added_at: string;
+  track: TrackFull;
+}
+
 export interface TrackPlaylist extends TrackSimplified {
   popularity: number;
   album: AlbumSimplified;

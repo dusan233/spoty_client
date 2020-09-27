@@ -59,6 +59,11 @@ export interface MoreAlbumTracks {
   items: TrackSimplified[];
 }
 
+export interface SavedAlbum {
+  added_at: string;
+  album: AlbumFull;
+}
+
 export interface AlbumFull extends AlbumSimplified {
   album_type: string;
   release_date: string;

@@ -34,17 +34,21 @@ export const checkCurrentUserSavedAlbums = (
 };
 
 export const setTrackLikes: ActionCreator<ISetTrackLikes> = (
-  tracksLikes: boolean[]
+  tracksLikes: boolean[],
+  action: string = ""
 ) => ({
   type: UserActionTypes.SET_TRACKS_LIKES,
   payload: tracksLikes,
+  action,
 });
 
 export const setAlbumLikes: ActionCreator<ISetAlbumLikes> = (
-  albumLikes: boolean[]
+  albumLikes: boolean[],
+  action: string = ""
 ) => ({
   type: UserActionTypes.SET_ALBUM_LIKES,
   payload: albumLikes,
+  action,
 });
 
 export const saveRemoveAlbumsForCurrentUser = (

@@ -8,6 +8,7 @@ import Playlist from "./Playlist/Playlist";
 import Album from "./Album/Album";
 import Searchbar from "./Searchbar/Searchbar";
 import SearchResult from "./SearchResult/SearchResult";
+import MusicLibrary from "./MusicLibrary/MusicLibrary";
 
 const Main = () => {
   return (
@@ -30,6 +31,7 @@ const Main = () => {
                   component={Playlist}
                 />
                 <Route path="/album/:albumId" exact component={Album} />
+                <Route path="/library/:term" exact component={MusicLibrary} />
                 <Route
                   path="/search/:type/:searchTerm"
                   exact

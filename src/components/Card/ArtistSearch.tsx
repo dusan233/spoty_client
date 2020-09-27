@@ -51,17 +51,6 @@ const ArtistSearch: React.FC<IProps> = React.memo(
             </div>
           </div>
         </div>
-        <div className={`${CardStyles["search-card__options"]}`}>
-          <div
-            className={`${
-              selected
-                ? CardStyles["search-card__like--selected"]
-                : CardStyles["search-card__like"]
-            }`}
-          >
-            <FaRegHeart />
-          </div>
-        </div>
       </div>
     );
   },

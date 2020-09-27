@@ -7,11 +7,17 @@ import {
   List,
 } from "react-virtualized";
 import { PlaylistSimplified } from "../../store/types/playlist";
-import { AlbumSimplified } from "../../store/types/album";
-import { TrackFull } from "../../store/types";
+import { AlbumSimplified, SavedAlbum } from "../../store/types/album";
+import { SavedTrack, TrackFull } from "../../store/types";
 import { ArtistFull } from "../../store/types/artist";
 
-type Item = PlaylistSimplified | AlbumSimplified | TrackFull | ArtistFull;
+type Item =
+  | PlaylistSimplified
+  | AlbumSimplified
+  | TrackFull
+  | ArtistFull
+  | SavedAlbum
+  | SavedTrack;
 
 type Props = {
   items: Item[];

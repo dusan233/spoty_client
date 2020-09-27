@@ -42,7 +42,7 @@ const Sidebar = () => {
           <NavLink
             className={SidebarStyles.sidebar__link}
             activeClassName={SidebarStyles.sidebar__link_active}
-            to="/somewhere"
+            to="/library/tracks"
           >
             <div className={SidebarStyles.link__content}>
               <span>Liked Songs</span>
@@ -53,7 +53,7 @@ const Sidebar = () => {
           <NavLink
             className={SidebarStyles.sidebar__link}
             activeClassName={SidebarStyles.sidebar__link_active}
-            to="/somewhere"
+            to="/library/albums"
           >
             <div className={SidebarStyles.link__content}>
               <span>Albums</span>

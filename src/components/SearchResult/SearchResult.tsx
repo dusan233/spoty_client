@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import { connect, ConnectedProps } from "react-redux";
+import { batch, connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
 import {
   fetchSearchData,
@@ -18,6 +18,10 @@ import { ArtistFull } from "../../store/types/artist";
 import {
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
+  checkCurrentUserSavedAlbums,
+  checkCurrentUserSavedTracks,
+  setAlbumLikes,
+  setTrackLikes,
 } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 
@@ -62,6 +66,8 @@ const mapDispatchToProps = {
   setError,
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
+  setAlbumLikes,
+  setTrackLikes,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -84,6 +90,8 @@ const SearchResult: React.FC<Props> = ({
   setSearchTracks,
   setSearchArtists,
   setError,
+  setAlbumLikes,
+  setTrackLikes,
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
   trackLikes,
@@ -209,18 +217,48 @@ const SearchResult: React.FC<Props> = ({
             match.params.searchTerm
           );
         } else if ("albums" in response.data) {
-          setSearchAlbums(
-            response.data.albums.items,
-            response.data.albums.total,
-            "add",
-            match.params.searchTerm
+          let albumIds = "";
+          response.data.albums.items.forEach((album) => {
+            if (albumIds === " ") {
+              albumIds += album.id;
+            } else {
+              albumIds += "," + album.id;
+            }
+          });
+          return checkCurrentUserSavedAlbums(albumIds, accessToken).then(
+            (res) => {
+              batch(() => {
+                setSearchAlbums(
+                  response.data.albums.items,
+                  response.data.albums.total,
+                  "add",
+                  match.params.searchTerm
+                );
+                setAlbumLikes([...res.data], "add");
+              });
+            }
           );
         } else if ("tracks" in response.data) {
-          setSearchTracks(
-            response.data.tracks.items,
-            response.data.tracks.total,
-            "add",
-            match.params.searchTerm
+          let trackIds = "";
+          response.data.tracks.items.forEach((track) => {
+            if (trackIds === " ") {
+              trackIds += track.id;
+            } else {
+              trackIds += "," + track.id;
+            }
+          });
+          return checkCurrentUserSavedTracks(trackIds, accessToken).then(
+            (res) => {
+              batch(() => {
+                setSearchTracks(
+                  response.data.tracks.items,
+                  response.data.tracks.total,
+                  "add",
+                  match.params.searchTerm
+                );
+                setTrackLikes([...res.data], "add");
+              });
+            }
           );
         } else if ("artists" in response.data) {
           setSearchArtists(
