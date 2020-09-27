@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import { connect, ConnectedProps } from "react-redux";
+import { getCurrentUserData } from "../store/actions/user";
 
 import Home from "./Home/Home";
 import NotFound from "./NotFound";
@@ -10,7 +12,16 @@ import Searchbar from "./Searchbar/Searchbar";
 import SearchResult from "./SearchResult/SearchResult";
 import MusicLibrary from "./MusicLibrary/MusicLibrary";
 
-const Main = () => {
+const mapDispatchToProps = {
+  getCurrentUserData,
+};
+const connector = connect(null, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector>;
+
+const Main: React.FC<Props> = ({ getCurrentUserData }) => {
+  useEffect(() => {
+    getCurrentUserData();
+  }, []);
   return (
     <div>
       <div className="root">
@@ -48,4 +59,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default connector(Main);

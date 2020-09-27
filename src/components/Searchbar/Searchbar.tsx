@@ -8,6 +8,9 @@ import { RiSearchLine } from "react-icons/ri";
 
 const mapStateToProps = (state: RootState) => ({
   term: state.search.searchTerm,
+  product: state.user.product,
+  image: state.user.image,
+  name: state.user.name,
 });
 const mapDispatchToProps = {
   setSearchTerm,
@@ -36,8 +39,8 @@ const Searchbar: React.FC<Props> = ({ term, setSearchTerm }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSearchSubmit}>
+    <div className={SearchbarStyles.wrap}>
+      <form className={SearchbarStyles.form} onSubmit={onSearchSubmit}>
         <div className={SearchbarStyles.searchbar}>
           <div className={SearchbarStyles.icon}>
             <RiSearchLine />
@@ -51,6 +54,15 @@ const Searchbar: React.FC<Props> = ({ term, setSearchTerm }) => {
           />
         </div>
       </form>
+      <div className={SearchbarStyles.user}>
+        <a
+          href="https://www.spotify.com/us/premium/"
+          target="_blank"
+          className="btn btn--white btn--circle"
+        >
+          Upgrade to Premium
+        </a>
+      </div>
     </div>
   );
 };

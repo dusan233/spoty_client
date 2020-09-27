@@ -4,10 +4,12 @@ import LoginStyles from "./Login.module.css";
 
 import { connect, ConnectedProps } from "react-redux";
 import { storeAuthState } from "../../store/actions/auth";
+import { getCurrentUserData } from "../../store/actions/user";
 import { history } from "../..";
 
 const mapDispatchToProps = {
   storeAuthState,
+  getCurrentUserData,
 };
 
 const connector = connect(null, mapDispatchToProps);
@@ -24,6 +26,7 @@ const Login: React.FC<TProps> = ({ storeAuthState }) => {
     console.log(accessToken, refreshToken);
     if (accessToken && refreshToken) {
       storeAuthState(accessToken, refreshToken);
+      getCurrentUserData();
       history.replace("/");
     }
   }, [storeAuthState]);

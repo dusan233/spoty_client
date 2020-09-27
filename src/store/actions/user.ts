@@ -1,7 +1,7 @@
 import { api } from "../../axios";
-import { Dispatch } from "redux";
+import { Action, Dispatch } from "redux";
 import { RootState } from "../reducers/index";
-import { ISetAlbumLikes, ISetTrackLikes } from "../types/user";
+import { ISetAlbumLikes, ISetTrackLikes, SetUserData } from "../types/user";
 import { UserActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
 
@@ -50,6 +50,42 @@ export const setAlbumLikes: ActionCreator<ISetAlbumLikes> = (
   payload: albumLikes,
   action,
 });
+
+export const setUserData: ActionCreator<SetUserData> = (
+  name: string,
+  image: string,
+  product: string
+) => ({
+  type: UserActionTypes.SET_USER_DATA,
+  payload: {
+    name,
+    image,
+    product,
+  },
+});
+
+export const getCurrentUserData = () => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const accessToken = getState().auth.accessToken;
+    try {
+      const res = await api.get("/me", {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+      console.log(res);
+      dispatch(
+        setUserData(
+          res.data.display_name,
+          res.data.images[0].url,
+          res.data.product
+        )
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
 
 export const saveRemoveAlbumsForCurrentUser = (
   albumIds: string,

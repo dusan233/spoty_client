@@ -58,6 +58,11 @@
   background: #1db954;
   color: white;
 }
+.btn--white {
+  background: white;
+  color: black;
+  text-decoration: none;
+}
 .btn--green:hover {
   transition: 0s;
   transform: scale(1.05);
