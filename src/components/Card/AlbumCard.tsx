@@ -27,11 +27,13 @@ const AlbumCard: React.FC<IProps> = ({ name, img, artists, albumId }) => {
   return (
     <div className={CardStyles.card}>
       <div className={CardStyles.card__image_container}>
-        <img
-          className={CardStyles.card__image}
-          src={img}
-          alt="Playlist poster"
-        />
+        <div className={CardStyles.card__image_container_placeholder}>
+          <img
+            className={CardStyles.card__image}
+            src={img}
+            alt="Playlist poster"
+          />
+        </div>
         <div className={CardStyles.card__overlay}>
           <div className={CardStyles.card__overlay__content}>
             <button className={`${CardStyles.btn} ${CardStyles["btn--side"]}`}>

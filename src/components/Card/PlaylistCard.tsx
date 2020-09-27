@@ -20,12 +20,14 @@ const PlaylistCard: React.FC<IProps> = React.memo(
     return (
       <div className={CardStyles.card}>
         <div className={CardStyles.card__image_container}>
-          <img
-            onLoad={measureImage}
-            className={CardStyles.card__image}
-            src={img}
-            alt="Playlist poster"
-          />
+          <div className={CardStyles.card__image_container_placeholder}>
+            <img
+              onLoad={measureImage}
+              className={CardStyles.card__image}
+              src={img}
+              alt="Playlist poster"
+            />
+          </div>
           <div className={CardStyles.card__overlay}>
             <div className={CardStyles.card__overlay__content}>
               <button

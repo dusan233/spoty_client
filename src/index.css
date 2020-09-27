@@ -313,9 +313,14 @@
   align-items: center;
 }
 .home-card-list {
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
-  margin: 15px 0;
+  margin: 15px 0; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+  width: 100%;
+  margin-top: 40px;
 }
 .List {
   outline: none;
@@ -331,6 +336,14 @@
   display: flex;
   padding: 0;
   margin: 0;
+}
+.preload {
+  background: #161616;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 .ReactVirtualized__Grid__innerScrollContainer {
   overflow: visible !important;

@@ -8,12 +8,12 @@
   z-index: 1000;
   width: 225px;
   border-radius: 3px;
-  /* background: #2f2f2f; */
   background: #252525;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   animation-name: dropdown;
   animation-duration: 0.2s;
 }
+
 .dropdown--playlist {
   top: 47px;
   left: 20px;

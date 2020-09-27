@@ -5,6 +5,11 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
 import SearchbarStyles from "./Searchbar.module.css";
 import { RiSearchLine } from "react-icons/ri";
+import Dropdown from "../Dropdown/Dropdown";
+import { Link } from "react-router-dom";
+import DropdownStyles from "../Dropdown/Dropdown.module.css";
+import { IoMdArrowDropdown } from "react-icons/io";
+import NoImage from "../../assets/noimageartist.jpg";
 
 const mapStateToProps = (state: RootState) => ({
   term: state.search.searchTerm,
@@ -19,7 +24,13 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type ReduxProps = ConnectedProps<typeof connector>;
 type Props = ReduxProps;
 
-const Searchbar: React.FC<Props> = ({ term, setSearchTerm }) => {
+const Searchbar: React.FC<Props> = ({
+  term,
+  setSearchTerm,
+  image,
+  name,
+  product,
+}) => {
   const [searchValue, setSearchValue] = useState("");
 
   //   useEffect(() => {
@@ -55,13 +66,35 @@ const Searchbar: React.FC<Props> = ({ term, setSearchTerm }) => {
         </div>
       </form>
       <div className={SearchbarStyles.user}>
-        <a
-          href="https://www.spotify.com/us/premium/"
-          target="_blank"
-          className="btn btn--white btn--circle"
-        >
-          Upgrade to Premium
-        </a>
+        {product === "premium" ? null : (
+          <a
+            href="https://www.spotify.com/us/premium/"
+            target="_blank"
+            className="btn btn--white btn--circle"
+          >
+            Upgrade to Premium
+          </a>
+        )}
+        <Dropdown>
+          <div className={`${SearchbarStyles["dropdown-btn"]}`}>
+            <img src={image || NoImage} alt="User" />
+            <div>{name}</div>
+            <div className={SearchbarStyles.icon}>
+              <IoMdArrowDropdown />
+            </div>
+          </div>
+          <div
+            className={`${DropdownStyles.dropdown} ${DropdownStyles["dropdown--user"]}`}
+          >
+            <ul>
+              <li>
+                <Link className={DropdownStyles.link} to="/">
+                  Logout
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </Dropdown>
       </div>
     </div>
   );

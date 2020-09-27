@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import { getCurrentUserData } from "../store/actions/user";
@@ -19,10 +19,12 @@ const connector = connect(null, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
 const Main: React.FC<Props> = ({ getCurrentUserData }) => {
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
-    getCurrentUserData();
+    getCurrentUserData().then((res) => setReady(true));
   }, []);
-  return (
+  return ready ? (
     <div>
       <div className="root">
         <div className="root__wrap">
@@ -56,6 +58,8 @@ const Main: React.FC<Props> = ({ getCurrentUserData }) => {
         <div className="root__audio-player"></div>
       </div>
     </div>
+  ) : (
+    <div className="preload"></div>
   );
 };
 

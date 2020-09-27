@@ -4,6 +4,7 @@ export interface UserState {
   name: string;
   image: string;
   product: string;
+  userId: string;
   trackLikes: boolean[];
   albumLikes: boolean[];
 }
@@ -19,6 +20,7 @@ export interface SetUserData {
     name: string;
     image: string;
     product: string;
+    userId: string;
   };
 }
 

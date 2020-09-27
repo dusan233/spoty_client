@@ -5,6 +5,7 @@ const initialState: UserState = {
   name: "",
   image: "",
   product: "",
+  userId: "",
   trackLikes: [],
   albumLikes: [],
 };
@@ -33,6 +34,7 @@ const reducer = (state = initialState, action: UserActions) => {
         name: action.payload.name,
         image: action.payload.image,
         product: action.payload.product,
+        userId: action.payload.userId,
       };
     default:
       return state;

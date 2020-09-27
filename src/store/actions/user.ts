@@ -54,13 +54,15 @@ export const setAlbumLikes: ActionCreator<ISetAlbumLikes> = (
 export const setUserData: ActionCreator<SetUserData> = (
   name: string,
   image: string,
-  product: string
+  product: string,
+  userId: string
 ) => ({
   type: UserActionTypes.SET_USER_DATA,
   payload: {
     name,
     image,
     product,
+    userId,
   },
 });
 
@@ -78,7 +80,8 @@ export const getCurrentUserData = () => {
         setUserData(
           res.data.display_name,
           res.data.images[0].url,
-          res.data.product
+          res.data.product,
+          res.data.id
         )
       );
     } catch (err) {
