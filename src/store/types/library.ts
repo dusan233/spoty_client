@@ -25,6 +25,7 @@ export interface SetLibraryAlbums {
   payload: {
     items: SavedAlbum[];
     total: number;
+    action: string;
   };
 }
 
@@ -33,6 +34,7 @@ export interface SetLibraryTracks {
   payload: {
     items: SavedTrack[];
     total: number;
+    action: string;
   };
 }
 

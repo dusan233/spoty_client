@@ -18,11 +18,14 @@ import {
   checkCurrentUserSavedAlbums,
   setTrackLikes,
   setAlbumLikes,
+  setPlaylistLikes,
+  checkUserSavedPlaylist,
 } from "./user";
 import { setError } from "./error";
 import { ArtistFull } from "../types/artist";
 import { PlaylistSimplified } from "../types/playlist";
 import { AlbumSimplified } from "../types/album";
+import { AxiosResponse } from "axios";
 
 export const getSearchData = (
   type: string,
@@ -124,22 +127,36 @@ export const fetchSearchData: ActionCreator<AppThunk> = (
   return async (dispatch: Dispatch, getState: () => RootState) => {
     dispatch(setSearchLoading(true));
     const accessToken = getState().auth.accessToken;
+    const userId = getState().user.userId;
     try {
       const searchResponse = await getSearchData(type, term, accessToken, 0);
-      console.log(searchResponse);
 
       if ("playlists" in searchResponse.data) {
-        batch(() => {
-          dispatch(
-            setSearchPlaylists(
-              searchResponse.data.playlists.items,
-              searchResponse.data.playlists.total,
-              "reset",
-              term
-            )
+        const promises: Promise<AxiosResponse<[boolean]>>[] = [];
+        searchResponse.data.playlists.items.forEach((playlist) => {
+          promises.push(
+            checkUserSavedPlaylist(playlist.id, userId, accessToken)
           );
-          dispatch(setSearchLoading(false));
         });
+
+        Promise.all(promises)
+          .then((res) => {
+            const playlistLikes: boolean[] = [];
+            res.forEach((response) => playlistLikes.push(...response.data));
+            batch(() => {
+              dispatch(
+                setSearchPlaylists(
+                  searchResponse.data.playlists.items,
+                  searchResponse.data.playlists.total,
+                  "reset",
+                  term
+                )
+              );
+              dispatch(setPlaylistLikes([...playlistLikes]));
+              dispatch(setSearchLoading(false));
+            });
+          })
+          .catch((err) => console.log(err));
       } else if ("tracks" in searchResponse.data) {
         let trackIds = "";
         searchResponse.data.tracks.items.slice(0, 50).forEach((track) => {

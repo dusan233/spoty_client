@@ -8,6 +8,7 @@ const initialState: UserState = {
   userId: "",
   trackLikes: [],
   albumLikes: [],
+  playlistLikes: [],
 };
 
 const reducer = (state = initialState, action: UserActions) => {
@@ -28,6 +29,16 @@ const reducer = (state = initialState, action: UserActions) => {
             ? state.albumLikes.concat(action.payload)
             : action.payload,
       };
+
+    case UserActionTypes.SET_PLAYLIST_LIKES:
+      return {
+        ...state,
+        playlistLikes:
+          action.action === "add"
+            ? state.playlistLikes.concat(action.payload)
+            : action.payload,
+      };
+
     case UserActionTypes.SET_USER_DATA:
       return {
         ...state,

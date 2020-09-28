@@ -1,16 +1,24 @@
 import React, { useEffect, useRef } from "react";
 import LibraryStyles from "./MusicLibrary.module.css";
 import { RouteComponentProps } from "react-router-dom";
-import { ConnectedProps, connect } from "react-redux";
+import { ConnectedProps, connect, batch } from "react-redux";
 import { RootState } from "../../store/reducers/index";
 import {
   getUsersAlbums,
   getUserTracks,
   setLibraryLoading,
+  fetchUserTracks,
+  fetchUserAlbums,
+  setLibraryTracks,
+  setLibraryAlbums,
 } from "../../store/actions/library";
 import {
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
+  setTrackLikes,
+  setAlbumLikes,
+  checkCurrentUserSavedTracks,
+  checkCurrentUserSavedAlbums,
 } from "../../store/actions/user";
 import { AlbumFull, SavedAlbum } from "../../store/types/album";
 
@@ -29,12 +37,17 @@ const mapStateToProps = (state: RootState) => ({
   tracks: state.library.tracks,
   tracksTotal: state.library.tracksTotal,
   trackLikes: state.user.trackLikes,
+  accessToken: state.auth.accessToken,
 });
 
 const mapDispatchToProps = {
   getUsersAlbums,
   getUserTracks,
+  setTrackLikes,
+  setAlbumLikes,
   setLibraryLoading,
+  setLibraryTracks,
+  setLibraryAlbums,
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
 };
@@ -54,6 +67,10 @@ const MusicLibrary: React.FC<Props> = ({
   getUsersAlbums,
   getUserTracks,
   setLibraryLoading,
+  setTrackLikes,
+  setLibraryTracks,
+  setLibraryAlbums,
+  setAlbumLikes,
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
   loading,
@@ -63,6 +80,7 @@ const MusicLibrary: React.FC<Props> = ({
   tracks,
   trackLikes,
   tracksTotal,
+  accessToken,
 }) => {
   let containerEl = useRef<HTMLDivElement>(null);
 
@@ -79,24 +97,57 @@ const MusicLibrary: React.FC<Props> = ({
     };
   }, [match.params.term, getUsersAlbums, getUserTracks]);
 
-  useEffect(() => {
-    if (match.params.term === "albums") {
-      if (albumLikes.indexOf(false) !== -1 && !loading) getUsersAlbums(false);
-    }
-    if (match.params.term === "tracks") {
-      if (trackLikes.indexOf(false) !== -1 && !loading) getUserTracks(false);
-    }
-  }, [
-    albumLikes,
-    trackLikes,
-    getUsersAlbums,
-    getUserTracks,
-    match.params.term,
-  ]);
+  const loadMoreTracks = ({ startIndex }: { startIndex: number }) => {
+    return fetchUserTracks(tracks.length, accessToken)
+      .then((res) => {
+        let trackIds = "";
 
-  useEffect(() => {
-    console.log("library");
-  });
+        res.data.items.slice(0, 50).forEach((track) => {
+          if (trackIds === " ") {
+            trackIds += track.track.id;
+          } else {
+            trackIds += "," + track.track.id;
+          }
+        });
+
+        return checkCurrentUserSavedTracks(trackIds, accessToken).then(
+          (savedTracksRes) => {
+            batch(() => {
+              setLibraryTracks(res.data.items, res.data.total, "add");
+              setTrackLikes([...savedTracksRes.data], "add");
+            });
+          }
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const loadMoreAlbums = ({ startIndex }: { startIndex: number }) => {
+    return fetchUserAlbums(albums.length, accessToken).then((res) => {
+      let albumIds = "";
+
+      res.data.items.slice(0, 50).forEach((album) => {
+        if (albumIds === " ") {
+          albumIds += album.album.id;
+        } else {
+          albumIds += "," + album.album.id;
+        }
+      });
+
+      return checkCurrentUserSavedAlbums(albumIds, accessToken).then(
+        (savedAlbumsRes) => {
+          batch(() => {
+            setLibraryAlbums(res.data.items, res.data.total, "add");
+            setAlbumLikes([...savedAlbumsRes.data], "add");
+          });
+        }
+      );
+    });
+  };
+
+  //   useEffect(() => {
+  //     console.log("library");
+  //   });
 
   const renderList = () => {
     if (match.params.term === "albums") {
@@ -107,7 +158,7 @@ const MusicLibrary: React.FC<Props> = ({
           rowHeight={85}
           containerEl={containerEl}
           type="albums"
-          loadMoreItems={(obj: any) => new Promise((resolve) => resolve())}
+          loadMoreItems={loadMoreAlbums}
           renderRow={({ key, index, style }: any) => {
             const item = albums[index];
             let savedAlbum = item as SavedAlbum;
@@ -152,7 +203,7 @@ const MusicLibrary: React.FC<Props> = ({
           rowHeight={44}
           containerEl={containerEl}
           type="tracks"
-          loadMoreItems={(obj: any) => new Promise((resolve) => resolve())}
+          loadMoreItems={loadMoreTracks}
           renderRow={({ key, index, style }: any) => {
             const item = tracks[index];
             let savedTrack = item as SavedTrack;

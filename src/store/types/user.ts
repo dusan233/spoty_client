@@ -7,6 +7,7 @@ export interface UserState {
   userId: string;
   trackLikes: boolean[];
   albumLikes: boolean[];
+  playlistLikes: boolean[];
 }
 
 export interface ISetTrackLikes {
@@ -14,6 +15,13 @@ export interface ISetTrackLikes {
   payload: boolean[];
   action: string;
 }
+
+export interface SetPlaylistLikes {
+  type: UserActionTypes.SET_PLAYLIST_LIKES;
+  payload: boolean[];
+  action: string;
+}
+
 export interface SetUserData {
   type: UserActionTypes.SET_USER_DATA;
   payload: {
@@ -30,4 +38,8 @@ export interface ISetAlbumLikes {
   action: string;
 }
 
-export type UserActions = ISetTrackLikes | ISetAlbumLikes | SetUserData;
+export type UserActions =
+  | ISetTrackLikes
+  | ISetAlbumLikes
+  | SetUserData
+  | SetPlaylistLikes;

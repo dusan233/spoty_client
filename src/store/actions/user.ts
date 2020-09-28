@@ -1,9 +1,29 @@
 import { api } from "../../axios";
-import { Action, Dispatch } from "redux";
+import { Dispatch } from "redux";
 import { RootState } from "../reducers/index";
-import { ISetAlbumLikes, ISetTrackLikes, SetUserData } from "../types/user";
+import {
+  ISetAlbumLikes,
+  ISetTrackLikes,
+  SetPlaylistLikes,
+  SetUserData,
+} from "../types/user";
 import { UserActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
+
+export const checkUserSavedPlaylist = (
+  playlistId: string,
+  userIds: string,
+  accessToken: string | undefined
+) => {
+  return api.get(`/playlists/${playlistId}/followers/contains`, {
+    params: {
+      ids: userIds,
+    },
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  });
+};
 
 export const checkCurrentUserSavedTracks = (
   trackIds: string,
@@ -48,6 +68,15 @@ export const setAlbumLikes: ActionCreator<ISetAlbumLikes> = (
 ) => ({
   type: UserActionTypes.SET_ALBUM_LIKES,
   payload: albumLikes,
+  action,
+});
+
+export const setPlaylistLikes: ActionCreator<SetPlaylistLikes> = (
+  playlistLikes: boolean[],
+  action: string = ""
+) => ({
+  type: UserActionTypes.SET_PLAYLIST_LIKES,
+  payload: playlistLikes,
   action,
 });
 
@@ -121,6 +150,36 @@ export const saveRemoveAlbumsForCurrentUser = (
       }
     } catch (err) {
       console.log(err, "ds");
+    }
+  };
+};
+
+export const saveRemovePlaylistForCurrentUser = (
+  playlistId: string,
+  index: number,
+  action: string
+) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const accessToken = getState().auth.accessToken;
+    const playlistLikes = getState().user.playlistLikes;
+    try {
+      const method = action === "save" ? "PUT" : "DELETE";
+      const res = await api({
+        method: method,
+        url: `/playlists/${playlistId}/followers`,
+        headers: {
+          Authorization: "Bearer " + accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(res);
+      if (res.status === 200) {
+        const likes = [...playlistLikes];
+        likes[index] = !likes[index];
+        dispatch(setPlaylistLikes(likes));
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 };

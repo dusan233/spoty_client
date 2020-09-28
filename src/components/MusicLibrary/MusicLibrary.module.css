@@ -16,6 +16,8 @@
   background-color: darkgrey;
   outline: 1px solid slategrey;
   border-radius: 50px;
+  border: none;
+  outline: none;
 }
 .heading {
   color: white;

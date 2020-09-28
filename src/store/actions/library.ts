@@ -29,40 +29,66 @@ export const setLibraryLoading: ActionCreator<ISetLibraryLoading> = (
 
 export const setLibraryAlbums: ActionCreator<SetLibraryAlbums> = (
   items: SavedAlbum[],
-  total: number
+  total: number,
+  action: string = ""
 ) => ({
   type: LibraryActionTypes.SET_LIBRARY_ALBUMS,
   payload: {
     items,
     total,
+    action,
   },
 });
 
 export const setLibraryTracks: ActionCreator<SetLibraryTracks> = (
   items: SavedTrack[],
-  total: number
+  total: number,
+  action: string = ""
 ) => ({
   type: LibraryActionTypes.SET_LIBRARY_TRACKS,
   payload: {
     items,
     total,
+    action,
   },
 });
+
+export const fetchUserTracks = (
+  offset: number,
+  accessToken: string | undefined
+) => {
+  return api.get<LibraryTrackResult>("/me/tracks", {
+    params: {
+      limit: 50,
+      offset: offset,
+    },
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  });
+};
+
+export const fetchUserAlbums = (
+  offset: number,
+  accessToken: string | undefined
+) => {
+  return api.get<LibraryAlbumResult>("/me/albums", {
+    params: {
+      limit: 50,
+      offset: offset,
+    },
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  });
+};
 
 export const getUserTracks = (loading: boolean) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
     dispatch(setLibraryLoading(loading));
     try {
-      const res = await api.get<LibraryTrackResult>("/me/tracks", {
-        params: {
-          limit: 50,
-          offset: 0,
-        },
-        headers: {
-          Authorization: "Bearer " + accessToken,
-        },
-      });
+      const res = await fetchUserTracks(0, accessToken);
 
       let trackIds = "";
 
@@ -96,15 +122,7 @@ export const getUsersAlbums = (loading: boolean) => {
     const accessToken = getState().auth.accessToken;
     dispatch(setLibraryLoading(loading));
     try {
-      const res = await api.get<LibraryAlbumResult>("/me/albums", {
-        params: {
-          limit: 50,
-          offset: 0,
-        },
-        headers: {
-          Authorization: "Bearer " + accessToken,
-        },
-      });
+      const res = await fetchUserAlbums(0, accessToken);
 
       let albumIds = "";
 

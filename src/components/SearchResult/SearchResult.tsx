@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 import { batch, connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
+import { AxiosResponse } from "axios";
 import {
   fetchSearchData,
   getSearchData,
@@ -18,10 +19,13 @@ import { ArtistFull } from "../../store/types/artist";
 import {
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
+  saveRemovePlaylistForCurrentUser,
   checkCurrentUserSavedAlbums,
   checkCurrentUserSavedTracks,
+  checkUserSavedPlaylist,
   setAlbumLikes,
   setTrackLikes,
+  setPlaylistLikes,
 } from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 
@@ -39,6 +43,7 @@ import InfiniteVirtualizedList from "../InfiniteVirtualizedList/InfiniteVirtuali
 const mapStateToProps = (state: RootState) => ({
   loading: state.search.loading,
   playlists: state.search.searchPlaylists,
+  userId: state.user.userId,
   accessToken: state.auth.accessToken,
   totalPlaylists: state.search.playlistsTotal,
   albums: state.search.searchAlbums,
@@ -55,6 +60,7 @@ const mapStateToProps = (state: RootState) => ({
   subErrorMsg: state.error.subMsg,
   trackLikes: state.user.trackLikes,
   albumLikes: state.user.albumLikes,
+  playlistLikes: state.user.playlistLikes,
 });
 const mapDispatchToProps = {
   fetchSearchData,
@@ -66,8 +72,10 @@ const mapDispatchToProps = {
   setError,
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
+  saveRemovePlaylistForCurrentUser,
   setAlbumLikes,
   setTrackLikes,
+  setPlaylistLikes,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -83,6 +91,7 @@ type Props = RouteComponentProps<Params> & ReduxProps;
 const SearchResult: React.FC<Props> = ({
   match,
   loading,
+  userId,
   fetchSearchData,
   setSearchPlaylists,
   setSearchAlbums,
@@ -92,10 +101,13 @@ const SearchResult: React.FC<Props> = ({
   setError,
   setAlbumLikes,
   setTrackLikes,
+  setPlaylistLikes,
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
+  saveRemovePlaylistForCurrentUser,
   trackLikes,
   albumLikes,
+  playlistLikes,
   accessToken,
   playlists,
   totalPlaylists,
@@ -128,6 +140,7 @@ const SearchResult: React.FC<Props> = ({
     } else if (match.params.type === "track") {
       // fetchSearchData(match.params.type, match.params.searchTerm);
       if (match.params.searchTerm !== tracksTerm) {
+        console.log("huhu");
         fetchSearchData(match.params.type, match.params.searchTerm);
       }
     } else if (match.params.type === "artist") {
@@ -154,9 +167,9 @@ const SearchResult: React.FC<Props> = ({
     tracksTerm,
   ]);
 
-  useEffect(() => {
-    setSearchTerm(match.params.searchTerm);
-  }, [match.params.searchTerm, setSearchTerm]);
+  // useEffect(() => {
+  //   setSearchTerm(match.params.searchTerm);
+  // }, [match.params.searchTerm, setSearchTerm]);
 
   const renderLinks = () => {
     return (
@@ -210,12 +223,29 @@ const SearchResult: React.FC<Props> = ({
     )
       .then((response) => {
         if ("playlists" in response.data) {
-          setSearchPlaylists(
-            response.data.playlists.items,
-            response.data.playlists.total,
-            "add",
-            match.params.searchTerm
-          );
+          const promises: Promise<AxiosResponse<[boolean]>>[] = [];
+          response.data.playlists.items.forEach((playlist) => {
+            promises.push(
+              checkUserSavedPlaylist(playlist.id, userId, accessToken)
+            );
+          });
+
+          Promise.all(promises)
+            .then((res) => {
+              const playlistLikes: boolean[] = [];
+              res.forEach((response) => playlistLikes.push(...response.data));
+              batch(() => {
+                setSearchPlaylists(
+                  response.data.playlists.items,
+                  response.data.playlists.total,
+                  "add",
+                  match.params.searchTerm
+                );
+
+                setPlaylistLikes([...playlistLikes], "add");
+              });
+            })
+            .catch((err) => console.log(err));
         } else if ("albums" in response.data) {
           let albumIds = "";
           response.data.albums.items.forEach((album) => {
@@ -304,6 +334,7 @@ const SearchResult: React.FC<Props> = ({
           loadMoreItems={loadMoreResults}
           renderRow={({ key, index, style }: any) => {
             const item = playlists[index];
+            const liked = playlistLikes[index];
             let playlist = item as PlaylistSimplified;
             if (!playlists[index]) {
               return (
@@ -329,8 +360,8 @@ const SearchResult: React.FC<Props> = ({
                   key={playlist.id}
                   totalTracks={(playlist as PlaylistSimplified).tracks.total}
                   type="playlist"
-                  liked={false}
-                  saveItem={saveRemoveAlbumsForCurrentUser}
+                  liked={liked}
+                  saveItem={saveRemovePlaylistForCurrentUser}
                 />
               );
             }

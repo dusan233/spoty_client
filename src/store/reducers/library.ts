@@ -19,15 +19,22 @@ const reducer = (state = initialState, action: LibraryActions) => {
     case LibraryActionTypes.SET_LIBRARY_ALBUMS:
       return {
         ...state,
-        albums: action.payload.items,
+        albums:
+          action.payload.action === "add"
+            ? state.albums.concat(action.payload.items)
+            : action.payload.items,
         albumsTotal: action.payload.total,
       };
     case LibraryActionTypes.SET_LIBRARY_TRACKS:
       return {
         ...state,
-        tracks: action.payload.items,
+        tracks:
+          action.payload.action === "add"
+            ? state.tracks.concat(action.payload.items)
+            : action.payload.items,
         tracksTotal: action.payload.total,
       };
+
     default:
       return state;
   }
