@@ -2,7 +2,8 @@ import React from "react";
 import SidebarStyles from "./Sidebar.module.css";
 import logo from "../../assets/Spotify_Logo_CMYK_White.png";
 import { NavLink } from "react-router-dom";
-import { FiHome, FiSearch } from "react-icons/fi";
+import { FiHome, FiSearch, FiPlus } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -42,17 +43,6 @@ const Sidebar = () => {
           <NavLink
             className={SidebarStyles.sidebar__link}
             activeClassName={SidebarStyles.sidebar__link_active}
-            to="/library/tracks"
-          >
-            <div className={SidebarStyles.link__content}>
-              <span>Liked Songs</span>
-            </div>
-          </NavLink>
-        </li>
-        <li className={SidebarStyles.sidebar__item}>
-          <NavLink
-            className={SidebarStyles.sidebar__link}
-            activeClassName={SidebarStyles.sidebar__link_active}
             to="/library/albums"
           >
             <div className={SidebarStyles.link__content}>
@@ -83,6 +73,34 @@ const Sidebar = () => {
           </NavLink>
         </li>
       </ul>
+      <div className={SidebarStyles.sidebar__heading}>PLAYLISTS</div>
+      <ul className={SidebarStyles.sideabr__list}>
+        <li className={SidebarStyles.sidebar__item}>
+          <NavLink className={SidebarStyles.sidebar__link} to="/somewhere">
+            <div className={SidebarStyles.link__content}>
+              <div className={`${SidebarStyles["sidebar__playlists-icon"]}`}>
+                <FiPlus />
+              </div>
+              <span>Create Playlist</span>
+            </div>
+          </NavLink>
+          <NavLink
+            className={SidebarStyles.sidebar__link}
+            to="/library/tracks"
+            activeClassName={`${SidebarStyles["sidebar__link-icon_active"]}`}
+          >
+            <div className={SidebarStyles.link__content}>
+              <div
+                className={`${SidebarStyles["sidebar__playlists-icon--colored"]}`}
+              >
+                <FaHeart />
+              </div>
+              <span>Liked Songs</span>
+            </div>
+          </NavLink>
+        </li>
+      </ul>
+      <hr className={SidebarStyles.sidebar__devider} />
     </div>
   );
 };
