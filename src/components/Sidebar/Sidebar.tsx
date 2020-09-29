@@ -5,6 +5,8 @@ import { NavLink } from "react-router-dom";
 import { FiHome, FiSearch, FiPlus } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 
+import SidebarPlaylists from "../SidebarPlaylists/SidebarPlaylists";
+
 const Sidebar = () => {
   return (
     <div className={SidebarStyles.sidebar}>
@@ -101,6 +103,7 @@ const Sidebar = () => {
         </li>
       </ul>
       <hr className={SidebarStyles.sidebar__devider} />
+      <SidebarPlaylists />
     </div>
   );
 };

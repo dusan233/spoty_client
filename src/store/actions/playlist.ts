@@ -96,10 +96,10 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
         }
       });
 
-      const savedTracksRes = await checkCurrentUserSavedTracks(
-        trackIds,
-        accessToken
-      );
+      const savedTracksRes =
+        trackIds.length > 0
+          ? await checkCurrentUserSavedTracks(trackIds, accessToken)
+          : { data: [] };
 
       response.data.tracks.items.slice(50, 100).forEach((track) => {
         if (trackIds2 === " ") {
@@ -113,8 +113,6 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
         trackIds2.length > 0
           ? await checkCurrentUserSavedTracks(trackIds2, accessToken)
           : { data: [] };
-
-     
 
       batch(() => {
         dispatch(

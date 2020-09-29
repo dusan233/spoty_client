@@ -22,7 +22,7 @@ type Item =
 type Props = {
   items: Item[];
   totalItems: number;
-  rowHeight: any;
+  rowHeight: number;
   containerEl: RefObject<HTMLDivElement>;
   loadMoreItems: (obj: any) => Promise<void>;
   type: string;

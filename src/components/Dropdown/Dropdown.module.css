@@ -3,8 +3,8 @@
 }
 .dropdown {
   position: absolute;
-  left: -190px;
   top: 30px;
+  left: -190px;
   z-index: 1000;
   width: 225px;
   border-radius: 3px;
@@ -12,6 +12,8 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   animation-name: dropdown;
   animation-duration: 0.2s;
+  top: 30px;
+  transform-origin: left left;
 }
 
 .dropdown--playlist {

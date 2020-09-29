@@ -4,8 +4,11 @@ import { LibraryActionTypes } from "../actions/actionTypes";
 const initialState: LibraryState = {
   albums: [],
   tracks: [],
+  playlists: [],
   albumsTotal: 0,
   tracksTotal: 0,
+  playlistsTotal: 0,
+  loadingPlaylists: true,
   loading: true,
 };
 
@@ -15,6 +18,11 @@ const reducer = (state = initialState, action: LibraryActions) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case LibraryActionTypes.SET_LIBRARY_PLAYLISTS_LOADING:
+      return {
+        ...state,
+        loadingPlaylists: action.payload,
       };
     case LibraryActionTypes.SET_LIBRARY_ALBUMS:
       return {
@@ -33,6 +41,15 @@ const reducer = (state = initialState, action: LibraryActions) => {
             ? state.tracks.concat(action.payload.items)
             : action.payload.items,
         tracksTotal: action.payload.total,
+      };
+    case LibraryActionTypes.SET_LIBRARY_PLAYLISTS:
+      return {
+        ...state,
+        playlists:
+          action.payload.action === "add"
+            ? state.playlists.concat(action.payload.items)
+            : action.payload.items,
+        playlistsTotal: action.payload.total,
       };
 
     default:

@@ -18,6 +18,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
 
 import { BsMusicNoteBeamed } from "react-icons/bs";
+import { Link } from "react-router-dom";
 import PlaylistStyles from "./Playlist.module.css";
 import Spinner from "../Spinner/Spinner";
 import PlaylistHeader from "../PlaylistHeader/PlaylistHeader";
@@ -189,49 +190,65 @@ const Playlist: React.FC<Props> = ({
             totalSongs={total}
             type="Playlist"
           />
-
-          <div style={{ padding: "30px" }}>
-            <TrackHeader />
-            {showSticky && (
-              <StickyHeader
-                followers={followers}
-                description={description}
-                img={img}
-                title={name}
-                owner={owner}
-              />
-            )}
-            <WindowScroller scrollElement={containerEl.current}>
-              {({ height, isScrolling, onChildScroll, scrollTop }) => (
-                <AutoSizer disableHeight>
-                  {({ width }) => (
-                    <InfiniteLoader
-                      isRowLoaded={isRowLoaded}
-                      loadMoreRows={loadMoreTracks}
-                      rowCount={itemsCount}
-                    >
-                      {({ onRowsRendered, registerChild }) => (
-                        <List
-                          autoHeight
-                          className="List"
-                          height={height}
-                          onRowsRendered={onRowsRendered}
-                          ref={registerChild}
-                          isScrolling={isScrolling}
-                          onScroll={onChildScroll}
-                          scrollTop={scrollTop}
-                          rowHeight={44}
-                          rowCount={itemsCount}
-                          rowRenderer={renderRow}
-                          width={width}
-                        />
-                      )}
-                    </InfiniteLoader>
-                  )}
-                </AutoSizer>
+          {!tracks.length ? (
+            <div className="error-container--small">
+              <div>
+                <div className="error-icon">
+                  <BsMusicNoteBeamed />
+                </div>
+                <h1 className="error-heading">It's a bit empty here...</h1>
+                <h3 className="error-text margin-bottom">
+                  Let's find some songs for your playlist
+                </h3>
+                <Link className="btn btn--circle btn--white " to="/">
+                  NEW RELEASES
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div style={{ padding: "30px" }}>
+              <TrackHeader />
+              {showSticky && (
+                <StickyHeader
+                  followers={followers}
+                  description={description}
+                  img={img}
+                  title={name}
+                  owner={owner}
+                />
               )}
-            </WindowScroller>
-          </div>
+              <WindowScroller scrollElement={containerEl.current}>
+                {({ height, isScrolling, onChildScroll, scrollTop }) => (
+                  <AutoSizer disableHeight>
+                    {({ width }) => (
+                      <InfiniteLoader
+                        isRowLoaded={isRowLoaded}
+                        loadMoreRows={loadMoreTracks}
+                        rowCount={itemsCount}
+                      >
+                        {({ onRowsRendered, registerChild }) => (
+                          <List
+                            autoHeight
+                            className="List"
+                            height={height}
+                            onRowsRendered={onRowsRendered}
+                            ref={registerChild}
+                            isScrolling={isScrolling}
+                            onScroll={onChildScroll}
+                            scrollTop={scrollTop}
+                            rowHeight={44}
+                            rowCount={itemsCount}
+                            rowRenderer={renderRow}
+                            width={width}
+                          />
+                        )}
+                      </InfiniteLoader>
+                    )}
+                  </AutoSizer>
+                )}
+              </WindowScroller>
+            </div>
+          )}
         </React.Fragment>
       )}
     </div>

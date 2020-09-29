@@ -3,7 +3,7 @@ import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
-
+import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 
@@ -28,7 +28,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
   return (
     <div className={PlaylistHeaderStyles.container}>
       <div className={PlaylistHeaderStyles["img-container"]}>
-        <img src={img} alt="Poster" />
+        <img src={img || NoImage} alt="Poster" />
       </div>
       <div className={PlaylistHeaderStyles.content}>
         <div>
