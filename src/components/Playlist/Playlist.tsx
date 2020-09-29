@@ -12,7 +12,11 @@ import {
   addMoreTracks,
   getMoreTracks,
 } from "../../store/actions/playlist";
-import { saveRemoveTracksForCurrentUser } from "../../store/actions/user";
+
+import {
+  saveRemoveTracksForCurrentUser,
+  saveRemovePlaylistForCurrentUser,
+} from "../../store/actions/user";
 import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
@@ -40,6 +44,9 @@ const mapStateToProps = (state: RootState) => ({
   error: state.error.errorMsg,
   subErrorMsg: state.error.subMsg,
   tracksLikes: state.user.trackLikes,
+  playlistLikes: state.user.playlistLikes,
+  userId: state.user.userId,
+  ownerId: state.playlist.ownerId,
 });
 const mapDispatchToProps = {
   getPlaylistData,
@@ -47,6 +54,7 @@ const mapDispatchToProps = {
   addMoreTracks,
   setError,
   saveRemoveTracksForCurrentUser,
+  saveRemovePlaylistForCurrentUser,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -62,6 +70,7 @@ const Playlist: React.FC<Props> = ({
   addMoreTracks,
   setError,
   saveRemoveTracksForCurrentUser,
+  saveRemovePlaylistForCurrentUser,
   match,
   loading,
   name,
@@ -75,6 +84,9 @@ const Playlist: React.FC<Props> = ({
   error,
   subErrorMsg,
   tracksLikes,
+  playlistLikes,
+  userId,
+  ownerId,
 }) => {
   const [showSticky, setShowSticky] = useState(false);
   let containerEl = useRef<HTMLDivElement>(null);
@@ -182,6 +194,11 @@ const Playlist: React.FC<Props> = ({
       ) : (
         <React.Fragment>
           <PlaylistHeader
+            ownerId={ownerId}
+            userId={userId}
+            liked={playlistLikes[0]}
+            playlistId={match.params.playlistId}
+            savePlaylist={saveRemovePlaylistForCurrentUser}
             name={name}
             followers={followers}
             owner={owner}

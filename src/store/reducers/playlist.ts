@@ -4,6 +4,7 @@ import { PlaylistState, PlaylistActions } from "../types/playlist";
 const initialState: PlaylistState = {
   name: "",
   owner: "",
+  ownerId: "",
   followers: 0,
   description: null,
   img: undefined,

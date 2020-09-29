@@ -1,6 +1,6 @@
 import React from "react";
 import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
-import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
@@ -10,11 +10,20 @@ import Dropdown from "../Dropdown/Dropdown";
 interface PlaylistProps {
   name: string;
   owner: string;
+  ownerId: string;
   followers: number;
   img: string | undefined;
   description: string | null;
   totalSongs: number;
   type: string;
+  liked: boolean;
+  playlistId: string | undefined;
+  userId: string;
+  savePlaylist: (
+    playlistId: string,
+    index: number,
+    action: string
+  ) => Promise<void>;
 }
 
 const PlaylistHeader: React.FC<PlaylistProps> = ({
@@ -24,7 +33,19 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
   img,
   description,
   totalSongs,
+  liked,
+  playlistId,
+  userId,
+  ownerId,
+  savePlaylist,
 }) => {
+  const saveRemoveAlbum = () => {
+    const action = liked ? "remove" : "save";
+    if (playlistId) {
+      savePlaylist(playlistId, 0, action);
+    }
+  };
+
   return (
     <div className={PlaylistHeaderStyles.container}>
       <div className={PlaylistHeaderStyles["img-container"]}>
@@ -53,10 +74,21 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
             </span>
           </div>
           <div className={PlaylistHeaderStyles.controlls}>
-            <button className="btn btn--green btn--circle">Play</button>
-            <button className="btn-round margin-left">
-              <IoMdHeartEmpty />
-            </button>
+            {totalSongs ? (
+              <button className="btn btn--green btn--circle">Play</button>
+            ) : null}
+
+            {userId === ownerId ? null : (
+              <button
+                className={
+                  liked
+                    ? "btn-round--liked margin-left"
+                    : "btn-round margin-left"
+                }
+              >
+                {liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
+              </button>
+            )}
 
             <Dropdown>
               <button className="btn-round margin-left">

@@ -4,6 +4,7 @@ import { ImageObject, UserPublic, TrackPlaylist } from "./index";
 export interface PlaylistState {
   name: string;
   owner: string;
+  ownerId: string;
   img: string | undefined;
   description: string | null;
   followers: number;
@@ -34,6 +35,7 @@ export interface ISetPlaylistData {
     name: string;
     followers: number;
     owner: string;
+    ownerId: string;
     tracks: PlaylistTrackObject[];
     id: string;
     total: number;

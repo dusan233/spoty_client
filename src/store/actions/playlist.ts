@@ -5,8 +5,8 @@ import { setError } from "./error";
 import { RootState } from "../reducers/index";
 import { api } from "../../axios";
 import { AxiosResponse } from "axios";
-import { checkCurrentUserSavedTracks } from "./user";
-import { setTrackLikes } from "./user";
+import { checkCurrentUserSavedTracks, checkUserSavedPlaylist } from "./user";
+import { setTrackLikes, setPlaylistLikes } from "./user";
 import {
   ISetPlaylistLoading,
   ISetPlaylistData,
@@ -37,6 +37,7 @@ export const setPlaylistData: ActionCreator<ISetPlaylistData> = (
   name: string,
   followers: number,
   owner: string,
+  ownerId: string,
   tracks: PlaylistTrackObject[],
   id: string,
   total: number,
@@ -49,6 +50,7 @@ export const setPlaylistData: ActionCreator<ISetPlaylistData> = (
     name,
     followers,
     owner,
+    ownerId,
     tracks,
     id,
     total,
@@ -77,6 +79,7 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
+    const userId = getState().user.userId;
     dispatch(setPlaylistLoading(true));
     try {
       const response = await api.get<PlaylistFull>(`/playlists/${playlistId}`, {
@@ -85,6 +88,12 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
         },
       });
       console.log(response);
+
+      const savedPlaylistRes = await checkUserSavedPlaylist(
+        playlistId ? playlistId : "",
+        userId,
+        accessToken
+      );
 
       let trackIds = "";
       let trackIds2 = "";
@@ -122,12 +131,14 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
             response.data.name,
             response.data.followers.total,
             response.data.owner.display_name,
+            response.data.owner.id,
             response.data.tracks.items,
             response.data.id,
             response.data.tracks.total,
             response.data.type
           )
         );
+        dispatch(setPlaylistLikes([...savedPlaylistRes.data]));
         dispatch(
           setTrackLikes([...savedTracksRes.data, ...savedTracksRes2.data])
         );
