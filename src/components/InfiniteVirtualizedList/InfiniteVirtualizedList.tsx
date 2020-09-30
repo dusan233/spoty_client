@@ -12,7 +12,10 @@ import { SavedTrack, TrackFull } from "../../store/types";
 import { ArtistFull } from "../../store/types/artist";
 
 type Item =
-  | PlaylistSimplified
+  | {
+      id: string;
+      name: string;
+    }
   | AlbumSimplified
   | TrackFull
   | ArtistFull

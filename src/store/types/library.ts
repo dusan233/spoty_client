@@ -8,7 +8,10 @@ export interface LibraryState {
   albumsTotal: number;
   tracks: SavedTrack[];
   tracksTotal: number;
-  playlists: PlaylistSimplified[];
+  playlists: {
+    id: string;
+    name: string;
+  }[];
   playlistsTotal: number;
   loading: boolean;
   loadingPlaylists: boolean;

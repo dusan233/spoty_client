@@ -11,6 +11,7 @@ import {
   setSearchTerm,
   setSearchTracks,
   setSearchArtists,
+  cleanSearchState,
 } from "../../store/actions/search";
 import { PlaylistSimplified } from "../../store/types/playlist";
 import { AlbumSimplified } from "../../store/types/album";
@@ -76,6 +77,7 @@ const mapDispatchToProps = {
   setAlbumLikes,
   setTrackLikes,
   setPlaylistLikes,
+  cleanSearchState,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -96,6 +98,7 @@ const SearchResult: React.FC<Props> = ({
   setSearchPlaylists,
   setSearchAlbums,
   setSearchTerm,
+  cleanSearchState,
   setSearchTracks,
   setSearchArtists,
   setError,
@@ -167,9 +170,15 @@ const SearchResult: React.FC<Props> = ({
     tracksTerm,
   ]);
 
-  // useEffect(() => {
-  //   setSearchTerm(match.params.searchTerm);
-  // }, [match.params.searchTerm, setSearchTerm]);
+  useEffect(() => {
+    return () => {
+      cleanSearchState();
+    };
+  }, [cleanSearchState]);
+
+  useEffect(() => {
+    setSearchTerm(match.params.searchTerm);
+  }, [match.params.searchTerm, setSearchTerm]);
 
   const renderLinks = () => {
     return (

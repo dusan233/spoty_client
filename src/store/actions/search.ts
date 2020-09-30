@@ -12,6 +12,7 @@ import {
   ISetSearchArtists,
   ISetSearchTracks,
   ISetSearchTerm,
+  ClearSearchState,
 } from "../types/search";
 import {
   checkCurrentUserSavedTracks,
@@ -118,6 +119,10 @@ export const setSearchArtists: ActionCreator<ISetSearchArtists> = (
     type,
     term,
   },
+});
+
+export const cleanSearchState: ActionCreator<ClearSearchState> = () => ({
+  type: SearchActionTypes.CLEAN_SEARCH_STATE,
 });
 
 export const fetchSearchData: ActionCreator<AppThunk> = (

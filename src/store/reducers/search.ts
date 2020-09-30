@@ -70,7 +70,23 @@ const reducer = (state = initialState, action: SearchActions) => {
         ...state,
         searchTerm: action.payload.term,
       };
-
+    case SearchActionTypes.CLEAN_SEARCH_STATE:
+      return {
+        loading: false,
+        searchArtists: [],
+        artistsTerm: "",
+        artistsTotal: 0,
+        searchTracks: [],
+        tracksTerm: "",
+        tracksTotal: 0,
+        searchAlbums: [],
+        albumsTerm: "",
+        albumsTotal: 0,
+        searchPlaylists: [],
+        playlistsTerm: "",
+        playlistsTotal: 0,
+        searchTerm: "",
+      };
     default:
       return state;
   }

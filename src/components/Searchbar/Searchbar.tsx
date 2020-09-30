@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { setSearchTerm } from "../../store/actions/search";
 import { history } from "../..";
 import { connect, ConnectedProps } from "react-redux";
@@ -33,9 +33,9 @@ const Searchbar: React.FC<Props> = ({
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
-  //   useEffect(() => {
-  //     setSearchValue(term);
-  //   }, [term]);
+  useEffect(() => {
+    setSearchValue(term);
+  }, [term]);
 
   const onSearchValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue((e.target as HTMLInputElement).value);
@@ -43,10 +43,8 @@ const Searchbar: React.FC<Props> = ({
 
   const onSearchSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (searchValue !== "" && searchValue !== term) {
-      history.push(`/search/playlist/${searchValue}`);
-      setSearchValue("");
-    }
+
+    history.push(`/search/playlist/${searchValue}`);
   };
 
   return (
@@ -70,6 +68,7 @@ const Searchbar: React.FC<Props> = ({
           <a
             href="https://www.spotify.com/us/premium/"
             target="_blank"
+            rel="noopener noreferrer"
             className="btn btn--white btn--circle"
           >
             Upgrade to Premium

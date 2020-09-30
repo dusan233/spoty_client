@@ -77,13 +77,18 @@ export interface ISetSearchTracks {
   };
 }
 
+export interface ClearSearchState {
+  type: SearchActionTypes.CLEAN_SEARCH_STATE;
+}
+
 export type SearchActions =
   | ISetSearchLoading
   | ISetSearchPlaylists
   | ISetSearchAlbums
   | ISetSearchArtists
   | ISetSearchTracks
-  | ISetSearchTerm;
+  | ISetSearchTerm
+  | ClearSearchState;
 //some other types
 
 export interface SearchResultPlaylists {
