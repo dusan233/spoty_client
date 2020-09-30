@@ -51,7 +51,13 @@ const reducer = (state = initialState, action: LibraryActions) => {
             : action.payload.items,
         playlistsTotal: action.payload.total,
       };
-
+    case LibraryActionTypes.REMOVE_LIBRARY_PLAYLIST:
+      return {
+        ...state,
+        playlists: state.playlists.filter(
+          (playlist) => playlist.id !== action.payload.id
+        ),
+      };
     default:
       return state;
   }

@@ -7,8 +7,10 @@ import {
   SetPlaylistLikes,
   SetUserData,
 } from "../types/user";
+import { removeLibraryPlaylist } from "./library";
 import { UserActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
+import { batch } from "react-redux";
 
 export const checkUserSavedPlaylist = (
   playlistId: string,
@@ -176,7 +178,16 @@ export const saveRemovePlaylistForCurrentUser = (
       if (res.status === 200) {
         const likes = [...playlistLikes];
         likes[index] = !likes[index];
-        dispatch(setPlaylistLikes(likes));
+        if (method === "DELETE") {
+          batch(() => {
+            dispatch(setPlaylistLikes(likes));
+            dispatch(removeLibraryPlaylist(playlistId));
+          });
+        } else {
+          batch(() => {
+            dispatch(setPlaylistLikes(likes));
+          });
+        }
       }
     } catch (err) {
       console.log(err);

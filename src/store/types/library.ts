@@ -38,6 +38,20 @@ export interface SetLibraryPlaylists {
   };
 }
 
+export interface RemoveLibraryPlaylist {
+  type: LibraryActionTypes.REMOVE_LIBRARY_PLAYLIST;
+  payload: {
+    id: string;
+  };
+}
+
+export interface AddLibraryPlaylist {
+  type: LibraryActionTypes.ADD_LIBRARY_PLAYLIST;
+  payload: {
+    id: string;
+  };
+}
+
 export interface SetLibraryAlbums {
   type: LibraryActionTypes.SET_LIBRARY_ALBUMS;
   payload: {
@@ -71,4 +85,6 @@ export type LibraryActions =
   | SetLibraryAlbums
   | SetLibraryTracks
   | SetLibraryPlaylists
-  | SetLibraryPlaylistsLoading;
+  | SetLibraryPlaylistsLoading
+  | RemoveLibraryPlaylist
+  | AddLibraryPlaylist;

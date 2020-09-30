@@ -3,6 +3,7 @@ import { ActionCreator } from "redux";
 import {
   ISetLibraryLoading,
   LibraryPlaylistsResult,
+  RemoveLibraryPlaylist,
   SetLibraryPlaylists,
   SetLibraryPlaylistsLoading,
 } from "../types/library";
@@ -124,6 +125,15 @@ export const fetchUserAlbums = (
     },
   });
 };
+
+export const removeLibraryPlaylist: ActionCreator<RemoveLibraryPlaylist> = (
+  id: string
+) => ({
+  type: LibraryActionTypes.REMOVE_LIBRARY_PLAYLIST,
+  payload: {
+    id,
+  },
+});
 
 export const getCurrentUserPlaylists: ActionCreator<AppThunk> = () => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
