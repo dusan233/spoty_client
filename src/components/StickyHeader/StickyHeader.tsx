@@ -90,9 +90,8 @@ const StickyHeader: React.FC<Props> = ({
           </div>
           <div
             className={`${StickyHeaderStyles["sticky-header__description"]}`}
-          >
-            By {owner} - {description}
-          </div>
+            dangerouslySetInnerHTML={{ __html: `By ${owner} - ${description}` }}
+          ></div>
           <div>
             {followers!.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
             FOLLOWERS

@@ -39,6 +39,9 @@
   -webkit-box-orient: vertical;
   padding-right: 240px;
 }
+.sticky-header__description a {
+  color: #1db954;
+}
 .sticky-header__content div:nth-child(3) {
   font-weight: 600;
 }

@@ -9,11 +9,19 @@
 }
 .img-container {
   width: 250px;
+  position: relative;
   box-shadow: 0 0 20px rgba(18, 18, 18, 0.3);
+  padding-bottom: 250px;
+  background: #282828;
 }
 .img-container img {
   width: 100%;
   display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 .content {
   flex: 1;
