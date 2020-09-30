@@ -21,7 +21,8 @@ type Props = {
   savePlaylist: (
     playlistId: string,
     index: number,
-    action: string
+    action: string,
+    name: string
   ) => Promise<void>;
 };
 
@@ -68,7 +69,7 @@ const StickyHeader: React.FC<Props> = ({
   const saveRemovePlaylist = () => {
     const action = liked ? "remove" : "save";
     if (playlistId) {
-      savePlaylist(playlistId, 0, action);
+      savePlaylist(playlistId, 0, action, title);
     }
   };
   return (

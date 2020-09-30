@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
+import { FaHeart } from "react-icons/fa";
 
 interface PlaylistProps {
   name: string;
@@ -22,7 +23,8 @@ interface PlaylistProps {
   savePlaylist: (
     playlistId: string,
     index: number,
-    action: string
+    action: string,
+    name: string
   ) => Promise<void>;
 }
 
@@ -42,7 +44,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
   const saveRemovePlaylist = () => {
     const action = liked ? "remove" : "save";
     if (playlistId) {
-      savePlaylist(playlistId, 0, action);
+      savePlaylist(playlistId, 0, action, name);
     }
   };
 
@@ -100,29 +102,13 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
               >
                 <ul>
                   <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Save to your Liked Songs
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Queue
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Playlist
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Show Credits
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Go to Artist
-                    </Link>
+                    <div
+                      onClick={saveRemovePlaylist}
+                      className={DropdownStyles.link}
+                    >
+                      <FaHeart />
+                      {liked ? "Remove from library" : "Save to library"}
+                    </div>
                   </li>
                 </ul>
               </div>

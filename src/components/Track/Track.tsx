@@ -1,8 +1,15 @@
 import React, { useCallback } from "react";
 import TrackStyles from "./Track.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
-import { BsPlayFill, BsMusicNote, BsThreeDots } from "react-icons/bs";
+import {
+  BsPlayFill,
+  BsMusicNote,
+  BsThreeDots,
+  BsFillPersonFill,
+} from "react-icons/bs";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { RiPlayListLine, RiPlayListAddLine, RiAlbumLine } from "react-icons/ri";
+
 import { Link } from "react-router-dom";
 
 import { ArtistSimplified } from "../../store/types/artist";
@@ -187,27 +194,46 @@ const Track: React.FC<TrackProps> = React.memo(
             <div className={DropdownStyles.dropdown}>
               <ul>
                 <li>
-                  <Link className={DropdownStyles.link} to="/">
-                    Save to your Liked Songs
-                  </Link>
+                  <div
+                    onClick={saveRemoveUserTracks}
+                    className={DropdownStyles.link}
+                  >
+                    <FaHeart />
+                    {liked ? "Remove from Liked Songs" : "Save to Liked Songs"}
+                  </div>
                 </li>
                 <li>
                   <Link className={DropdownStyles.link} to="/">
+                    <RiPlayListLine />
                     Add to Queue
                   </Link>
                 </li>
                 <li>
                   <Link className={DropdownStyles.link} to="/">
+                    <RiPlayListAddLine />
                     Add to Playlist
                   </Link>
                 </li>
+                {albumId && (
+                  <li>
+                    <Link
+                      className={DropdownStyles.link}
+                      to={`/album/${albumId}`}
+                    >
+                      <RiAlbumLine />
+                      Go to Album
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <Link className={DropdownStyles.link} to="/">
+                    <BsMusicNote />
                     Show Credits
                   </Link>
                 </li>
                 <li>
                   <Link className={DropdownStyles.link} to="/">
+                    <BsFillPersonFill />
                     Go to Artist
                   </Link>
                 </li>

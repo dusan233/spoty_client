@@ -1,6 +1,7 @@
 import { LibraryActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
 import {
+  AddLibraryPlaylist,
   ISetLibraryLoading,
   LibraryPlaylistsResult,
   RemoveLibraryPlaylist,
@@ -132,6 +133,17 @@ export const removeLibraryPlaylist: ActionCreator<RemoveLibraryPlaylist> = (
   type: LibraryActionTypes.REMOVE_LIBRARY_PLAYLIST,
   payload: {
     id,
+  },
+});
+
+export const addLibraryPlaylist: ActionCreator<AddLibraryPlaylist> = (
+  id: string,
+  name: string
+) => ({
+  type: LibraryActionTypes.ADD_LIBRARY_PLAYLIST,
+  payload: {
+    id,
+    name,
   },
 });
 

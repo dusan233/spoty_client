@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
 import { BsPlayFill, BsThreeDots } from "react-icons/bs";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { RiPlayListAddLine, RiPlayListLine } from "react-icons/ri";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 import useSelected from "../../hooks/useSelected";
@@ -18,9 +19,13 @@ interface IProps {
   totalTracks: number;
   type: string;
   liked: boolean;
-  saveItem: (albumIds: string, index: number, action: string) => Promise<void>;
+  saveItem: (
+    albumIds: string,
+    index: number,
+    action: string,
+    name?: string
+  ) => Promise<void>;
 }
-
 const SearchPlaylist: React.FC<IProps> = React.memo(
   ({
     img,
@@ -38,7 +43,11 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
 
     const saveItemUser = () => {
       const action = liked ? "remove" : "save";
-      saveItem(itemId, index, action);
+      if (type === "playlist") {
+        saveItem(itemId, index, action, name);
+      } else {
+        saveItem(itemId, index, action);
+      }
     };
 
     return (
@@ -109,30 +118,27 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
               <div className={DropdownStyles.dropdown}>
                 <ul>
                   <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Save to your Liked Songs
-                    </Link>
+                    <div onClick={saveItemUser} className={DropdownStyles.link}>
+                      <FaHeart />
+                      {liked ? "Remove from library" : "Save to library"}
+                    </div>
                   </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Queue
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Playlist
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Show Credits
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Go to Artist
-                    </Link>
-                  </li>
+                  {type === "album" && (
+                    <li>
+                      <div className={DropdownStyles.link}>
+                        <RiPlayListAddLine />
+                        Add to Playlist
+                      </div>
+                    </li>
+                  )}
+                  {type === "album" && (
+                    <li>
+                      <div className={DropdownStyles.link}>
+                        <RiPlayListLine />
+                        Add to Queue
+                      </div>
+                    </li>
+                  )}
                 </ul>
               </div>
             </Dropdown>

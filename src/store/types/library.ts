@@ -49,6 +49,7 @@ export interface AddLibraryPlaylist {
   type: LibraryActionTypes.ADD_LIBRARY_PLAYLIST;
   payload: {
     id: string;
+    name: string;
   };
 }
 

@@ -7,7 +7,7 @@ import {
   SetPlaylistLikes,
   SetUserData,
 } from "../types/user";
-import { removeLibraryPlaylist } from "./library";
+import { removeLibraryPlaylist, addLibraryPlaylist } from "./library";
 import { UserActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
 import { batch } from "react-redux";
@@ -159,7 +159,8 @@ export const saveRemoveAlbumsForCurrentUser = (
 export const saveRemovePlaylistForCurrentUser = (
   playlistId: string,
   index: number,
-  action: string
+  action: string,
+  name: string | undefined
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
@@ -186,6 +187,7 @@ export const saveRemovePlaylistForCurrentUser = (
         } else {
           batch(() => {
             dispatch(setPlaylistLikes(likes));
+            dispatch(addLibraryPlaylist(playlistId, name));
           });
         }
       }

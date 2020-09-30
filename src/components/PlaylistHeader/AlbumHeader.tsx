@@ -3,9 +3,11 @@ import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 
+import { RiPlayListAddLine, RiPlayListLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
+import { FaHeart } from "react-icons/fa";
 
 interface AlbumProps {
   albumId: string | undefined;
@@ -100,29 +102,25 @@ const AlbumHeader: React.FC<AlbumProps> = ({
               >
                 <ul>
                   <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Save to your Liked Songs
-                    </Link>
+                    <div
+                      onClick={saveRemoveAlbum}
+                      className={DropdownStyles.link}
+                    >
+                      <FaHeart />
+                      {liked ? "Remove from library" : "Save to library"}
+                    </div>
                   </li>
                   <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Queue
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
+                    <div className={DropdownStyles.link}>
+                      <RiPlayListAddLine />
                       Add to Playlist
-                    </Link>
+                    </div>
                   </li>
                   <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Show Credits
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Go to Artist
-                    </Link>
+                    <div className={DropdownStyles.link}>
+                      <RiPlayListLine />
+                      Add to Queue
+                    </div>
                   </li>
                 </ul>
               </div>

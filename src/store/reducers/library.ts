@@ -58,6 +58,11 @@ const reducer = (state = initialState, action: LibraryActions) => {
           (playlist) => playlist.id !== action.payload.id
         ),
       };
+    case LibraryActionTypes.ADD_LIBRARY_PLAYLIST:
+      return {
+        ...state,
+        playlists: [action.payload, ...state.playlists],
+      };
     default:
       return state;
   }
