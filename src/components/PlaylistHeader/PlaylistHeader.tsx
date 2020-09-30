@@ -39,7 +39,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
   ownerId,
   savePlaylist,
 }) => {
-  const saveRemoveAlbum = () => {
+  const saveRemovePlaylist = () => {
     const action = liked ? "remove" : "save";
     if (playlistId) {
       savePlaylist(playlistId, 0, action);
@@ -80,6 +80,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
 
             {userId === ownerId ? null : (
               <button
+                onClick={saveRemovePlaylist}
                 className={
                   liked
                     ? "btn-round--liked margin-left"

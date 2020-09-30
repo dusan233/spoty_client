@@ -2,7 +2,7 @@ import React from "react";
 import StickyHeaderStyles from "./StickyHeader.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
-import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -13,6 +13,16 @@ type Props = {
   owner: string;
   description: string | null;
   followers: number;
+  totalSongs: number;
+  playlistId: string | undefined;
+  liked: boolean;
+  ownerId: string;
+  userId: string;
+  savePlaylist: (
+    playlistId: string,
+    index: number,
+    action: string
+  ) => Promise<void>;
 };
 
 const containerVariants = {
@@ -48,7 +58,19 @@ const StickyHeader: React.FC<Props> = ({
   owner,
   description,
   followers,
+  ownerId,
+  userId,
+  totalSongs,
+  liked,
+  playlistId,
+  savePlaylist,
 }) => {
+  const saveRemovePlaylist = () => {
+    const action = liked ? "remove" : "save";
+    if (playlistId) {
+      savePlaylist(playlistId, 0, action);
+    }
+  };
   return (
     <div className={`${StickyHeaderStyles["sticky-header-wrap"]}`}>
       <motion.div
@@ -76,18 +98,28 @@ const StickyHeader: React.FC<Props> = ({
             FOLLOWERS
           </div>
           <div className={`${StickyHeaderStyles["sticky-header__controlls"]}`}>
-            <motion.button
-              className="btn btn--green btn--circle"
-              variants={controllsVariants}
-            >
-              Play
-            </motion.button>
-            <motion.button
-              className="btn-round margin-left"
-              variants={controllsVariants}
-            >
-              <IoMdHeartEmpty />
-            </motion.button>
+            {totalSongs ? (
+              <motion.button
+                className="btn btn--green btn--circle"
+                variants={controllsVariants}
+              >
+                Play
+              </motion.button>
+            ) : null}
+
+            {userId === ownerId ? null : (
+              <motion.button
+                onClick={saveRemovePlaylist}
+                className={
+                  liked
+                    ? "btn-round--liked margin-left"
+                    : "btn-round margin-left"
+                }
+                variants={controllsVariants}
+              >
+                {liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
+              </motion.button>
+            )}
 
             <Dropdown>
               <motion.button

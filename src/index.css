@@ -119,7 +119,7 @@
 }
 .root__audio-player {
   flex-basis: 90px;
-  background: yellow;
+  background: #282828;
 }
 .page-not-found {
   background: rgb(143, 27, 50);

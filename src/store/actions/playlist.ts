@@ -145,6 +145,7 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
         dispatch(setPlaylistLoading(false));
       });
     } catch (err) {
+      console.log(err);
       let errorMsg: string;
       let subMsg: string;
       if (err.response.status === 404) {

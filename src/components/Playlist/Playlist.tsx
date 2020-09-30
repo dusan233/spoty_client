@@ -227,6 +227,12 @@ const Playlist: React.FC<Props> = ({
               <TrackHeader />
               {showSticky && (
                 <StickyHeader
+                  savePlaylist={saveRemovePlaylistForCurrentUser}
+                  totalSongs={total}
+                  ownerId={ownerId}
+                  userId={userId}
+                  liked={playlistLikes[0]}
+                  playlistId={match.params.playlistId}
                   followers={followers}
                   description={description}
                   img={img}

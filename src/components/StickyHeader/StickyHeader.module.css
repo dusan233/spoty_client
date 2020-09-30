@@ -2,11 +2,10 @@
   display: flex;
 }
 .sticky-header-wrap {
-  width: 100%;
+  width: calc(100% - 242px);
   position: fixed;
   top: 60px;
   left: 232px;
-  right: 10px;
   height: 180px;
   display: flex;
   padding: 25px 15px;
