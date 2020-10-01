@@ -7,6 +7,7 @@ import SearchReducer from "./search";
 import ErrorReducer from "./error";
 import UserReducer from "./user";
 import LibraryReducer from "./library";
+import ArtistReducer from "./artist";
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -19,4 +20,5 @@ export const rootReducer = combineReducers({
   error: ErrorReducer,
   user: UserReducer,
   library: LibraryReducer,
+  artist: ArtistReducer,
 });

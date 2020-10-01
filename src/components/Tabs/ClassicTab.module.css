@@ -12,6 +12,7 @@
   font-weight: bold;
   padding: 6px 15px;
   border-radius: 3px;
+  cursor: pointer;
 }
 .item:hover {
   background: rgb(70, 69, 69);

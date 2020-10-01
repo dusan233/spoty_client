@@ -4,6 +4,7 @@ import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
+import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -133,29 +134,13 @@ const StickyHeader: React.FC<Props> = ({
               >
                 <ul>
                   <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Save to your Liked Songs
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Queue
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Playlist
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Show Credits
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Go to Artist
-                    </Link>
+                    <div
+                      onClick={saveRemovePlaylist}
+                      className={DropdownStyles.link}
+                    >
+                      <FaHeart />
+                      {liked ? "Remove from library" : "Save to library"}
+                    </div>
                   </li>
                 </ul>
               </div>

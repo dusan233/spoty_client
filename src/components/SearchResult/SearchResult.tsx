@@ -362,6 +362,7 @@ const SearchResult: React.FC<Props> = ({
                   description={
                     (playlist as PlaylistSimplified).owner.display_name
                   }
+                  userId={playlist.owner.id}
                   name={playlist.name}
                   itemId={playlist.id}
                   index={index}
@@ -423,6 +424,7 @@ const SearchResult: React.FC<Props> = ({
                 <SearchPlaylistCard
                   img={album.images[0] && album.images[0].url}
                   description={(album as AlbumSimplified).artists[0].name}
+                  userId={album.artists[0].id}
                   name={album.name}
                   itemId={album.id}
                   index={index}

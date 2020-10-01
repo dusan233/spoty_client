@@ -106,6 +106,13 @@
   -webkit-box-orient: vertical;
   font-weight: 600;
 }
+.datagrid-cell-artist a {
+  color: white;
+  text-decoration: none;
+}
+.datagrid-cell-artist a:hover {
+  text-decoration: underline;
+}
 .datagrid-cell-album {
   width: 20%;
   display: -webkit-box;

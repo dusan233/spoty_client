@@ -184,6 +184,7 @@ const MusicLibrary: React.FC<Props> = ({
                   itemId={savedAlbum.album.id}
                   index={index}
                   style={style}
+                  userId={(savedAlbum.album as AlbumFull).artists[0].id}
                   key={savedAlbum.album.id}
                   totalTracks={(savedAlbum.album as AlbumFull).tracks.total}
                   type="album"

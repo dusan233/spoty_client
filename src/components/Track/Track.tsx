@@ -53,15 +53,23 @@ const Track: React.FC<TrackProps> = React.memo(
     const [selected, rowRef] = useSelected();
 
     const getArtists = useCallback(() => {
-      let artistsString = "";
+      let artistsString: any[] = [];
       if (!artists) {
         return "";
       }
       artists.forEach((artist, i) => {
         if (i === artists!.length - 1) {
-          artistsString += artist.name;
+          artistsString.push(
+            <React.Fragment key={artist.id}>
+              <Link to={`/artist/${artist.id}`}>{artist.name}</Link>
+            </React.Fragment>
+          );
         } else {
-          artistsString += artist.name + ", ";
+          artistsString.push(
+            <React.Fragment key={artist.id}>
+              <Link to={`/artist/${artist.id}`}>{artist.name}</Link> ,{" "}
+            </React.Fragment>
+          );
         }
       });
       return artistsString;
@@ -167,7 +175,6 @@ const Track: React.FC<TrackProps> = React.memo(
         </div>
         {type === "playlist" && (
           <div
-            title={getArtists()}
             className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-artist"]}`}
           >
             {getArtists()}

@@ -19,6 +19,7 @@ interface IProps {
   totalTracks: number;
   type: string;
   liked: boolean;
+  userId: string;
   saveItem: (
     albumIds: string,
     index: number,
@@ -37,6 +38,7 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
     totalTracks,
     type,
     liked,
+    userId,
     saveItem,
   }) => {
     const [selected, rowRef] = useSelected();
@@ -81,9 +83,18 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
             >
               {name}
             </Link>
-            <div className={`${CardStyles["search-card__desc"]}`}>
-              {description}
-            </div>
+            {type === "playlist" ? (
+              <div className={`${CardStyles["search-card__desc"]}`}>
+                {description}
+              </div>
+            ) : (
+              <Link
+                to={`/artist/${userId}`}
+                className={`${CardStyles["search-card__desc"]}`}
+              >
+                {description}
+              </Link>
+            )}
             <div className={`${CardStyles["search-card__songs"]}`}>
               {totalTracks > 1 ? totalTracks + " songs" : totalTracks + " song"}
             </div>

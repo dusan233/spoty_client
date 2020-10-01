@@ -9,6 +9,7 @@ import Dropdown from "../Dropdown/Dropdown";
 import { Link } from "react-router-dom";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { AiOutlineLogout } from "react-icons/ai";
 import NoImage from "../../assets/noimageartist.jpg";
 
 const mapStateToProps = (state: RootState) => ({
@@ -82,12 +83,11 @@ const Searchbar: React.FC<Props> = ({
               <IoMdArrowDropdown />
             </div>
           </div>
-          <div
-            className={`${DropdownStyles.dropdown} ${DropdownStyles["dropdown--user"]}`}
-          >
+          <div className={` ${DropdownStyles["dropdown--card"]}`}>
             <ul>
               <li>
                 <Link className={DropdownStyles.link} to="/">
+                  <AiOutlineLogout />
                   Logout
                 </Link>
               </li>

@@ -1,7 +1,6 @@
 import React from "react";
 import CardStyles from "./Card.module.css";
 import { Link } from "react-router-dom";
-import { FaRegHeart } from "react-icons/fa";
 import NoImage from "../../assets/noimageartist.jpg";
 import useSelected from "../../hooks/useSelected";
 
@@ -14,7 +13,7 @@ interface IProps {
 }
 
 const ArtistSearch: React.FC<IProps> = React.memo(
-  ({ style, img, name, genres }) => {
+  ({ style, img, name, genres, artistId }) => {
     const [selected, rowRef] = useSelected();
     const getGenres = () => {
       return genres.map((genre) => {
@@ -41,7 +40,7 @@ const ArtistSearch: React.FC<IProps> = React.memo(
         <div className={`${CardStyles["search-card__info"]}`}>
           <div>
             <Link
-              to={`/playlist/das12`}
+              to={`/artist/${artistId}`}
               className={`${CardStyles["search-card__name"]}`}
             >
               {name}

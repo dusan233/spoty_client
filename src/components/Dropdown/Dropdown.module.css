@@ -13,7 +13,6 @@
   animation-name: dropdown;
   animation-duration: 0.2s;
   top: 30px;
-  transform-origin: left left;
 }
 
 .dropdown--playlist {
@@ -23,12 +22,19 @@
   animation-duration: 0.2s;
 }
 .dropdown--card {
+  position: absolute;
   top: 47px;
-  left: -160px;
+  right: 0px;
   animation-name: dropdown--card;
   animation-duration: 0.2s;
+  z-index: 1000;
+  width: 251px;
+  border-radius: 3px;
+  background: #252525;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-.dropdown ul {
+.dropdown ul,
+.dropdown--card ul {
   list-style-type: none;
   padding: 7px;
 }
@@ -67,11 +73,11 @@
 
 @keyframes dropdown--card {
   from {
-    left: -180px;
+    right: 50px;
     opacity: 0;
   }
   to {
-    left: -160px;
+    right: 0px;
     opacity: 1;
   }
 }

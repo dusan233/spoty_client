@@ -11,6 +11,7 @@ import Album from "./Album/Album";
 import Searchbar from "./Searchbar/Searchbar";
 import SearchResult from "./SearchResult/SearchResult";
 import MusicLibrary from "./MusicLibrary/MusicLibrary";
+import Artist from "./Artist/Artist";
 
 const mapDispatchToProps = {
   getCurrentUserData,
@@ -23,7 +24,7 @@ const Main: React.FC<Props> = ({ getCurrentUserData }) => {
 
   useEffect(() => {
     getCurrentUserData().then((res) => setReady(true));
-  }, []);
+  }, [getCurrentUserData]);
   return ready ? (
     <div>
       <div className="root">
@@ -45,6 +46,7 @@ const Main: React.FC<Props> = ({ getCurrentUserData }) => {
                 />
                 <Route path="/album/:albumId" exact component={Album} />
                 <Route path="/library/:term" exact component={MusicLibrary} />
+                <Route path="/artist/:artistId" exact component={Artist} />
                 <Route
                   path="/search/:type/:searchTerm"
                   exact

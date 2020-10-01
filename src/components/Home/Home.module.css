@@ -1,6 +1,7 @@
 .home {
   padding: 35px;
   overflow-y: scroll;
+  overflow-x: initial;
   position: absolute;
   top: 0;
   left: 0;

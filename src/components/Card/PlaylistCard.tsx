@@ -47,9 +47,7 @@ const PlaylistCard: React.FC<IProps> = React.memo(
                 >
                   <BsThreeDots />
                 </button>
-                <div
-                  className={`${DropdownStyles.dropdown} ${DropdownStyles["dropdown--card"]}`}
-                >
+                <div className={` ${DropdownStyles["dropdown--card"]}`}>
                   <ul>
                     <li>
                       <Link className={DropdownStyles.link} to="/">
