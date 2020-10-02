@@ -43,7 +43,7 @@ const Home: React.FC<Props> = ({
       setHomeLoading(true);
       setError("", "");
     };
-  }, [getHomeData, setHomeLoading]);
+  }, [getHomeData, setHomeLoading, setError]);
 
   if (error) {
     return (

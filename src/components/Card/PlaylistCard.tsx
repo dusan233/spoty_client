@@ -2,27 +2,22 @@ import React from "react";
 import CardStyles from "./Card.module.css";
 import { Link } from "react-router-dom";
 
-import { FaRegHeart } from "react-icons/fa";
-import { BsThreeDots, BsPlayFill } from "react-icons/bs";
-import DropdownStyles from "../Dropdown/Dropdown.module.css";
-import Dropdown from "../Dropdown/Dropdown";
+import { BsPlayFill } from "react-icons/bs";
 
 interface IProps {
   img: string | undefined;
   name: string;
   description: string | null;
   playlistId: string;
-  measureImage?: any;
 }
 
 const PlaylistCard: React.FC<IProps> = React.memo(
-  ({ name, img, description, playlistId, measureImage }) => {
+  ({ name, img, description, playlistId }) => {
     return (
       <div className={CardStyles.card}>
         <div className={CardStyles.card__image_container}>
           <div className={CardStyles.card__image_container_placeholder}>
             <img
-              onLoad={measureImage}
               className={CardStyles.card__image}
               src={img}
               alt="Playlist poster"
@@ -31,52 +26,10 @@ const PlaylistCard: React.FC<IProps> = React.memo(
           <div className={CardStyles.card__overlay}>
             <div className={CardStyles.card__overlay__content}>
               <button
-                className={`${CardStyles.btn} ${CardStyles["btn--side"]}`}
-              >
-                <FaRegHeart />
-              </button>
-              <button
                 className={`${CardStyles.btn} ${CardStyles["btn--play"]}`}
               >
                 <BsPlayFill />
               </button>
-
-              <Dropdown>
-                <button
-                  className={`${CardStyles.btn} ${CardStyles["btn--side"]}`}
-                >
-                  <BsThreeDots />
-                </button>
-                <div className={` ${DropdownStyles["dropdown--card"]}`}>
-                  <ul>
-                    <li>
-                      <Link className={DropdownStyles.link} to="/">
-                        Save to your Liked Songs
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className={DropdownStyles.link} to="/">
-                        Add to Queue
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className={DropdownStyles.link} to="/">
-                        Add to Playlist
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className={DropdownStyles.link} to="/">
-                        Show Credits
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className={DropdownStyles.link} to="/">
-                        Go to Artist
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </Dropdown>
             </div>
           </div>
         </div>

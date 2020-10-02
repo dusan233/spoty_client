@@ -36,50 +36,9 @@ const AlbumCard: React.FC<IProps> = ({ name, img, artists, albumId }) => {
         </div>
         <div className={CardStyles.card__overlay}>
           <div className={CardStyles.card__overlay__content}>
-            <button className={`${CardStyles.btn} ${CardStyles["btn--side"]}`}>
-              <FaRegHeart />
-            </button>
             <button className={`${CardStyles.btn} ${CardStyles["btn--play"]}`}>
               <BsPlayFill />
             </button>
-            <Dropdown>
-              <button
-                className={`${CardStyles.btn} ${CardStyles["btn--side"]}`}
-              >
-                <BsThreeDots />
-              </button>
-              <div
-                className={`${DropdownStyles.dropdown} ${DropdownStyles["dropdown--card"]}`}
-              >
-                <ul>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Save to your Liked Songs
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Queue
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Add to Playlist
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Show Credits
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className={DropdownStyles.link} to="/">
-                      Go to Artist
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </Dropdown>
           </div>
         </div>
       </div>
