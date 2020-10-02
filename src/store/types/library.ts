@@ -2,6 +2,7 @@ import { SavedAlbum } from "./album";
 import { SavedTrack } from "./index";
 import { LibraryActionTypes } from "../actions/actionTypes";
 import { PlaylistSimplified } from "./playlist";
+import { ArtistFull } from "./artist";
 
 export interface LibraryState {
   albums: SavedAlbum[];
@@ -13,6 +14,8 @@ export interface LibraryState {
     name: string;
   }[];
   playlistsTotal: number;
+  artists: ArtistFull[];
+  artistsTotal: number;
   loading: boolean;
   loadingPlaylists: boolean;
 }
@@ -30,6 +33,22 @@ export interface SetLibraryPlaylistsLoading {
 export interface LibraryAlbumResult {
   items: SavedAlbum[];
   total: number;
+}
+
+export interface LibraryArtistsResult {
+  artists: {
+    items: ArtistFull[];
+    total: number;
+  };
+}
+
+export interface SetLibraryArtists {
+  type: LibraryActionTypes.SET_LIBRARY_ARTISTS;
+  payload: {
+    item: ArtistFull[];
+    total: number;
+    action: string;
+  };
 }
 
 export interface SetLibraryPlaylists {
@@ -91,4 +110,5 @@ export type LibraryActions =
   | SetLibraryPlaylists
   | SetLibraryPlaylistsLoading
   | RemoveLibraryPlaylist
-  | AddLibraryPlaylist;
+  | AddLibraryPlaylist
+  | SetLibraryArtists;

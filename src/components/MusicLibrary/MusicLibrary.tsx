@@ -6,6 +6,7 @@ import { RootState } from "../../store/reducers/index";
 import {
   getUsersAlbums,
   getUserTracks,
+  getCurrentUserFollowedArtists,
   setLibraryLoading,
   fetchUserTracks,
   fetchUserAlbums,
@@ -25,9 +26,11 @@ import { AlbumFull, SavedAlbum } from "../../store/types/album";
 import Spinner from "../Spinner/Spinner";
 import InfiniteVirtualizedList from "../InfiniteVirtualizedList/InfiniteVirtualizedList";
 import SearchPlaylistCard from "../Card/SearchPlaylist";
+import ArtistCard from "../Card/ArtistSearch";
 import Track from "../Track/Track";
 import TrackHeader from "../Track/TrackHeader";
 import { SavedTrack } from "../../store/types";
+import { ArtistFull } from "../../store/types/artist";
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.library.loading,
@@ -38,6 +41,8 @@ const mapStateToProps = (state: RootState) => ({
   tracksTotal: state.library.tracksTotal,
   trackLikes: state.user.trackLikes,
   accessToken: state.auth.accessToken,
+  artists: state.library.artists,
+  artistsTotal: state.library.artistsTotal,
 });
 
 const mapDispatchToProps = {
@@ -50,6 +55,7 @@ const mapDispatchToProps = {
   setLibraryAlbums,
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
+  getCurrentUserFollowedArtists,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -71,6 +77,7 @@ const MusicLibrary: React.FC<Props> = ({
   setLibraryTracks,
   setLibraryAlbums,
   setAlbumLikes,
+  getCurrentUserFollowedArtists,
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
   loading,
@@ -81,6 +88,8 @@ const MusicLibrary: React.FC<Props> = ({
   trackLikes,
   tracksTotal,
   accessToken,
+  artists,
+  artistsTotal,
 }) => {
   let containerEl = useRef<HTMLDivElement>(null);
 
@@ -92,10 +101,19 @@ const MusicLibrary: React.FC<Props> = ({
       console.log("dssdsadas");
       getUserTracks(true);
     }
+    if (match.params.term === "artists") {
+      getCurrentUserFollowedArtists();
+    }
     return () => {
       setLibraryLoading(true);
     };
-  }, [match.params.term, getUsersAlbums, getUserTracks]);
+  }, [
+    match.params.term,
+    getUsersAlbums,
+    getUserTracks,
+    getCurrentUserFollowedArtists,
+    setLibraryLoading,
+  ]);
 
   const loadMoreTracks = ({ startIndex }: { startIndex: number }) => {
     return fetchUserTracks(tracks.length, accessToken)
@@ -236,6 +254,42 @@ const MusicLibrary: React.FC<Props> = ({
                   saveTrack={saveRemoveTracksForCurrentUser}
                   liked={liked}
                   albumId={savedTrack.track.album.id}
+                />
+              );
+            }
+          }}
+        />
+      );
+    } else if (match.params.term === "artists") {
+      return (
+        <InfiniteVirtualizedList
+          items={artists}
+          totalItems={artistsTotal}
+          rowHeight={85}
+          containerEl={containerEl}
+          type="artists"
+          loadMoreItems={loadMoreTracks}
+          renderRow={({ key, index, style }: any) => {
+            const item = artists[index];
+            let savedArtist = item as ArtistFull;
+            if (!artists[index]) {
+              return (
+                <div
+                  style={{ ...style }}
+                  key={key}
+                  className="loader-container"
+                >
+                  <Spinner />
+                </div>
+              );
+            } else {
+              return (
+                <ArtistCard
+                  key={savedArtist.id}
+                  artistId={savedArtist.id}
+                  img={savedArtist.images[0].url}
+                  name={savedArtist.name}
+                  genres={savedArtist.genres}
                 />
               );
             }

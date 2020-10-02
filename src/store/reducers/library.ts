@@ -8,6 +8,8 @@ const initialState: LibraryState = {
   albumsTotal: 0,
   tracksTotal: 0,
   playlistsTotal: 0,
+  artists: [],
+  artistsTotal: 0,
   loadingPlaylists: true,
   loading: true,
 };
@@ -50,6 +52,15 @@ const reducer = (state = initialState, action: LibraryActions) => {
             ? state.playlists.concat(action.payload.items)
             : action.payload.items,
         playlistsTotal: action.payload.total,
+      };
+    case LibraryActionTypes.SET_LIBRARY_ARTISTS:
+      return {
+        ...state,
+        artists:
+          action.payload.action === "add"
+            ? state.artists.concat(action.payload.item)
+            : action.payload.item,
+        artistsTotal: action.payload.total,
       };
     case LibraryActionTypes.REMOVE_LIBRARY_PLAYLIST:
       return {

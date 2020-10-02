@@ -3,8 +3,10 @@ import { ActionCreator } from "redux";
 import {
   AddLibraryPlaylist,
   ISetLibraryLoading,
+  LibraryArtistsResult,
   LibraryPlaylistsResult,
   RemoveLibraryPlaylist,
+  SetLibraryArtists,
   SetLibraryPlaylists,
   SetLibraryPlaylistsLoading,
 } from "../types/library";
@@ -28,6 +30,7 @@ import { SavedAlbum } from "../types/album";
 import { batch } from "react-redux";
 import { SavedTrack } from "../types";
 import { PlaylistSimplified } from "../types/playlist";
+import { ArtistFull } from "../types/artist";
 
 export const setLibraryLoading: ActionCreator<ISetLibraryLoading> = (
   loading: boolean
@@ -82,6 +85,19 @@ export const setLibraryTracks: ActionCreator<SetLibraryTracks> = (
   },
 });
 
+export const setLibraryArtists: ActionCreator<SetLibraryArtists> = (
+  item: ArtistFull[],
+  total: number,
+  action: string = ""
+) => ({
+  type: LibraryActionTypes.SET_LIBRARY_ARTISTS,
+  payload: {
+    item,
+    total,
+    action,
+  },
+});
+
 export const fetchUserTracks = (
   offset: number,
   accessToken: string | undefined
@@ -127,6 +143,21 @@ export const fetchUserAlbums = (
   });
 };
 
+export const fetchUserArtists = (
+  lastArtistId: string,
+  accessToken: string | undefined
+) => {
+  return api.get<LibraryArtistsResult>("/me/following", {
+    params: {
+      type: "artist",
+      after: lastArtistId ? lastArtistId : undefined,
+    },
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  });
+};
+
 export const removeLibraryPlaylist: ActionCreator<RemoveLibraryPlaylist> = (
   id: string
 ) => ({
@@ -158,6 +189,26 @@ export const getCurrentUserPlaylists: ActionCreator<AppThunk> = () => {
         dispatch(setLibraryPlaylists(res.data.items, res.data.total));
         dispatch(setLibraryPlaylistsLoading(false));
       });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const getCurrentUserFollowedArtists = () => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const accessToken = getState().auth.accessToken;
+    let lastArtistId = "";
+
+    try {
+      const res = await fetchUserArtists(lastArtistId, accessToken);
+      batch(() => {
+        dispatch(
+          setLibraryArtists(res.data.artists.items, res.data.artists.total)
+        );
+        dispatch(setLibraryLoading(false));
+      });
+      console.log(res);
     } catch (err) {
       console.log(err);
     }

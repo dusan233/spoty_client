@@ -56,7 +56,7 @@ const Sidebar = () => {
           <NavLink
             className={SidebarStyles.sidebar__link}
             activeClassName={SidebarStyles.sidebar__link_active}
-            to="/somewhere"
+            to="/library/artists"
           >
             <div className={SidebarStyles.link__content}>
               <span>Artists</span>
