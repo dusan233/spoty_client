@@ -12,6 +12,8 @@ import {
   fetchUserAlbums,
   setLibraryTracks,
   setLibraryAlbums,
+  fetchUserArtists,
+  setLibraryArtists,
 } from "../../store/actions/library";
 import {
   saveRemoveAlbumsForCurrentUser,
@@ -50,6 +52,7 @@ const mapDispatchToProps = {
   getUserTracks,
   setTrackLikes,
   setAlbumLikes,
+  setLibraryArtists,
   setLibraryLoading,
   setLibraryTracks,
   setLibraryAlbums,
@@ -77,6 +80,7 @@ const MusicLibrary: React.FC<Props> = ({
   setLibraryTracks,
   setLibraryAlbums,
   setAlbumLikes,
+  setLibraryArtists,
   getCurrentUserFollowedArtists,
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
@@ -135,6 +139,19 @@ const MusicLibrary: React.FC<Props> = ({
               setTrackLikes([...savedTracksRes.data], "add");
             });
           }
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const loadMoreArtists = ({ startIndex }: { startIndex: number }) => {
+    const lastArtistId = artists[artists.length - 1].id;
+    return fetchUserArtists(lastArtistId, accessToken)
+      .then((res) => {
+        setLibraryArtists(
+          res.data.artists.items,
+          res.data.artists.total,
+          "add"
         );
       })
       .catch((err) => console.log(err));
@@ -267,8 +284,8 @@ const MusicLibrary: React.FC<Props> = ({
           totalItems={artistsTotal}
           rowHeight={85}
           containerEl={containerEl}
-          type="artists"
-          loadMoreItems={loadMoreTracks}
+          type="playlists"
+          loadMoreItems={loadMoreArtists}
           renderRow={({ key, index, style }: any) => {
             const item = artists[index];
             let savedArtist = item as ArtistFull;
@@ -290,6 +307,7 @@ const MusicLibrary: React.FC<Props> = ({
                   img={savedArtist.images[0].url}
                   name={savedArtist.name}
                   genres={savedArtist.genres}
+                  style={style}
                 />
               );
             }

@@ -151,6 +151,7 @@ export const fetchUserArtists = (
     params: {
       type: "artist",
       after: lastArtistId ? lastArtistId : undefined,
+      limit: 50,
     },
     headers: {
       Authorization: "Bearer " + accessToken,

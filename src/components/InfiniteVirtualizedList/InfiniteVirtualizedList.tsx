@@ -6,7 +6,6 @@ import {
   InfiniteLoader,
   List,
 } from "react-virtualized";
-import { PlaylistSimplified } from "../../store/types/playlist";
 import { AlbumSimplified, SavedAlbum } from "../../store/types/album";
 import { SavedTrack, TrackFull } from "../../store/types";
 import { ArtistFull } from "../../store/types/artist";
