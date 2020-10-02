@@ -179,6 +179,33 @@ export const saveRemoveAlbumsForCurrentUser = (
   };
 };
 
+export const followUnfollowArtistForCurrentUser = (
+  artistId: string | undefined,
+  action: string
+) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const accessToken = getState().auth.accessToken;
+    const artisFollows = getState().user.artistsLikes;
+    try {
+      const method = action === "save" ? "PUT" : "DELETE";
+      const res = await api({
+        method: method,
+        params: {
+          type: "artist",
+          ids: artistId,
+        },
+        url: "/me/following",
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+      dispatch(setArtistLikes([!artisFollows[0]]));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 export const saveRemovePlaylistForCurrentUser = (
   playlistId: string,
   index: number,

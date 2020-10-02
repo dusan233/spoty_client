@@ -4,7 +4,10 @@ import { RouteComponentProps } from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
 import { getArtist, setArtistLoading } from "../../store/actions/artist";
-import { saveRemoveTracksForCurrentUser } from "../../store/actions/user";
+import {
+  saveRemoveTracksForCurrentUser,
+  followUnfollowArtistForCurrentUser,
+} from "../../store/actions/user";
 
 import Spinner from "../Spinner/Spinner";
 import ArtistHeader from "./ArtistHeader";
@@ -27,6 +30,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = {
   getArtist,
   saveRemoveTracksForCurrentUser,
+  followUnfollowArtistForCurrentUser,
   setArtistLoading,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -42,6 +46,7 @@ type Props = RouteComponentProps<Params> & ReduxProps;
 const Artist: React.FC<Props> = ({
   getArtist,
   saveRemoveTracksForCurrentUser,
+  followUnfollowArtistForCurrentUser,
   setArtistLoading,
   match,
   name,
@@ -110,10 +115,12 @@ const Artist: React.FC<Props> = ({
       ) : (
         <React.Fragment>
           <ArtistHeader
+            artistId={match.params.artistId}
             followed={artistFollow[0]}
             name={name}
             followers={followers}
             image={image}
+            followArtist={followUnfollowArtistForCurrentUser}
           />
           <div style={{ padding: "35px" }}>
             <ClassicTab renderLinks={renderLinks} />

@@ -6,6 +6,8 @@ interface Props {
   image: string;
   followers: number;
   followed: boolean;
+  artistId: string | undefined;
+  followArtist: (artistId: string | undefined, action: string) => Promise<void>;
 }
 
 const ArtistHeader: React.FC<Props> = ({
@@ -13,7 +15,17 @@ const ArtistHeader: React.FC<Props> = ({
   image,
   followers,
   followed,
+  artistId,
+  followArtist,
 }) => {
+  const followUnfollowArtist = () => {
+    if (followed) {
+      followArtist(artistId, "remove");
+    } else {
+      followArtist(artistId, "save");
+    }
+  };
+
   return (
     <div className={ArtistStyles.header}>
       <div className={`${ArtistStyles["header__image-cotainer"]}`}>
@@ -26,7 +38,10 @@ const ArtistHeader: React.FC<Props> = ({
           followers
         </div>
         <div className="margin-top-l">
-          <button className="btn btn--green btn--circle">
+          <button
+            onClick={followUnfollowArtist}
+            className="btn btn--green btn--circle"
+          >
             {followed ? "Following" : "Follow"}
           </button>
         </div>
