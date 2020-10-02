@@ -22,6 +22,7 @@ const mapStateToProps = (state: RootState) => ({
   trackLikes: state.user.trackLikes,
   topTracks: state.artist.topTracks,
   artists: state.artist.artists,
+  artistFollow: state.user.artistsLikes,
 });
 const mapDispatchToProps = {
   getArtist,
@@ -50,6 +51,7 @@ const Artist: React.FC<Props> = ({
   trackLikes,
   topTracks,
   artists,
+  artistFollow,
 }) => {
   const [active, setActive] = useState(0);
 
@@ -107,7 +109,12 @@ const Artist: React.FC<Props> = ({
         </div>
       ) : (
         <React.Fragment>
-          <ArtistHeader name={name} followers={followers} image={image} />
+          <ArtistHeader
+            followed={artistFollow[0]}
+            name={name}
+            followers={followers}
+            image={image}
+          />
           <div style={{ padding: "35px" }}>
             <ClassicTab renderLinks={renderLinks} />
             {active === 0 ? (

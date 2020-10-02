@@ -5,9 +5,15 @@ interface Props {
   name: string;
   image: string;
   followers: number;
+  followed: boolean;
 }
 
-const ArtistHeader: React.FC<Props> = ({ name, image, followers }) => {
+const ArtistHeader: React.FC<Props> = ({
+  name,
+  image,
+  followers,
+  followed,
+}) => {
   return (
     <div className={ArtistStyles.header}>
       <div className={`${ArtistStyles["header__image-cotainer"]}`}>
@@ -20,7 +26,9 @@ const ArtistHeader: React.FC<Props> = ({ name, image, followers }) => {
           followers
         </div>
         <div className="margin-top-l">
-          <button className="btn btn--green btn--circle">Follow</button>
+          <button className="btn btn--green btn--circle">
+            {followed ? "Following" : "Follow"}
+          </button>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { RootState } from "../reducers/index";
 import {
   ISetAlbumLikes,
   ISetTrackLikes,
+  SetArtistLikes,
   SetPlaylistLikes,
   SetUserData,
 } from "../types/user";
@@ -20,6 +21,21 @@ export const checkUserSavedPlaylist = (
   return api.get(`/playlists/${playlistId}/followers/contains`, {
     params: {
       ids: userIds,
+    },
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  });
+};
+
+export const checkUserFollowedArtists = (
+  artistId: string | undefined,
+  accessToken: string | undefined
+) => {
+  return api.get("/me/following/contains", {
+    params: {
+      ids: artistId,
+      type: "artist",
     },
     headers: {
       Authorization: "Bearer " + accessToken,
@@ -80,6 +96,13 @@ export const setPlaylistLikes: ActionCreator<SetPlaylistLikes> = (
   type: UserActionTypes.SET_PLAYLIST_LIKES,
   payload: playlistLikes,
   action,
+});
+
+export const setArtistLikes: ActionCreator<SetArtistLikes> = (
+  artistLikes: boolean[]
+) => ({
+  type: UserActionTypes.SET_ARTISTS_LIKES,
+  payload: artistLikes,
 });
 
 export const setUserData: ActionCreator<SetUserData> = (

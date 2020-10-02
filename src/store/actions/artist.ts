@@ -8,7 +8,12 @@ import {
   ArtistTopTracksResponse,
   ArtistSimularArtistsResponse,
 } from "../types/artist";
-import { checkCurrentUserSavedTracks, setTrackLikes } from "./user";
+import {
+  checkCurrentUserSavedTracks,
+  checkUserFollowedArtists,
+  setArtistLikes,
+  setTrackLikes,
+} from "./user";
 import { api } from "../../axios";
 import { batch } from "react-redux";
 import { TrackFull } from "../types";
@@ -95,24 +100,45 @@ export const getArtist = (artistId: string | undefined) => {
           }
         });
 
-        return checkCurrentUserSavedTracks(trackIds, accessToken).then(
-          (savedTracksRes) => {
-            batch(() => {
-              dispatch(
-                setArtistData(
-                  res[0].data.name,
-                  res[0].data.followers.total,
-                  res[0].data.images[0].url,
+        return Promise.all([
+          checkCurrentUserSavedTracks(trackIds, accessToken),
+          checkUserFollowedArtists(artistId, accessToken),
+        ]).then((savedRes) => {
+          batch(() => {
+            dispatch(
+              setArtistData(
+                res[0].data.name,
+                res[0].data.followers.total,
+                res[0].data.images[0].url,
 
-                  res[2].data.artists,
-                  res[1].data.tracks
-                )
-              );
-              dispatch(setTrackLikes(savedTracksRes.data));
-              dispatch(setArtistLoading(false));
-            });
-          }
-        );
+                res[2].data.artists,
+                res[1].data.tracks
+              )
+            );
+            dispatch(setArtistLikes(savedRes[1].data));
+            dispatch(setTrackLikes(savedRes[0].data));
+            dispatch(setArtistLoading(false));
+          });
+        });
+
+        // return checkCurrentUserSavedTracks(trackIds, accessToken).then(
+        //   (savedTracksRes) => {
+        //     batch(() => {
+        //       dispatch(
+        //         setArtistData(
+        //           res[0].data.name,
+        //           res[0].data.followers.total,
+        //           res[0].data.images[0].url,
+
+        //           res[2].data.artists,
+        //           res[1].data.tracks
+        //         )
+        //       );
+        //       dispatch(setTrackLikes(savedTracksRes.data));
+        //       dispatch(setArtistLoading(false));
+        //     });
+        //   }
+        // );
       })
       .catch((err) => {
         console.log(err);
