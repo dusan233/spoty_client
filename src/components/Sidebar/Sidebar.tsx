@@ -63,17 +63,6 @@ const Sidebar = () => {
             </div>
           </NavLink>
         </li>
-        <li className={SidebarStyles.sidebar__item}>
-          <NavLink
-            className={SidebarStyles.sidebar__link}
-            activeClassName={SidebarStyles.sidebar__link_active}
-            to="/somewhere"
-          >
-            <div className={SidebarStyles.link__content}>
-              <span>Podcasts</span>
-            </div>
-          </NavLink>
-        </li>
       </ul>
       <div className={SidebarStyles.sidebar__heading}>PLAYLISTS</div>
       <ul className={SidebarStyles.sideabr__list}>
