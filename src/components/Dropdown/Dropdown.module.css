@@ -4,7 +4,7 @@
 .dropdown {
   position: absolute;
   top: 30px;
-  left: -190px;
+  left: -210px;
   z-index: 1000;
   width: 251px;
   border-radius: 3px;
@@ -84,11 +84,11 @@
 
 @keyframes dropdown {
   from {
-    left: -210px;
+    left: -240px;
     opacity: 0;
   }
   to {
-    left: -190px;
+    left: -210px;
     opacity: 1;
   }
 }

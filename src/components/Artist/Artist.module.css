@@ -7,6 +7,7 @@
   bottom: 0;
   color: white;
 }
+
 .container::-webkit-scrollbar {
   width: 0.6em;
   background: transparent;
@@ -50,4 +51,31 @@
 .header__followers {
   font-size: 20px;
   font-weight: 600;
+}
+.wrap {
+  display: flex;
+}
+.wrap h1 {
+  margin-bottom: 30px;
+}
+.tracks {
+  flex: 1;
+  margin-right: 50px;
+}
+.singles {
+  flex-basis: 600px;
+}
+.singles__container {
+  width: 100%;
+}
+.singles__container::-webkit-scrollbar {
+  width: 0.3em;
+  background: transparent;
+}
+
+.singles__container::-webkit-scrollbar-thumb {
+  background-color: rgb(116, 115, 115);
+  outline: 1px solid slategrey;
+  border-radius: 50px;
+  outline: none;
 }

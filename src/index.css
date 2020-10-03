@@ -348,9 +348,23 @@
   bottom: 0;
   right: 0;
 }
-.ReactVirtualized__Grid__innerScrollContainer {
+.Listar {
+  outline: none;
+}
+.Listar::-webkit-scrollbar {
+  width: 0.3em;
+  background: transparent;
+}
+
+.Listar::-webkit-scrollbar-thumb {
+  background-color: rgb(110, 110, 110);
+  outline: 1px solid slategrey;
+  border-radius: 50px;
+  outline: none;
+}
+/* .ReactVirtualized__Grid__innerScrollContainer {
   overflow: visible !important;
 }
 .ReactVirtualized__Grid {
   overflow: visible !important;
-}
+} */

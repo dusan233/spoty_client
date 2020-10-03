@@ -7,6 +7,8 @@ const initialState: ArtistState = {
   loading: true,
   topTracks: [],
   artists: [],
+  albums: [],
+  albumsTotal: 0,
 };
 
 const reducer = (state = initialState, action: ArtistActions) => {

@@ -17,6 +17,7 @@ import {
 import { api } from "../../axios";
 import { batch } from "react-redux";
 import { TrackFull } from "../types";
+import { AlbumSimplified } from "../types/album";
 
 export const setArtistLoading: ActionCreator<SetArtistLoading> = (
   loading: boolean
@@ -30,7 +31,9 @@ export const setArtistData: ActionCreator<SetArtistData> = (
   followers: number,
   image: string,
   artists: ArtistFull[],
-  topTracks: TrackFull[]
+  topTracks: TrackFull[],
+  albums: AlbumSimplified[],
+  albumsTotal: number
 ) => ({
   type: ArtistActionTypes.SET_ARTIST_DATA,
   payload: {
@@ -39,8 +42,32 @@ export const setArtistData: ActionCreator<SetArtistData> = (
     followers,
     artists,
     topTracks,
+    albums,
+    albumsTotal,
   },
 });
+
+export const fetchArtistAlbums = (
+  artistId: string | undefined,
+  accessToken: string | undefined,
+  albumType: string,
+  offset: number,
+  limit: number
+) => {
+  return api.get<{ items: AlbumSimplified[]; total: number }>(
+    `/artists/${artistId}/albums`,
+    {
+      params: {
+        include_groups: albumType,
+        offset: offset,
+        limit: limit,
+      },
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    }
+  );
+};
 
 export const fetchArtistData = (
   artistId: string | undefined,
@@ -89,10 +116,11 @@ export const getArtist = (artistId: string | undefined) => {
       fetchArtistData(artistId, accessToken),
       fetchArtistTopTracks(artistId, accessToken),
       fetchArtistSimylarArtists(artistId, accessToken),
+      fetchArtistAlbums(artistId, accessToken, "single,album", 0, 20),
     ])
       .then((res) => {
         let trackIds = "";
-        res[1].data.tracks.slice(0, 50).forEach((track) => {
+        res[1].data.tracks.slice(0, 50).forEach((track: TrackFull) => {
           if (trackIds === " ") {
             trackIds += track.id;
           } else {
@@ -110,9 +138,10 @@ export const getArtist = (artistId: string | undefined) => {
                 res[0].data.name,
                 res[0].data.followers.total,
                 res[0].data.images[0].url,
-
                 res[2].data.artists,
-                res[1].data.tracks
+                res[1].data.tracks,
+                res[3].data.items,
+                res[3].data.total
               )
             );
             dispatch(setArtistLikes(savedRes[1].data));
@@ -120,25 +149,6 @@ export const getArtist = (artistId: string | undefined) => {
             dispatch(setArtistLoading(false));
           });
         });
-
-        // return checkCurrentUserSavedTracks(trackIds, accessToken).then(
-        //   (savedTracksRes) => {
-        //     batch(() => {
-        //       dispatch(
-        //         setArtistData(
-        //           res[0].data.name,
-        //           res[0].data.followers.total,
-        //           res[0].data.images[0].url,
-
-        //           res[2].data.artists,
-        //           res[1].data.tracks
-        //         )
-        //       );
-        //       dispatch(setTrackLikes(savedTracksRes.data));
-        //       dispatch(setArtistLoading(false));
-        //     });
-        //   }
-        // );
       })
       .catch((err) => {
         console.log(err);

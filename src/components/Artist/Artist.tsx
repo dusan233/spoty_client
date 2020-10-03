@@ -6,6 +6,7 @@ import { RootState } from "../../store/reducers/index";
 import { getArtist, setArtistLoading } from "../../store/actions/artist";
 import {
   saveRemoveTracksForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
   followUnfollowArtistForCurrentUser,
 } from "../../store/actions/user";
 
@@ -16,6 +17,8 @@ import ClassicTabStyles from "../Tabs/ClassicTab.module.css";
 import Track from "../Track/Track";
 import TrackHeader from "../Track/TrackHeader";
 import ArtistCard from "../Card/ArtistSearch";
+import InfiniteVirtualizedSimple from "../InfiniteVirtualizedList/InfiniteVirtualizedSimple";
+import SearchPlaylistCard from "../Card/SearchPlaylist";
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.artist.loading,
@@ -26,11 +29,14 @@ const mapStateToProps = (state: RootState) => ({
   topTracks: state.artist.topTracks,
   artists: state.artist.artists,
   artistFollow: state.user.artistsLikes,
+  albums: state.artist.albums,
+  albumsTotal: state.artist.albumsTotal,
 });
 const mapDispatchToProps = {
   getArtist,
   saveRemoveTracksForCurrentUser,
   followUnfollowArtistForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
   setArtistLoading,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -47,6 +53,7 @@ const Artist: React.FC<Props> = ({
   getArtist,
   saveRemoveTracksForCurrentUser,
   followUnfollowArtistForCurrentUser,
+  saveRemoveAlbumsForCurrentUser,
   setArtistLoading,
   match,
   name,
@@ -57,6 +64,8 @@ const Artist: React.FC<Props> = ({
   topTracks,
   artists,
   artistFollow,
+  albums,
+  albumsTotal,
 }) => {
   const [active, setActive] = useState(0);
 
@@ -127,27 +136,71 @@ const Artist: React.FC<Props> = ({
             {active === 0 ? (
               <React.Fragment>
                 <h1>Popular</h1>
-                <TrackHeader />
-                {topTracks.map((track, i) => {
-                  const liked = trackLikes[i];
-                  return (
-                    <Track
-                      title={track.name}
-                      artists={track.artists}
-                      index={i}
-                      duration={track.duration_ms}
-                      explicit={track.explicit}
-                      trackId={track.id}
-                      type="playlist"
-                      saveTrack={saveRemoveTracksForCurrentUser}
-                      album={track.album.name}
-                      popularity={track.popularity}
-                      key={track.id}
-                      liked={liked}
-                      albumId={track.album.id}
-                    />
-                  );
-                })}
+                <div style={{ marginBottom: "80px" }}>
+                  <TrackHeader />
+                  {topTracks.map((track, i) => {
+                    const liked = trackLikes[i];
+                    return (
+                      <Track
+                        title={track.name}
+                        artists={track.artists}
+                        index={i}
+                        duration={track.duration_ms}
+                        explicit={track.explicit}
+                        trackId={track.id}
+                        type="playlist"
+                        saveTrack={saveRemoveTracksForCurrentUser}
+                        album={track.album.name}
+                        popularity={track.popularity}
+                        key={track.id}
+                        liked={liked}
+                        albumId={track.album.id}
+                      />
+                    );
+                  })}
+                </div>
+                <h1>Albums</h1>
+                <InfiniteVirtualizedSimple
+                  items={albums}
+                  totalItems={albumsTotal}
+                  height={480}
+                  rowHeight={85}
+                  type="albums"
+                  loadMoreItems={(is: any) => Promise.resolve()}
+                  renderRow={({ key, index, style }: any) => {
+                    const item = albums[index];
+
+                    const liked = false;
+                    if (!albums[index]) {
+                      return (
+                        <div
+                          style={{ ...style }}
+                          key={key}
+                          className="loader-container"
+                        >
+                          <Spinner />
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <SearchPlaylistCard
+                          img={item.images[0] && item.images[0].url}
+                          description={item.artists[0].name}
+                          name={item.name}
+                          itemId={item.id}
+                          index={index}
+                          style={style}
+                          userId={item.artists[0].id}
+                          key={item.id}
+                          totalTracks={item.total_tracks}
+                          type="album"
+                          liked={liked}
+                          saveItem={saveRemoveAlbumsForCurrentUser}
+                        />
+                      );
+                    }
+                  }}
+                />
               </React.Fragment>
             ) : (
               <React.Fragment>

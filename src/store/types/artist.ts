@@ -1,5 +1,6 @@
 import { ImageObject, TrackFull } from "./index";
 import { ArtistActionTypes } from "../actions/actionTypes";
+import { AlbumSimplified } from "./album";
 export interface ArtistState {
   name: string;
   followers: number;
@@ -7,6 +8,8 @@ export interface ArtistState {
   loading: boolean;
   artists: ArtistFull[];
   topTracks: TrackFull[];
+  albums: AlbumSimplified[];
+  albumsTotal: number;
 }
 
 //actions
@@ -24,6 +27,8 @@ export interface SetArtistData {
     followers: number;
     topTracks: TrackFull[];
     artists: ArtistFull[];
+    albums: AlbumSimplified[];
+    albumsTotal: number;
   };
 }
 
