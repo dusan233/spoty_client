@@ -28,9 +28,10 @@ const ArtistHeader: React.FC<Props> = ({
 
   return (
     <div className={ArtistStyles.header}>
-      <div className={`${ArtistStyles["header__image-cotainer"]}`}>
-        <img src={image} alt="" />
-      </div>
+      <div
+        className={`${ArtistStyles["header__image-cotainer"]}`}
+        style={{ backgroundImage: `url(${image})` }}
+      ></div>
       <div className={ArtistStyles.text}>
         <h1 className={ArtistStyles.header__heading}>{name}</h1>
         <div className={ArtistStyles.header__followers}>
