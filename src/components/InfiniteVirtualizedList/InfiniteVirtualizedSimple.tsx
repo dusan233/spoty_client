@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef } from "react";
+import React from "react";
 
 import { AutoSizer, InfiniteLoader, List } from "react-virtualized";
 import { AlbumSimplified, SavedAlbum } from "../../store/types/album";
@@ -21,7 +21,6 @@ type Props = {
   totalItems: number;
   rowHeight: number;
   loadMoreItems: (obj: any) => Promise<void>;
-  type: string;
   height: number;
   renderRow: ({ key, index, style }: any) => JSX.Element | undefined;
 };
@@ -33,12 +32,7 @@ const InfiniteVirtualizedList: React.FC<Props> = ({
   height,
   loadMoreItems,
   renderRow,
-  type,
 }) => {
-  //   const nekiRef = useRef<any>();
-  //   useEffect(() => {
-  //     (nekiRef.current as List).recomputeRowHeights();
-  //   }, [type]);
   const rowCount =
     totalItems === items.length ? items.length : items.length + 1;
 

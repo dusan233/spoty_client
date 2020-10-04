@@ -3,10 +3,7 @@ import CardStyles from "./Card.module.css";
 import { ArtistSimplified } from "../../store/types/artist";
 import { Link } from "react-router-dom";
 
-import { FaRegHeart } from "react-icons/fa";
-import { BsThreeDots, BsPlayFill } from "react-icons/bs";
-import Dropdown from "../Dropdown/Dropdown";
-import DropdownStyles from "../Dropdown/Dropdown.module.css";
+import { BsPlayFill } from "react-icons/bs";
 
 interface IProps {
   img: string | undefined;

@@ -205,7 +205,6 @@ const Artist: React.FC<Props> = ({
                   totalItems={albumsTotal}
                   height={480}
                   rowHeight={85}
-                  type="albums"
                   loadMoreItems={loadMoreAlbums}
                   renderRow={({ key, index, style }: any) => {
                     const item = albums[index];

@@ -2,7 +2,6 @@ import React from "react";
 import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
-import { Link } from "react-router-dom";
 import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
