@@ -159,10 +159,9 @@ const Track: React.FC<TrackProps> = React.memo(
           )}
         </div>
         <div
-          title={title}
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-title"]}`}
         >
-          {title}
+          <span title={title}>{title}</span>
         </div>
         <div
           className={`${TrackStyles["datagrid-cell"]} ${
