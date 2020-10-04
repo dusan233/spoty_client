@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import TrackStyles from "./Track.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
+import Modal from "react-modal";
 import {
   BsPlayFill,
   BsMusicNote,
@@ -51,6 +52,10 @@ const Track: React.FC<TrackProps> = React.memo(
     saveTrack,
   }) => {
     const [selected, rowRef] = useSelected();
+    const [modalIsOpen, setModal] = useState(false);
+
+    const openModal = () => setModal(true);
+    const closeModal = () => setModal(false);
 
     const getArtists = useCallback(() => {
       let artistsString: any[] = [];
@@ -125,6 +130,16 @@ const Track: React.FC<TrackProps> = React.memo(
         style={{ ...style, background: selected && "#ffffff29" }}
         ref={rowRef}
       >
+        <Modal
+          className="ds"
+          overlayClassName="kajk"
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          closeTimeoutMS={400}
+        >
+          <button>hello there</button>
+        </Modal>
+
         <div
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
         >
@@ -215,10 +230,10 @@ const Track: React.FC<TrackProps> = React.memo(
                   </Link>
                 </li>
                 <li>
-                  <Link className={DropdownStyles.link} to="/">
+                  <div onClick={openModal} className={DropdownStyles.link}>
                     <RiPlayListAddLine />
                     Add to Playlist
-                  </Link>
+                  </div>
                 </li>
                 {albumId && (
                   <li>
