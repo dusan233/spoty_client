@@ -231,12 +231,7 @@ const Track: React.FC<TrackProps> = React.memo(
                     </Link>
                   </li>
                 )}
-                <li>
-                  <Link className={DropdownStyles.link} to="/">
-                    <BsMusicNote />
-                    Show Credits
-                  </Link>
-                </li>
+
                 <li>
                   <Link className={DropdownStyles.link} to="/">
                     <BsFillPersonFill />
