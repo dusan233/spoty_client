@@ -267,10 +267,9 @@ export const getUsersAlbums: ActionCreator<AppThunk> = (loading: boolean) => {
         }
       });
 
-      const savedAlbumsRes = await checkCurrentUserSavedAlbums(
-        albumIds,
-        accessToken
-      );
+      const savedAlbumsRes = albumIds
+        ? await checkCurrentUserSavedAlbums(albumIds, accessToken)
+        : { data: [] };
 
       console.log(res.data);
       batch(() => {
