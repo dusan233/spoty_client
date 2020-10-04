@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
@@ -48,20 +48,44 @@ const AlbumHeader: React.FC<AlbumProps> = ({
     }
   };
 
-  const getArtists = () => {
-    let artistsString = "";
+  // const getArtists = () => {
+  //   let artistsString = "";
+  //   if (!artists) {
+  //     return "";
+  //   }
+  //   artists.forEach((artist, i) => {
+  //     if (i === artists!.length - 1) {
+  //       artistsString += artist.name;
+  //     } else {
+  //       artistsString += artist.name + ", ";
+  //     }
+  //   });
+  //   return artistsString;
+  // };
+
+  const getArtists = useCallback(() => {
+    let artistsString: any[] = [];
     if (!artists) {
       return "";
     }
     artists.forEach((artist, i) => {
       if (i === artists!.length - 1) {
-        artistsString += artist.name;
+        artistsString.push(
+          <React.Fragment key={artist.id}>
+            <Link to={`/artist/${artist.id}`}>{artist.name}</Link>
+          </React.Fragment>
+        );
       } else {
-        artistsString += artist.name + ", ";
+        artistsString.push(
+          <React.Fragment key={artist.id}>
+            <Link to={`/artist/${artist.id}`}>{artist.name}</Link> ,{" "}
+          </React.Fragment>
+        );
       }
     });
     return artistsString;
-  };
+  }, [artists]);
+
   return (
     <div className={PlaylistHeaderStyles.container}>
       <div className={PlaylistHeaderStyles["img-container"]}>

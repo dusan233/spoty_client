@@ -57,7 +57,9 @@
 .info--album {
   margin-top: 15px;
 }
-.owner {
+
+.owner a {
+  text-decoration: none;
   color: white;
 }
 .controlls {
