@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import LibraryStyles from "./MusicLibrary.module.css";
 import { RouteComponentProps } from "react-router-dom";
 import { ConnectedProps, connect, batch } from "react-redux";
@@ -15,6 +15,7 @@ import {
   fetchUserArtists,
   setLibraryArtists,
 } from "../../store/actions/library";
+import { BsFillPersonDashFill } from "react-icons/bs";
 import {
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
@@ -45,6 +46,7 @@ const mapStateToProps = (state: RootState) => ({
   accessToken: state.auth.accessToken,
   artists: state.library.artists,
   artistsTotal: state.library.artistsTotal,
+  library: state.library,
 });
 
 const mapDispatchToProps = {
@@ -94,6 +96,7 @@ const MusicLibrary: React.FC<Props> = ({
   accessToken,
   artists,
   artistsTotal,
+  library,
 }) => {
   let containerEl = useRef<HTMLDivElement>(null);
 
@@ -278,6 +281,20 @@ const MusicLibrary: React.FC<Props> = ({
         />
       );
     } else if (match.params.term === "artists") {
+      if (!artists.length)
+        return (
+          <div className="error-container--small">
+            <div>
+              <div className="error-icon">
+                <BsFillPersonDashFill />
+              </div>
+              <h1 className="error-heading">Follow your first artist</h1>
+              <h3 className="error-text margin-bottom">
+                Follow artists you like by tapping the follow button.
+              </h3>
+            </div>
+          </div>
+        );
       return (
         <InfiniteVirtualizedList
           items={artists}
@@ -331,7 +348,7 @@ const MusicLibrary: React.FC<Props> = ({
       ) : (
         <React.Fragment>
           <h1 className={LibraryStyles.heading}>{formatHeading()}</h1>
-          {match.params.term === "tracks" && <TrackHeader />}
+          {match.params.term === "tracks" && tracks.length && <TrackHeader />}
           {renderList()}
         </React.Fragment>
       )}
