@@ -233,10 +233,9 @@ export const getUserTracks: ActionCreator<AppThunk> = (loading: boolean) => {
         }
       });
 
-      const savedAlbumsRes = await checkCurrentUserSavedTracks(
-        trackIds,
-        accessToken
-      );
+      const savedAlbumsRes = trackIds
+        ? await checkCurrentUserSavedTracks(trackIds, accessToken)
+        : { data: [] };
 
       console.log(res.data);
       batch(() => {
