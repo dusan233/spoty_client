@@ -23,6 +23,11 @@ const reducer = (state = initialState, action: ArtistActions) => {
         ...state,
         ...action.payload,
       };
+    case ArtistActionTypes.SET_MORE_ALBUMS:
+      return {
+        ...state,
+        albums: state.albums.concat(action.payload),
+      };
     default:
       return state;
   }

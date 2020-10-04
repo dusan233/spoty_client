@@ -52,4 +52,5 @@ export enum LibraryActionTypes {
 export enum ArtistActionTypes {
   SET_ARTIST_LOADING = "SET_ARTIST_LOADING",
   SET_ARTIST_DATA = "SET_ARTIST_DATA",
+  SET_MORE_ALBUMS = "SET_MORE_ALBUMS",
 }

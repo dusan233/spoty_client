@@ -7,12 +7,15 @@ import {
   SetArtistLoading,
   ArtistTopTracksResponse,
   ArtistSimularArtistsResponse,
+  SetMoreAlbums,
 } from "../types/artist";
 import {
   checkCurrentUserSavedTracks,
   checkUserFollowedArtists,
+  checkCurrentUserSavedAlbums,
   setArtistLikes,
   setTrackLikes,
+  setAlbumLikes,
 } from "./user";
 import { api } from "../../axios";
 import { batch } from "react-redux";
@@ -45,6 +48,12 @@ export const setArtistData: ActionCreator<SetArtistData> = (
     albums,
     albumsTotal,
   },
+});
+export const setMoreAlbums: ActionCreator<SetMoreAlbums> = (
+  albums: AlbumSimplified[]
+) => ({
+  type: ArtistActionTypes.SET_MORE_ALBUMS,
+  payload: albums,
 });
 
 export const fetchArtistAlbums = (
@@ -127,10 +136,19 @@ export const getArtist = (artistId: string | undefined) => {
             trackIds += "," + track.id;
           }
         });
+        let albumIds = "";
+        res[3].data.items.slice(0, 50).forEach((album: AlbumSimplified) => {
+          if (albumIds === " ") {
+            albumIds += album.id;
+          } else {
+            albumIds += "," + album.id;
+          }
+        });
 
         return Promise.all([
           checkCurrentUserSavedTracks(trackIds, accessToken),
           checkUserFollowedArtists(artistId, accessToken),
+          checkCurrentUserSavedAlbums(albumIds, accessToken),
         ]).then((savedRes) => {
           batch(() => {
             dispatch(
@@ -146,6 +164,7 @@ export const getArtist = (artistId: string | undefined) => {
             );
             dispatch(setArtistLikes(savedRes[1].data));
             dispatch(setTrackLikes(savedRes[0].data));
+            dispatch(setAlbumLikes(savedRes[2].data));
             dispatch(setArtistLoading(false));
           });
         });

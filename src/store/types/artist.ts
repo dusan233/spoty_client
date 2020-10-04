@@ -19,6 +19,11 @@ export interface SetArtistLoading {
   payload: boolean;
 }
 
+export interface SetMoreAlbums {
+  type: ArtistActionTypes.SET_MORE_ALBUMS;
+  payload: AlbumSimplified[];
+}
+
 export interface SetArtistData {
   type: ArtistActionTypes.SET_ARTIST_DATA;
   payload: {
@@ -32,8 +37,8 @@ export interface SetArtistData {
   };
 }
 
-export type ArtistActions = SetArtistLoading | SetArtistData;
-//otehr types
+export type ArtistActions = SetArtistLoading | SetArtistData | SetMoreAlbums;
+//other types
 
 export interface ArtistSimplified {
   name: string;

@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import ArtistStyles from "./Artist.module.css";
 import { RouteComponentProps } from "react-router-dom";
-import { connect, ConnectedProps } from "react-redux";
+import { batch, connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
 import { getArtist, setArtistLoading } from "../../store/actions/artist";
 import {
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
   followUnfollowArtistForCurrentUser,
+  checkCurrentUserSavedAlbums,
+  setAlbumLikes,
 } from "../../store/actions/user";
+import { fetchArtistAlbums, setMoreAlbums } from "../../store/actions/artist";
 
 import Spinner from "../Spinner/Spinner";
 import ArtistHeader from "./ArtistHeader";
@@ -31,6 +34,8 @@ const mapStateToProps = (state: RootState) => ({
   artistFollow: state.user.artistsLikes,
   albums: state.artist.albums,
   albumsTotal: state.artist.albumsTotal,
+  albumLikes: state.user.albumLikes,
+  accessToken: state.auth.accessToken,
 });
 const mapDispatchToProps = {
   getArtist,
@@ -38,6 +43,8 @@ const mapDispatchToProps = {
   followUnfollowArtistForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
   setArtistLoading,
+  setMoreAlbums,
+  setAlbumLikes,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -55,6 +62,8 @@ const Artist: React.FC<Props> = ({
   followUnfollowArtistForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
   setArtistLoading,
+  setMoreAlbums,
+  setAlbumLikes,
   match,
   name,
   followers,
@@ -66,6 +75,8 @@ const Artist: React.FC<Props> = ({
   artistFollow,
   albums,
   albumsTotal,
+  albumLikes,
+  accessToken,
 }) => {
   const [active, setActive] = useState(0);
 
@@ -79,6 +90,35 @@ const Artist: React.FC<Props> = ({
       setArtistLoading(true);
     };
   }, [setArtistLoading]);
+
+  const loadMoreAlbums = () => {
+    return fetchArtistAlbums(
+      match.params.artistId,
+      accessToken,
+      "single,album",
+      albums.length,
+      20
+    )
+      .then((res) => {
+        let albumIds = "";
+        res.data.items.slice(0, 50).forEach((album) => {
+          if (albumIds === " ") {
+            albumIds += album.id;
+          } else {
+            albumIds += "," + album.id;
+          }
+        });
+        return checkCurrentUserSavedAlbums(albumIds, accessToken).then(
+          (savedRes) => {
+            batch(() => {
+              setMoreAlbums(res.data.items);
+              setAlbumLikes(savedRes.data, "add");
+            });
+          }
+        );
+      })
+      .catch((err) => console.log(err));
+  };
 
   const renderLinks = () => {
     return (
@@ -166,11 +206,11 @@ const Artist: React.FC<Props> = ({
                   height={480}
                   rowHeight={85}
                   type="albums"
-                  loadMoreItems={(is: any) => Promise.resolve()}
+                  loadMoreItems={loadMoreAlbums}
                   renderRow={({ key, index, style }: any) => {
                     const item = albums[index];
 
-                    const liked = false;
+                    const liked = albumLikes[index];
                     if (!albums[index]) {
                       return (
                         <div
