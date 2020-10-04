@@ -15,7 +15,7 @@ import {
   fetchUserArtists,
   setLibraryArtists,
 } from "../../store/actions/library";
-import { BsFillPersonDashFill } from "react-icons/bs";
+import { BsFillPersonDashFill, BsMusicNoteBeamed } from "react-icons/bs";
 import {
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
@@ -189,6 +189,20 @@ const MusicLibrary: React.FC<Props> = ({
 
   const renderList = () => {
     if (match.params.term === "albums") {
+      if (!albums.length)
+        return (
+          <div className="error-container--small">
+            <div>
+              <div className="error-icon">
+                <BsMusicNoteBeamed />
+              </div>
+              <h1 className="error-heading">Follow your first album</h1>
+              <h3 className="error-text margin-bottom">
+                Save albums by tapping the heart icon.
+              </h3>
+            </div>
+          </div>
+        );
       return (
         <InfiniteVirtualizedList
           items={albums}

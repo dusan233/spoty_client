@@ -99,7 +99,7 @@ const Playlist: React.FC<Props> = ({
       setPlaylistLoading(true);
       setError("", "");
     };
-  }, [getPlaylistData, match.params.playlistId, setPlaylistLoading]);
+  }, [getPlaylistData, match.params.playlistId, setPlaylistLoading, setError]);
 
   useEffect(() => {
     let refEl = containerEl.current;
