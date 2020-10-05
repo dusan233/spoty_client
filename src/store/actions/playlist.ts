@@ -181,3 +181,28 @@ export const addTracksToPlaylist = (trackUri: string, playlistId: string) => {
     }
   };
 };
+
+export const removeTracksFromPlaylist = (
+  trackUri: string,
+  index: number,
+  playlistId: string | undefined
+) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const accessToken = getState().auth.accessToken;
+    try {
+      console.log(playlistId);
+      const res = await api.delete(`/playlists/${playlistId}/tracks`, {
+        data: JSON.stringify({
+          tracks: [{ uri: trackUri, position: index }],
+        }),
+        headers: {
+          Authorization: "Bearer " + accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};

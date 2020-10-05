@@ -11,6 +11,7 @@ import {
   setPlaylistLoading,
   addMoreTracks,
   getMoreTracks,
+  removeTracksFromPlaylist,
 } from "../../store/actions/playlist";
 
 import {
@@ -55,6 +56,7 @@ const mapDispatchToProps = {
   setError,
   saveRemoveTracksForCurrentUser,
   saveRemovePlaylistForCurrentUser,
+  removeTracksFromPlaylist,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -71,6 +73,7 @@ const Playlist: React.FC<Props> = ({
   setError,
   saveRemoveTracksForCurrentUser,
   saveRemovePlaylistForCurrentUser,
+  removeTracksFromPlaylist,
   match,
   loading,
   name,
@@ -164,9 +167,13 @@ const Playlist: React.FC<Props> = ({
           popularity={track.track.popularity}
           albumId={track.track.album.id}
           liked={liked}
+          playlistId={match.params.playlistId}
+          userId={userId}
+          playlistOwnerId={ownerId}
           uri={track.track.uri}
           trackId={track.track.id}
           saveTrack={saveRemoveTracksForCurrentUser}
+          remvoeTrackFromPlaylist={removeTracksFromPlaylist}
         />
       );
     }

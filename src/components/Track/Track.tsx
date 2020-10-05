@@ -17,12 +17,16 @@ import { Link } from "react-router-dom";
 import { ArtistSimplified } from "../../store/types/artist";
 import useSelected from "../../hooks/useSelected";
 import Dropdown from "../Dropdown/Dropdown";
+import { removeTracksFromPlaylist } from "../../store/actions/playlist";
 
 interface TrackProps {
   title: string;
   artists: ArtistSimplified[];
   album?: string;
   albumId?: string;
+  playlistOwnerId?: string;
+  playlistId?: string;
+  userId?: string;
   style?: any;
   index: number;
   duration: number;
@@ -34,6 +38,11 @@ interface TrackProps {
   trackId: string;
   uri: string;
   saveTrack: (trackIds: string, index: number, action: string) => Promise<void>;
+  remvoeTrackFromPlaylist?: (
+    trackUri: string,
+    index: number,
+    playlistId: string | undefined
+  ) => Promise<void>;
 }
 
 Modal.setAppElement("#modal");
@@ -54,13 +63,22 @@ const Track: React.FC<TrackProps> = React.memo(
     liked,
     trackId,
     uri,
+    userId,
+    playlistOwnerId,
+    playlistId,
     saveTrack,
+    remvoeTrackFromPlaylist,
   }) => {
     const [selected, rowRef] = useSelected();
     const [modalIsOpen, setModal] = useState(false);
 
     const openModal = () => setModal(true);
     const closeModal = () => setModal(false);
+
+    const removeTrackFromPlaylist = () => {
+      remvoeTrackFromPlaylist &&
+        remvoeTrackFromPlaylist(uri, index, playlistId);
+    };
 
     const getArtists = useCallback(() => {
       let artistsString: any[] = [];
@@ -240,6 +258,17 @@ const Track: React.FC<TrackProps> = React.memo(
                     Add to Playlist
                   </div>
                 </li>
+                {userId && playlistOwnerId && userId === playlistOwnerId && (
+                  <li>
+                    <div
+                      onClick={removeTrackFromPlaylist}
+                      className={DropdownStyles.link}
+                    >
+                      <RiPlayListAddLine />
+                      Remove from this playlist
+                    </div>
+                  </li>
+                )}
                 {albumId && (
                   <li>
                     <Link
