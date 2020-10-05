@@ -4,7 +4,6 @@ import { batch } from "react-redux";
 import { setError } from "./error";
 import { RootState } from "../reducers/index";
 import { api } from "../../axios";
-import { AxiosResponse } from "axios";
 import { checkCurrentUserSavedTracks, checkUserSavedPlaylist } from "./user";
 import { setTrackLikes, setPlaylistLikes } from "./user";
 import {
@@ -159,6 +158,26 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
         dispatch(setPlaylistLoading(false));
         dispatch(setError(errorMsg, subMsg));
       });
+    }
+  };
+};
+
+export const addTracksToPlaylist = (trackUri: string, playlistId: string) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const accessToken = getState().auth.accessToken;
+
+    try {
+      const res = await api.post(`/playlists/${playlistId}/tracks`, null, {
+        params: {
+          uris: trackUri,
+        },
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
   };
 };

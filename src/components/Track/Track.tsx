@@ -32,6 +32,7 @@ interface TrackProps {
   hidePopularity?: boolean;
   liked?: boolean;
   trackId: string;
+  uri: string;
   saveTrack: (trackIds: string, index: number, action: string) => Promise<void>;
 }
 
@@ -52,6 +53,7 @@ const Track: React.FC<TrackProps> = React.memo(
     albumId,
     liked,
     trackId,
+    uri,
     saveTrack,
   }) => {
     const [selected, rowRef] = useSelected();
@@ -140,7 +142,7 @@ const Track: React.FC<TrackProps> = React.memo(
           onRequestClose={closeModal}
           closeTimeoutMS={400}
         >
-          <AddToPlaylist />
+          <AddToPlaylist trackUri={uri} />
         </Modal>
 
         <div

@@ -495,6 +495,7 @@ const SearchResult: React.FC<Props> = ({
                     album={track.album.name}
                     style={style}
                     key={track.id}
+                    uri={track.uri}
                     trackId={track.id}
                     index={index}
                     saveTrack={saveRemoveTracksForCurrentUser}

@@ -302,6 +302,7 @@ const MusicLibrary: React.FC<Props> = ({
                   key={savedTrack.track.id}
                   trackId={savedTrack.track.id}
                   index={index}
+                  uri={savedTrack.track.uri}
                   saveTrack={saveRemoveTracksForCurrentUser}
                   liked={liked}
                   albumId={savedTrack.track.album.id}

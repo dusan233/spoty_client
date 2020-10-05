@@ -164,6 +164,7 @@ const Playlist: React.FC<Props> = ({
           popularity={track.track.popularity}
           albumId={track.track.album.id}
           liked={liked}
+          uri={track.track.uri}
           trackId={track.track.id}
           saveTrack={saveRemoveTracksForCurrentUser}
         />

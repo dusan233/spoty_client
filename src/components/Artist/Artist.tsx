@@ -195,6 +195,7 @@ const Artist: React.FC<Props> = ({
                         key={track.id}
                         liked={liked}
                         albumId={track.album.id}
+                        uri={track.uri}
                       />
                     );
                   })}

@@ -29,6 +29,7 @@ export interface TrackSimplified {
   duration_ms: number;
   name: string;
   preview_url: string | null;
+  uri: string;
 }
 
 export interface SavedTrack {
