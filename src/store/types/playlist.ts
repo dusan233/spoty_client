@@ -43,10 +43,16 @@ export interface ISetPlaylistData {
   };
 }
 
+export interface SetPlaylistTracks {
+  type: PlaylistActionTypes.SET_PLAYLIST_TRACKS;
+  payload: PlaylistTrackObject[];
+}
+
 export type PlaylistActions =
   | ISetPlaylistLoading
   | ISetPlaylistData
-  | IAddMoreTracks;
+  | IAddMoreTracks
+  | SetPlaylistTracks;
 
 // types for playlists
 

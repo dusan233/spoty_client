@@ -33,6 +33,12 @@ const reducer = (state = initialState, action: PlaylistActions) => {
         ...state,
         tracks: [...state.tracks, ...action.payload],
       };
+    case PlaylistActionTypes.SET_PLAYLIST_TRACKS:
+      return {
+        ...state,
+        tracks: action.payload,
+        total: state.total - 1,
+      };
     default:
       return state;
   }

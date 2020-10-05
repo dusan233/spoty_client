@@ -13,6 +13,7 @@ import {
   PlaylistFull,
   PlaylistTrackObject,
   MorePlaylistTracks,
+  SetPlaylistTracks,
 } from "../types/playlist";
 import { AppThunk } from "../types/index";
 
@@ -27,6 +28,13 @@ export const addMoreTracks: ActionCreator<IAddMoreTracks> = (
   tracks: PlaylistTrackObject[]
 ) => ({
   type: PlaylistActionTypes.ADD_MORE_TRACKS,
+  payload: tracks,
+});
+
+export const setTracks: ActionCreator<SetPlaylistTracks> = (
+  tracks: PlaylistTrackObject[]
+) => ({
+  type: PlaylistActionTypes.SET_PLAYLIST_TRACKS,
   payload: tracks,
 });
 
@@ -189,6 +197,8 @@ export const removeTracksFromPlaylist = (
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
+    const tracks = getState().playlist.tracks;
+    const trackLikes = getState().user.trackLikes;
     try {
       console.log(playlistId);
       const res = await api.delete(`/playlists/${playlistId}/tracks`, {
@@ -199,6 +209,12 @@ export const removeTracksFromPlaylist = (
           Authorization: "Bearer " + accessToken,
           "Content-Type": "application/json",
         },
+      });
+      const newTracks = tracks.filter((_, i) => i !== index);
+      const newLikes = trackLikes.filter((_, i) => i !== index);
+      batch(() => {
+        dispatch(setTracks(newTracks));
+        dispatch(setTrackLikes(newLikes));
       });
       console.log(res);
     } catch (err) {
