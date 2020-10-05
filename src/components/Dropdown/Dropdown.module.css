@@ -1,7 +1,8 @@
 .dropdown-container {
   position: relative;
 }
-.dropdown {
+.dropdown,
+.dropdown__sec {
   position: absolute;
   top: 30px;
   left: -210px;
@@ -14,7 +15,15 @@
   animation-duration: 0.2s;
   top: 30px;
 }
-
+.dropdown__sec {
+  left: -200px;
+  top: 35px;
+  display: none;
+  animation: none;
+}
+.link:hover .dropdown__sec {
+  display: block;
+}
 .dropdown--playlist {
   top: 47px;
   left: 20px;
@@ -38,8 +47,12 @@
   list-style-type: none;
   padding: 7px;
 }
+.dropdown ul li {
+  position: relative;
+}
 
 .link {
+  position: relative;
   display: block;
   text-decoration: none;
   cursor: pointer;

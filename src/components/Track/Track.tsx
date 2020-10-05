@@ -282,10 +282,26 @@ const Track: React.FC<TrackProps> = React.memo(
                 )}
 
                 <li>
-                  <Link className={DropdownStyles.link} to="/">
+                  <div className={DropdownStyles.link}>
                     <BsFillPersonFill />
-                    Go to Artist
-                  </Link>
+                    Go to Artists
+                    <div className={DropdownStyles.dropdown__sec}>
+                      <ul>
+                        {artists.map((artist) => {
+                          return (
+                            <li>
+                              <Link
+                                className={DropdownStyles.link}
+                                to={`/artist/${artist.id}`}
+                              >
+                                {artist.name}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>
