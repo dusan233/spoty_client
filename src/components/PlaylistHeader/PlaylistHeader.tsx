@@ -92,26 +92,28 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
               </button>
             )}
 
-            <Dropdown>
-              <button className="btn-round margin-left">
-                <BsThreeDots />
-              </button>
-              <div
-                className={`${DropdownStyles["dropdown--playlist"]} ${DropdownStyles.dropdown}`}
-              >
-                <ul>
-                  <li>
-                    <div
-                      onClick={saveRemovePlaylist}
-                      className={DropdownStyles.link}
-                    >
-                      <FaHeart />
-                      {liked ? "Remove from library" : "Save to library"}
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </Dropdown>
+            {userId === ownerId ? null : (
+              <Dropdown>
+                <button className="btn-round margin-left">
+                  <BsThreeDots />
+                </button>
+                <div
+                  className={`${DropdownStyles["dropdown--playlist"]} ${DropdownStyles.dropdown}`}
+                >
+                  <ul>
+                    <li>
+                      <div
+                        onClick={saveRemovePlaylist}
+                        className={DropdownStyles.link}
+                      >
+                        <FaHeart />
+                        {liked ? "Remove from library" : "Save to library"}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </Dropdown>
+            )}
           </div>
         </div>
       </div>
