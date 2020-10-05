@@ -9,10 +9,7 @@ export interface LibraryState {
   albumsTotal: number;
   tracks: SavedTrack[];
   tracksTotal: number;
-  playlists: {
-    id: string;
-    name: string;
-  }[];
+  playlists: PlaylistSimplified[];
   playlistsTotal: number;
   artists: ArtistFull[];
   artistsTotal: number;
@@ -69,10 +66,7 @@ export interface RemoveLibraryPlaylist {
 
 export interface AddLibraryPlaylist {
   type: LibraryActionTypes.ADD_LIBRARY_PLAYLIST;
-  payload: {
-    id: string;
-    name: string;
-  };
+  payload: PlaylistSimplified;
 }
 
 export interface SetLibraryAlbums {

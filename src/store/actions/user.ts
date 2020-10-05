@@ -8,6 +8,7 @@ import {
   SetPlaylistLikes,
   SetUserData,
 } from "../types/user";
+import { PlaylistFull } from "../types/playlist";
 import { removeLibraryPlaylist, addLibraryPlaylist } from "./library";
 import { UserActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
@@ -235,9 +236,18 @@ export const saveRemovePlaylistForCurrentUser = (
             dispatch(removeLibraryPlaylist(playlistId));
           });
         } else {
+          const response = await api.get<PlaylistFull>(
+            `/playlists/${playlistId}`,
+            {
+              headers: {
+                Authorization: "Bearer " + accessToken,
+              },
+            }
+          );
+
           batch(() => {
             dispatch(setPlaylistLikes(likes));
-            dispatch(addLibraryPlaylist(playlistId, name));
+            dispatch(addLibraryPlaylist(response.data));
           });
         }
       }

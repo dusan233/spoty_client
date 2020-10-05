@@ -169,14 +169,10 @@ export const removeLibraryPlaylist: ActionCreator<RemoveLibraryPlaylist> = (
 });
 
 export const addLibraryPlaylist: ActionCreator<AddLibraryPlaylist> = (
-  id: string,
-  name: string
+  playlist: PlaylistSimplified
 ) => ({
   type: LibraryActionTypes.ADD_LIBRARY_PLAYLIST,
-  payload: {
-    id,
-    name,
-  },
+  payload: playlist,
 });
 
 export const getCurrentUserPlaylists: ActionCreator<AppThunk> = () => {

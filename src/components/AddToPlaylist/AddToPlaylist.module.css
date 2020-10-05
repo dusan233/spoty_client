@@ -1,0 +1,23 @@
+.container {
+  width: 700px;
+  background: #282828;
+  border-radius: 5px;
+  padding: 20px;
+}
+.container h2 {
+  color: white;
+  text-align: center;
+}
+.cards {
+  margin-top: 20px;
+}
+.card {
+  color: #1db954;
+  padding: 10px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 18px;
+}
+.card:hover {
+  background: rgba(255, 255, 255, 0.05);
+}

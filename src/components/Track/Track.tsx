@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import TrackStyles from "./Track.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Modal from "react-modal";
+import AddToPlaylist from "../AddToPlaylist/AddToPlaylist";
 import {
   BsPlayFill,
   BsMusicNote,
@@ -33,6 +34,8 @@ interface TrackProps {
   trackId: string;
   saveTrack: (trackIds: string, index: number, action: string) => Promise<void>;
 }
+
+Modal.setAppElement("#modal");
 
 const Track: React.FC<TrackProps> = React.memo(
   ({
@@ -131,13 +134,13 @@ const Track: React.FC<TrackProps> = React.memo(
         ref={rowRef}
       >
         <Modal
-          className="ds"
-          overlayClassName="kajk"
+          className="Modal"
+          overlayClassName="Overlay"
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
           closeTimeoutMS={400}
         >
-          <button>hello there</button>
+          <AddToPlaylist />
         </Modal>
 
         <div

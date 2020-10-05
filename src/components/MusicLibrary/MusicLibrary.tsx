@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import LibraryStyles from "./MusicLibrary.module.css";
 import { RouteComponentProps } from "react-router-dom";
 import { ConnectedProps, connect, batch } from "react-redux";
@@ -100,7 +100,6 @@ const MusicLibrary: React.FC<Props> = ({
   accessToken,
   artists,
   artistsTotal,
-  library,
 }) => {
   let containerEl = useRef<HTMLDivElement>(null);
 
