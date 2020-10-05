@@ -183,7 +183,7 @@ export const addTracksToPlaylist = (trackUri: string, playlistId: string) => {
           Authorization: "Bearer " + accessToken,
         },
       });
-      console.log(res);
+      return res;
     } catch (err) {
       console.log(err);
     }

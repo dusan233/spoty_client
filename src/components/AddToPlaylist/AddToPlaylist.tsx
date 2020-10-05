@@ -17,12 +17,13 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type ReduxProps = ConnectedProps<typeof connector>;
 
-type Props = ReduxProps & { trackUri: string };
+type Props = ReduxProps & { trackUri: string; closeModal: () => void };
 
 const AddToPlaylist: React.FC<Props> = ({
   playlists,
   trackUri,
   addTracksToPlaylist,
+  closeModal,
 }) => {
   return (
     <div className={AddTrackToPlaylist.container}>
@@ -31,7 +32,11 @@ const AddToPlaylist: React.FC<Props> = ({
         {playlists.map((playlist) => {
           return (
             <div
-              onClick={() => addTracksToPlaylist(trackUri, playlist.id)}
+              onClick={() =>
+                addTracksToPlaylist(trackUri, playlist.id).then((res) => {
+                  closeModal();
+                })
+              }
               className={AddTrackToPlaylist.card}
             >
               {playlist.name}

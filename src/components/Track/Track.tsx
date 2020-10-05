@@ -160,7 +160,7 @@ const Track: React.FC<TrackProps> = React.memo(
           onRequestClose={closeModal}
           closeTimeoutMS={400}
         >
-          <AddToPlaylist trackUri={uri} />
+          <AddToPlaylist trackUri={uri} closeModal={closeModal} />
         </Modal>
 
         <div
