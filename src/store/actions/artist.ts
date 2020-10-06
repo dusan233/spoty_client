@@ -21,6 +21,7 @@ import { api } from "../../axios";
 import { batch } from "react-redux";
 import { TrackFull } from "../types";
 import { AlbumSimplified } from "../types/album";
+import { setError } from "./error";
 
 export const setArtistLoading: ActionCreator<SetArtistLoading> = (
   loading: boolean
@@ -170,7 +171,12 @@ export const getArtist = (artistId: string | undefined) => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        let errorMsg = "Opps! Something went wrong!";
+        let subMsg = "Please refresh the page and try again";
+        batch(() => {
+          dispatch(setError(errorMsg, subMsg));
+          dispatch(setArtistLoading(false));
+        });
       });
   };
 };

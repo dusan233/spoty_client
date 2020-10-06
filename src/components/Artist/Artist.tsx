@@ -36,6 +36,8 @@ const mapStateToProps = (state: RootState) => ({
   albumsTotal: state.artist.albumsTotal,
   albumLikes: state.user.albumLikes,
   accessToken: state.auth.accessToken,
+  errorMsg: state.error.errorMsg,
+  subError: state.error.subMsg,
 });
 const mapDispatchToProps = {
   getArtist,
@@ -77,6 +79,8 @@ const Artist: React.FC<Props> = ({
   albumsTotal,
   albumLikes,
   accessToken,
+  errorMsg,
+  subError,
 }) => {
   const [active, setActive] = useState(0);
 
@@ -160,6 +164,13 @@ const Artist: React.FC<Props> = ({
       {loading ? (
         <div className="loader-container">
           <Spinner />
+        </div>
+      ) : errorMsg ? (
+        <div className="error-container">
+          <div>
+            <h1 className="error-heading">{errorMsg}</h1>
+            <h3 className="error-text">{subError}</h3>
+          </div>
         </div>
       ) : (
         <React.Fragment>
