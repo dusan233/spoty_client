@@ -287,9 +287,9 @@ const Track: React.FC<TrackProps> = React.memo(
                     Go to Artists
                     <div className={DropdownStyles.dropdown__sec}>
                       <ul>
-                        {artists.map((artist) => {
+                        {artists.map((artist, i) => {
                           return (
-                            <li>
+                            <li key={i}>
                               <Link
                                 className={DropdownStyles.link}
                                 to={`/artist/${artist.id}`}

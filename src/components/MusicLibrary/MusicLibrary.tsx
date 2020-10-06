@@ -51,6 +51,8 @@ const mapStateToProps = (state: RootState) => ({
   artists: state.library.artists,
   artistsTotal: state.library.artistsTotal,
   library: state.library,
+  errorMsg: state.error.errorMsg,
+  subError: state.error.subMsg,
 });
 
 const mapDispatchToProps = {
@@ -100,6 +102,8 @@ const MusicLibrary: React.FC<Props> = ({
   accessToken,
   artists,
   artistsTotal,
+  errorMsg,
+  subError,
 }) => {
   let containerEl = useRef<HTMLDivElement>(null);
 
@@ -376,6 +380,16 @@ const MusicLibrary: React.FC<Props> = ({
       {loading ? (
         <div className="loader-container">
           <Spinner />
+        </div>
+      ) : errorMsg ? (
+        <div className="error-container">
+          <div>
+            <div className="error-icon">
+              <BsMusicNoteBeamed />
+            </div>
+            <h1 className="error-heading">{errorMsg}</h1>
+            <h3 className="error-text">{subError}</h3>
+          </div>
         </div>
       ) : (
         <React.Fragment>

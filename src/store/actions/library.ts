@@ -31,6 +31,7 @@ import { batch } from "react-redux";
 import { SavedTrack } from "../types";
 import { PlaylistSimplified } from "../types/playlist";
 import { ArtistFull } from "../types/artist";
+import { setError } from "./error";
 
 export const setLibraryLoading: ActionCreator<ISetLibraryLoading> = (
   loading: boolean
@@ -207,7 +208,12 @@ export const getCurrentUserFollowedArtists = () => {
       });
       console.log(res);
     } catch (err) {
-      console.log(err);
+      let errorMsg = "Opps! Something went wrong!";
+      let subMsg = "Please refresh the page and try again";
+      batch(() => {
+        dispatch(setError(errorMsg, subMsg));
+        dispatch(setLibraryLoading(false));
+      });
     }
   };
 };
@@ -240,7 +246,12 @@ export const getUserTracks: ActionCreator<AppThunk> = (loading: boolean) => {
         dispatch(setLibraryLoading(false));
       });
     } catch (err) {
-      console.log(err);
+      let errorMsg = "Opps! Something went wrong!";
+      let subMsg = "Please refresh the page and try again";
+      batch(() => {
+        dispatch(setError(errorMsg, subMsg));
+        dispatch(setLibraryLoading(false));
+      });
     }
   };
 };
@@ -273,7 +284,12 @@ export const getUsersAlbums: ActionCreator<AppThunk> = (loading: boolean) => {
         dispatch(setLibraryLoading(false));
       });
     } catch (err) {
-      console.log(err);
+      let errorMsg = "Opps! Something went wrong!";
+      let subMsg = "Please refresh the page and try again";
+      batch(() => {
+        dispatch(setError(errorMsg, subMsg));
+        dispatch(setLibraryLoading(false));
+      });
     }
   };
 };
