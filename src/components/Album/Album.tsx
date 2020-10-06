@@ -121,7 +121,7 @@ const Album: React.FC<Props> = ({
       return (
         <Track
           type="album"
-          key={track.id}
+          key={track.id + index}
           style={style}
           title={track.name}
           artists={track.artists}
@@ -180,7 +180,7 @@ const Album: React.FC<Props> = ({
                   <Track
                     type="album"
                     index={index}
-                    key={track.id}
+                    key={track.id + index}
                     title={track.name}
                     artists={track.artists}
                     duration={track.duration_ms}

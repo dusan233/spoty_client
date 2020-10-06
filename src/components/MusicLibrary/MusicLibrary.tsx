@@ -240,7 +240,7 @@ const MusicLibrary: React.FC<Props> = ({
                   index={index}
                   style={style}
                   userId={(savedAlbum.album as AlbumFull).artists[0].id}
-                  key={savedAlbum.album.id}
+                  key={savedAlbum.album.id + index}
                   totalTracks={(savedAlbum.album as AlbumFull).tracks.total}
                   type="album"
                   liked={liked}
@@ -299,7 +299,7 @@ const MusicLibrary: React.FC<Props> = ({
                   popularity={savedTrack.track.popularity}
                   album={savedTrack.track.album.name}
                   style={style}
-                  key={savedTrack.track.id}
+                  key={savedTrack.track.id + index}
                   trackId={savedTrack.track.id}
                   index={index}
                   uri={savedTrack.track.uri}
@@ -351,7 +351,7 @@ const MusicLibrary: React.FC<Props> = ({
             } else {
               return (
                 <ArtistCard
-                  key={savedArtist.id}
+                  key={savedArtist.id + index}
                   artistId={savedArtist.id}
                   img={savedArtist.images[0].url}
                   name={savedArtist.name}

@@ -192,7 +192,7 @@ const Artist: React.FC<Props> = ({
                         saveTrack={saveRemoveTracksForCurrentUser}
                         album={track.album.name}
                         popularity={track.popularity}
-                        key={track.id}
+                        key={track.id + i}
                         liked={liked}
                         albumId={track.album.id}
                         uri={track.uri}
@@ -231,7 +231,7 @@ const Artist: React.FC<Props> = ({
                           index={index}
                           style={style}
                           userId={item.artists[0].id}
-                          key={item.id}
+                          key={item.id + index}
                           totalTracks={item.total_tracks}
                           type="album"
                           liked={liked}
@@ -244,14 +244,14 @@ const Artist: React.FC<Props> = ({
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {artists.map((artist) => {
+                {artists.map((artist, i) => {
                   return (
                     <ArtistCard
                       img={artist.images[0].url}
                       name={artist.name}
                       genres={artist.genres}
                       artistId={artist.id}
-                      key={artist.id}
+                      key={artist.id + i}
                     />
                   );
                 })}

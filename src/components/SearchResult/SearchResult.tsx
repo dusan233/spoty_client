@@ -367,7 +367,7 @@ const SearchResult: React.FC<Props> = ({
                   itemId={playlist.id}
                   index={index}
                   style={style}
-                  key={playlist.id}
+                  key={playlist.id + index}
                   totalTracks={(playlist as PlaylistSimplified).tracks.total}
                   type="playlist"
                   liked={liked}
@@ -429,7 +429,7 @@ const SearchResult: React.FC<Props> = ({
                   itemId={album.id}
                   index={index}
                   style={style}
-                  key={album.id}
+                  key={album.id + index}
                   totalTracks={(album as AlbumSimplified).total_tracks}
                   type="album"
                   liked={liked}
@@ -494,7 +494,7 @@ const SearchResult: React.FC<Props> = ({
                     popularity={track.popularity}
                     album={track.album.name}
                     style={style}
-                    key={track.id}
+                    key={track.id + index}
                     uri={track.uri}
                     trackId={track.id}
                     index={index}
@@ -556,7 +556,7 @@ const SearchResult: React.FC<Props> = ({
                   img={artist.images[0] && artist.images[0].url}
                   artistId={artist.id}
                   genres={artist.genres}
-                  key={artist.id}
+                  key={artist.id + index}
                 />
               );
             }

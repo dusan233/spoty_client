@@ -157,7 +157,7 @@ const Playlist: React.FC<Props> = ({
         <Track
           type="playlist"
           index={index}
-          key={track.track.id}
+          key={track.track.id + index}
           style={style}
           title={track.track.name}
           artists={track.track.artists}
