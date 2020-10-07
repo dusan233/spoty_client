@@ -12,6 +12,7 @@ import {
   addMoreAlbumTracks,
   getMoreAlbumTracks,
 } from "../../store/actions/album";
+import { addTracksToPlaylist } from "../../store/actions/playlist";
 import {
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
@@ -50,6 +51,7 @@ const mapDispatchToProps = {
   setError,
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
+  addTracksToPlaylist,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -68,6 +70,7 @@ const Album: React.FC<Props> = ({
   addMoreAlbumTracks,
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
+  addTracksToPlaylist,
   trackLikes,
   albumLikes,
   loading,
@@ -91,7 +94,19 @@ const Album: React.FC<Props> = ({
       setAlbumLoading(true);
       setError("", "");
     };
-  }, [getAlbumData, match.params.albumId, setAlbumLoading]);
+  }, [getAlbumData, match.params.albumId, setAlbumLoading, setError]);
+
+  const trackUris = () => {
+    let uris = "";
+    tracks.forEach((track) => {
+      if (!uris) {
+        uris += track.uri;
+      } else {
+        uris += "," + track.uri;
+      }
+    });
+    return uris;
+  };
 
   const isRowLoaded = ({ index }: { index: number }) => {
     return !!tracks[index];
@@ -161,6 +176,7 @@ const Album: React.FC<Props> = ({
       ) : (
         <React.Fragment>
           <AlbumHeader
+            trackUris={trackUris()}
             totalTracks={total}
             albumId={match.params.albumId}
             liked={albumLikes[0]}

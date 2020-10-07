@@ -33,9 +33,10 @@ const AddToPlaylist: React.FC<Props> = ({
       </div>
       <h2>Add to playlist</h2>
       <div className={AddTrackToPlaylist.cards}>
-        {playlists.map((playlist) => {
+        {playlists.map((playlist, i) => {
           return (
             <div
+              key={i}
               onClick={() =>
                 addTracksToPlaylist(trackUri, playlist.id).then((res) => {
                   closeModal();

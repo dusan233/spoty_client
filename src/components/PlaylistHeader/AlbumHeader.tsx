@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 import { FaHeart } from "react-icons/fa";
+import Modal from "react-modal";
+import AddToPlaylist from "../AddToPlaylist/AddToPlaylist";
 
 interface AlbumProps {
   albumId: string | undefined;
@@ -19,8 +21,11 @@ interface AlbumProps {
   dateAdded: string | undefined;
   liked: boolean;
   totalTracks: number;
+  trackUris: string;
   saveAlbum: (albumIds: string, index: number, action: string) => Promise<void>;
 }
+
+Modal.setAppElement("#modal");
 
 const AlbumHeader: React.FC<AlbumProps> = ({
   name,
@@ -31,9 +36,15 @@ const AlbumHeader: React.FC<AlbumProps> = ({
   dateAdded,
   liked,
   totalTracks,
+  trackUris,
   saveAlbum,
   albumId,
 }) => {
+  const [modalIsOpen, setModal] = useState(false);
+
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
+
   const returnType = () => {
     switch (type) {
       case "single":
@@ -49,21 +60,6 @@ const AlbumHeader: React.FC<AlbumProps> = ({
       saveAlbum(albumId, 0, action);
     }
   };
-
-  // const getArtists = () => {
-  //   let artistsString = "";
-  //   if (!artists) {
-  //     return "";
-  //   }
-  //   artists.forEach((artist, i) => {
-  //     if (i === artists!.length - 1) {
-  //       artistsString += artist.name;
-  //     } else {
-  //       artistsString += artist.name + ", ";
-  //     }
-  //   });
-  //   return artistsString;
-  // };
 
   const getArtists = useCallback(() => {
     let artistsString: any[] = [];
@@ -90,6 +86,15 @@ const AlbumHeader: React.FC<AlbumProps> = ({
 
   return (
     <div className={PlaylistHeaderStyles.container}>
+      <Modal
+        className="Modal"
+        overlayClassName="Overlay"
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        closeTimeoutMS={400}
+      >
+        <AddToPlaylist trackUri={trackUris} closeModal={closeModal} />
+      </Modal>
       <div className={PlaylistHeaderStyles["img-container"]}>
         <img src={img} alt="Poster" />
       </div>
@@ -139,7 +144,10 @@ const AlbumHeader: React.FC<AlbumProps> = ({
                   {totalTracks <= 50 ? (
                     <React.Fragment>
                       <li>
-                        <div className={DropdownStyles.link}>
+                        <div
+                          onClick={openModal}
+                          className={DropdownStyles.link}
+                        >
                           <RiPlayListAddLine />
                           Add to Playlist
                         </div>
