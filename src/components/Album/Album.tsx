@@ -161,6 +161,7 @@ const Album: React.FC<Props> = ({
       ) : (
         <React.Fragment>
           <AlbumHeader
+            totalTracks={total}
             albumId={match.params.albumId}
             liked={albumLikes[0]}
             name={name}

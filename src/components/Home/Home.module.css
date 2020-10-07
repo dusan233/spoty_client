@@ -15,7 +15,7 @@
 
 .home::-webkit-scrollbar-thumb {
   background-color: darkgrey;
-  outline: 1px solid slategrey;
+  outline: none;
   border-radius: 50px;
 }
 .home__list_heading {

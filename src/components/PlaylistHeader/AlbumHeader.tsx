@@ -18,6 +18,7 @@ interface AlbumProps {
   type: string | undefined;
   dateAdded: string | undefined;
   liked: boolean;
+  totalTracks: number;
   saveAlbum: (albumIds: string, index: number, action: string) => Promise<void>;
 }
 
@@ -29,6 +30,7 @@ const AlbumHeader: React.FC<AlbumProps> = ({
   type,
   dateAdded,
   liked,
+  totalTracks,
   saveAlbum,
   albumId,
 }) => {
@@ -134,18 +136,22 @@ const AlbumHeader: React.FC<AlbumProps> = ({
                       {liked ? "Remove from library" : "Save to library"}
                     </div>
                   </li>
-                  <li>
-                    <div className={DropdownStyles.link}>
-                      <RiPlayListAddLine />
-                      Add to Playlist
-                    </div>
-                  </li>
-                  <li>
-                    <div className={DropdownStyles.link}>
-                      <RiPlayListLine />
-                      Add to Queue
-                    </div>
-                  </li>
+                  {totalTracks <= 50 ? (
+                    <React.Fragment>
+                      <li>
+                        <div className={DropdownStyles.link}>
+                          <RiPlayListAddLine />
+                          Add to Playlist
+                        </div>
+                      </li>
+                      <li>
+                        <div className={DropdownStyles.link}>
+                          <RiPlayListLine />
+                          Add to Queue
+                        </div>
+                      </li>
+                    </React.Fragment>
+                  ) : null}
                 </ul>
               </div>
             </Dropdown>
