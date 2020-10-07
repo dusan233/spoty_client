@@ -4,6 +4,7 @@ import logo from "../../assets/Spotify_Logo_CMYK_White.png";
 import { NavLink } from "react-router-dom";
 import { FiHome, FiSearch, FiPlus } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import SidebarPlaylists from "../SidebarPlaylists/SidebarPlaylists";
 
@@ -11,7 +12,9 @@ const Sidebar = () => {
   return (
     <div className={SidebarStyles.sidebar}>
       <div className={SidebarStyles.sidebar__logo}>
-        <img src={logo} alt="Logo" />
+        <Link to="/">
+          <img src={logo} alt="Logo" />
+        </Link>
       </div>
       <ul className={SidebarStyles.sidebar__list}>
         <li className={SidebarStyles.sidebar__item}>
