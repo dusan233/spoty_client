@@ -212,46 +212,48 @@ const Artist: React.FC<Props> = ({
                   })}
                 </div>
                 <h1>Albums</h1>
-                <InfiniteVirtualizedSimple
-                  items={albums}
-                  totalItems={albumsTotal}
-                  height={480}
-                  rowHeight={85}
-                  loadMoreItems={loadMoreAlbums}
-                  renderRow={({ key, index, style }: any) => {
-                    const item = albums[index];
+                <div className="overflow-fix">
+                  <InfiniteVirtualizedSimple
+                    items={albums}
+                    totalItems={albumsTotal}
+                    height={480}
+                    rowHeight={85}
+                    loadMoreItems={loadMoreAlbums}
+                    renderRow={({ key, index, style }: any) => {
+                      const item = albums[index];
 
-                    const liked = albumLikes[index];
-                    if (!albums[index]) {
-                      return (
-                        <div
-                          style={{ ...style }}
-                          key={key}
-                          className="loader-container"
-                        >
-                          <Spinner />
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <SearchPlaylistCard
-                          img={item.images[0] && item.images[0].url}
-                          description={item.artists[0].name}
-                          name={item.name}
-                          itemId={item.id}
-                          index={index}
-                          style={style}
-                          userId={item.artists[0].id}
-                          key={item.id + index}
-                          totalTracks={item.total_tracks}
-                          type="album"
-                          liked={liked}
-                          saveItem={saveRemoveAlbumsForCurrentUser}
-                        />
-                      );
-                    }
-                  }}
-                />
+                      const liked = albumLikes[index];
+                      if (!albums[index]) {
+                        return (
+                          <div
+                            style={{ ...style }}
+                            key={key}
+                            className="loader-container"
+                          >
+                            <Spinner />
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <SearchPlaylistCard
+                            img={item.images[0] && item.images[0].url}
+                            description={item.artists[0].name}
+                            name={item.name}
+                            itemId={item.id}
+                            index={index}
+                            style={style}
+                            userId={item.artists[0].id}
+                            key={item.id + index}
+                            totalTracks={item.total_tracks}
+                            type="album"
+                            liked={liked}
+                            saveItem={saveRemoveAlbumsForCurrentUser}
+                          />
+                        );
+                      }
+                    }}
+                  />
+                </div>
               </React.Fragment>
             ) : (
               <React.Fragment>

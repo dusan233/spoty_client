@@ -362,12 +362,17 @@
   border-radius: 50px;
   outline: none;
 }
-/* .ReactVirtualized__Grid__innerScrollContainer {
+.ReactVirtualized__Grid__innerScrollContainer {
   overflow: visible !important;
 }
 .ReactVirtualized__Grid {
   overflow: visible !important;
-} */
+}
+.overflow-fix .ReactVirtualized__Grid__innerScrollContainer,
+.overflow-fix .ReactVirtualized__Grid {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
 .ReactModal__Overlay {
   background: rgba(0, 0, 0, 0);
 
