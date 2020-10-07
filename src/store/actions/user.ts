@@ -48,7 +48,7 @@ export const checkCurrentUserSavedTracks = (
   trackIds: string,
   accessToken: string | undefined
 ) => {
-  return api.get("/me/tracks/contains", {
+  return api.get<boolean[]>("/me/tracks/contains", {
     params: {
       ids: trackIds,
     },

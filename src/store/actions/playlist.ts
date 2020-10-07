@@ -16,6 +16,7 @@ import {
   SetPlaylistTracks,
 } from "../types/playlist";
 import { AppThunk } from "../types/index";
+import { AxiosResponse } from "axios";
 
 export const setPlaylistLoading: ActionCreator<ISetPlaylistLoading> = (
   loading: boolean
@@ -96,8 +97,8 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
       });
       console.log(response);
 
-      const savedPlaylistRes = await checkUserSavedPlaylist(
-        playlistId ? playlistId : "",
+      const savedPlaylistRes = checkUserSavedPlaylist(
+        response.data.id,
         userId,
         accessToken
       );
@@ -112,10 +113,10 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
         }
       });
 
-      const savedTracksRes =
+      const savedTracksPromise =
         trackIds.length > 0
-          ? await checkCurrentUserSavedTracks(trackIds, accessToken)
-          : { data: [] };
+          ? checkCurrentUserSavedTracks(trackIds, accessToken)
+          : new Promise((resolve) => resolve({ data: [] }));
 
       response.data.tracks.items.slice(50, 100).forEach((track) => {
         if (trackIds2 === " ") {
@@ -125,10 +126,16 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
         }
       });
 
-      const savedTracksRes2 =
+      const savedTracksPromise2 =
         trackIds2.length > 0
-          ? await checkCurrentUserSavedTracks(trackIds2, accessToken)
-          : { data: [] };
+          ? checkCurrentUserSavedTracks(trackIds2, accessToken)
+          : new Promise((resolve) => resolve({ data: [] }));
+
+      const likesRes = await Promise.all([
+        savedTracksPromise,
+        savedTracksPromise2,
+        savedPlaylistRes,
+      ]);
 
       batch(() => {
         dispatch(
@@ -145,9 +152,14 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
             response.data.type
           )
         );
-        dispatch(setPlaylistLikes([...savedPlaylistRes.data]));
         dispatch(
-          setTrackLikes([...savedTracksRes.data, ...savedTracksRes2.data])
+          setPlaylistLikes([...(likesRes[2] as { data: boolean[] }).data])
+        );
+        dispatch(
+          setTrackLikes([
+            ...(likesRes[0] as { data: boolean[] }).data,
+            ...(likesRes[1] as { data: boolean[] }).data,
+          ])
         );
         dispatch(setPlaylistLoading(false));
       });
