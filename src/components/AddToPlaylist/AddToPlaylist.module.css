@@ -21,3 +21,12 @@
 .card:hover {
   background: rgba(255, 255, 255, 0.05);
 }
+.icon-container {
+  display: flex;
+  justify-content: flex-end;
+}
+.icon-container svg {
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}

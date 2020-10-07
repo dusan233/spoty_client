@@ -3,6 +3,7 @@ import AddTrackToPlaylist from "./AddToPlaylist.module.css";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
 import { addTracksToPlaylist } from "../../store/actions/playlist";
+import { RiCloseLine } from "react-icons/ri";
 
 const mapStateToProps = (state: RootState) => ({
   playlists: state.library.playlists.filter(
@@ -27,6 +28,9 @@ const AddToPlaylist: React.FC<Props> = ({
 }) => {
   return (
     <div className={AddTrackToPlaylist.container}>
+      <div className={`${AddTrackToPlaylist["icon-container"]}`}>
+        <RiCloseLine onClick={closeModal} />
+      </div>
       <h2>Add to playlist</h2>
       <div className={AddTrackToPlaylist.cards}>
         {playlists.map((playlist) => {
