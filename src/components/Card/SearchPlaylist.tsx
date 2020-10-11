@@ -134,14 +134,7 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
                       {liked ? "Remove from library" : "Save to library"}
                     </div>
                   </li>
-                  {type === "album" && totalTracks <= 50 && (
-                    <li>
-                      <div className={DropdownStyles.link}>
-                        <RiPlayListAddLine />
-                        Add to Playlist
-                      </div>
-                    </li>
-                  )}
+
                   {type === "album" && totalTracks <= 50 && (
                     <li>
                       <div className={DropdownStyles.link}>

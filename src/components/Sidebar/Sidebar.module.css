@@ -27,6 +27,7 @@
   font-size: 0.8rem;
   display: block;
   transition: 0.2s;
+  cursor: pointer;
 }
 .sidebar__link_active,
 .sidebar__link-icon_active {
