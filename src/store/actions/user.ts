@@ -204,7 +204,6 @@ export const createPlaylist = (name: string, description: string) => {
           },
         }
       );
-      console.log(res);
       dispatch(setCreatingPlaylist(false));
     } catch (err) {
       console.log(err);

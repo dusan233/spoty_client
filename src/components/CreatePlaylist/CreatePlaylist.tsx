@@ -43,11 +43,11 @@ const CreatePlaylist: React.FC<Props> = ({
 
   const createNewPlaylist = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name) {
-      createPlaylist(`Playlist #${playlists.length + 1}`, description);
-    } else {
-      createPlaylist(name, description);
-    }
+    let playlistName = name;
+    if (!name) playlistName = `Playlist #${playlists.length + 1}`;
+    createPlaylist(playlistName, description).then((_) => {
+      closeModal();
+    });
   };
 
   return (
