@@ -5,6 +5,7 @@ import {
   ISetAlbumLikes,
   ISetTrackLikes,
   SetArtistLikes,
+  SetCreatingPlaylist,
   SetPlaylistLikes,
   SetUserData,
 } from "../types/user";
@@ -106,6 +107,13 @@ export const setArtistLikes: ActionCreator<SetArtistLikes> = (
   payload: artistLikes,
 });
 
+export const setCreatingPlaylist: ActionCreator<SetCreatingPlaylist> = (
+  loading: boolean
+) => ({
+  type: UserActionTypes.SET_CREATING_PLAYLIST,
+  payload: loading,
+});
+
 export const setUserData: ActionCreator<SetUserData> = (
   name: string,
   image: string,
@@ -176,6 +184,30 @@ export const saveRemoveAlbumsForCurrentUser = (
       }
     } catch (err) {
       console.log(err, "ds");
+    }
+  };
+};
+
+export const createPlaylist = (name: string, description: string) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const accessToken = getState().auth.accessToken;
+    const userId = getState().user.userId;
+    dispatch(setCreatingPlaylist(true));
+    try {
+      const res = await api.post(
+        `/users/${userId}/playlists`,
+        { name, description },
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(res);
+      dispatch(setCreatingPlaylist(false));
+    } catch (err) {
+      console.log(err);
     }
   };
 };

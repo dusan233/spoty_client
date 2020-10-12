@@ -10,10 +10,16 @@ const initialState: UserState = {
   albumLikes: [],
   playlistLikes: [],
   artistsLikes: [],
+  creatingPlaylist: false,
 };
 
 const reducer = (state = initialState, action: UserActions) => {
   switch (action.type) {
+    case UserActionTypes.SET_CREATING_PLAYLIST:
+      return {
+        ...state,
+        creatingPlaylist: action.payload,
+      };
     case UserActionTypes.SET_TRACKS_LIKES:
       return {
         ...state,

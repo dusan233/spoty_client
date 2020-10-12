@@ -9,12 +9,18 @@ export interface UserState {
   albumLikes: boolean[];
   playlistLikes: boolean[];
   artistsLikes: boolean[];
+  creatingPlaylist: boolean;
 }
 
 export interface ISetTrackLikes {
   type: UserActionTypes.SET_TRACKS_LIKES;
   payload: boolean[];
   action: string;
+}
+
+export interface SetCreatingPlaylist {
+  type: UserActionTypes.SET_CREATING_PLAYLIST;
+  payload: boolean;
 }
 
 export interface SetArtistLikes {
@@ -49,4 +55,5 @@ export type UserActions =
   | ISetAlbumLikes
   | SetUserData
   | SetPlaylistLikes
-  | SetArtistLikes;
+  | SetArtistLikes
+  | SetCreatingPlaylist;
