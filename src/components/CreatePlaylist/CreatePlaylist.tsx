@@ -16,9 +16,6 @@ const CreatePlaylist: React.FC<Props> = ({ closeModal }) => {
       <h2>Create Playlist</h2>
       <form className={CreatePlaylistStyles.form}>
         <div className={CreatePlaylistStyles.form__content}>
-          <div className={`${CreatePlaylistStyles["form__image-container"]}`}>
-            <img src={NoImage} alt="playlist cover" />
-          </div>
           <div className={CreatePlaylistStyles.form__inputs}>
             <div className={`${CreatePlaylistStyles["form__input-control"]}`}>
               <label className={CreatePlaylistStyles.form__label}>Name</label>

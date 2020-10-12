@@ -1,5 +1,5 @@
 .container {
-  width: 650px;
+  width: 550px;
   background: #282828;
   border-radius: 5px;
   padding: 20px;
@@ -34,7 +34,6 @@
 }
 .form__inputs {
   flex: 1;
-  padding-left: 20px;
 }
 .form__label {
   text-align: left;
