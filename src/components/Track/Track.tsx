@@ -17,7 +17,6 @@ import { Link } from "react-router-dom";
 import { ArtistSimplified } from "../../store/types/artist";
 import useSelected from "../../hooks/useSelected";
 import Dropdown from "../Dropdown/Dropdown";
-import { removeTracksFromPlaylist } from "../../store/actions/playlist";
 
 interface TrackProps {
   title: string;
@@ -89,13 +88,18 @@ const Track: React.FC<TrackProps> = React.memo(
         if (i === artists!.length - 1) {
           artistsString.push(
             <React.Fragment key={artist.id}>
-              <Link to={`/artist/${artist.id}`}>{artist.name}</Link>
+              <Link title={artist.name} to={`/artist/${artist.id}`}>
+                {artist.name}
+              </Link>
             </React.Fragment>
           );
         } else {
           artistsString.push(
             <React.Fragment key={artist.id}>
-              <Link to={`/artist/${artist.id}`}>{artist.name}</Link> ,{" "}
+              <Link title={artist.name} to={`/artist/${artist.id}`}>
+                {artist.name}
+              </Link>{" "}
+              ,{" "}
             </React.Fragment>
           );
         }
