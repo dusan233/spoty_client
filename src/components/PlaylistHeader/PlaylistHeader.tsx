@@ -5,7 +5,7 @@ import { BsThreeDots } from "react-icons/bs";
 import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaEdit } from "react-icons/fa";
 
 interface PlaylistProps {
   name: string;
@@ -92,15 +92,22 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
               </button>
             )}
 
-            {userId === ownerId ? null : (
-              <Dropdown>
-                <button className="btn-round margin-left">
-                  <BsThreeDots />
-                </button>
-                <div
-                  className={`${DropdownStyles["dropdown--playlist"]} ${DropdownStyles.dropdown}`}
-                >
-                  <ul>
+            <Dropdown>
+              <button className="btn-round margin-left">
+                <BsThreeDots />
+              </button>
+              <div
+                className={`${DropdownStyles["dropdown--playlist"]} ${DropdownStyles.dropdown}`}
+              >
+                <ul>
+                  {userId === ownerId ? (
+                    <li>
+                      <div className={DropdownStyles.link}>
+                        <FaEdit />
+                        Edit Playlist
+                      </div>
+                    </li>
+                  ) : (
                     <li>
                       <div
                         onClick={saveRemovePlaylist}
@@ -110,10 +117,10 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
                         {liked ? "Remove from library" : "Save to library"}
                       </div>
                     </li>
-                  </ul>
-                </div>
-              </Dropdown>
-            )}
+                  )}
+                </ul>
+              </div>
+            </Dropdown>
           </div>
         </div>
       </div>
