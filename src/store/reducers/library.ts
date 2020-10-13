@@ -26,6 +26,18 @@ const reducer = (state = initialState, action: LibraryActions) => {
         ...state,
         loadingPlaylists: action.payload,
       };
+    case LibraryActionTypes.EDIT_LIBRARY_PLAYLIST:
+      return {
+        ...state,
+        playlists: state.playlists.map((pl) => {
+          if (pl.id === action.payload.id) {
+            pl.name = action.payload.name;
+            return pl;
+          } else {
+            return pl;
+          }
+        }),
+      };
     case LibraryActionTypes.SET_LIBRARY_ALBUMS:
       return {
         ...state,

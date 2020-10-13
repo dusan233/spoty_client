@@ -22,6 +22,14 @@ export interface ISetPlaylistLoading {
   payload: boolean;
 }
 
+export interface EditPlaylist {
+  type: PlaylistActionTypes.EDIT_PLAYLIST;
+  payload: {
+    id: string;
+    description: string;
+  };
+}
+
 export interface IAddMoreTracks {
   type: PlaylistActionTypes.ADD_MORE_TRACKS;
   payload: PlaylistTrackObject[];

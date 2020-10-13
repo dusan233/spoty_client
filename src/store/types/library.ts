@@ -68,6 +68,13 @@ export interface AddLibraryPlaylist {
   type: LibraryActionTypes.ADD_LIBRARY_PLAYLIST;
   payload: PlaylistSimplified;
 }
+export interface EditLibraryPlaylist {
+  type: LibraryActionTypes.EDIT_LIBRARY_PLAYLIST;
+  payload: {
+    id: string;
+    name: string;
+  };
+}
 
 export interface SetLibraryAlbums {
   type: LibraryActionTypes.SET_LIBRARY_ALBUMS;
@@ -105,4 +112,5 @@ export type LibraryActions =
   | SetLibraryPlaylistsLoading
   | RemoveLibraryPlaylist
   | AddLibraryPlaylist
-  | SetLibraryArtists;
+  | SetLibraryArtists
+  | EditLibraryPlaylist;

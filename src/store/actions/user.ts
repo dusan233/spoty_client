@@ -10,7 +10,11 @@ import {
   SetUserData,
 } from "../types/user";
 import { PlaylistFull } from "../types/playlist";
-import { removeLibraryPlaylist, addLibraryPlaylist } from "./library";
+import {
+  removeLibraryPlaylist,
+  addLibraryPlaylist,
+  editLibraryPlaylist,
+} from "./library";
 import { UserActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
 import { batch } from "react-redux";
@@ -230,7 +234,10 @@ export const editPlaylistDetails = (name: string, description: string) => {
           },
         }
       );
-      dispatch(setCreatingPlaylist(false));
+      batch(() => {
+        dispatch(editLibraryPlaylist(name, playlistId));
+        dispatch(setCreatingPlaylist(false));
+      });
       console.log(res);
     } catch (err) {
       console.log(err);

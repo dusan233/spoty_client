@@ -11,6 +11,7 @@ const mapStateToProps = (state: RootState) => ({
     (playlist) => playlist.owner.id === state.user.userId
   ),
   playlistName: state.playlist.name,
+  playlistDescription: state.playlist.description,
 });
 const mapDispatchToProps = {
   createPlaylist,
@@ -33,10 +34,15 @@ const CreatePlaylist: React.FC<Props> = ({
   loading,
   edit,
   playlistName,
+  playlistDescription,
 }) => {
   const [name, setName] = useState(edit ? playlistName : "");
   const [description, setDescription] = useState(
-    edit ? "playlist description" : ""
+    edit
+      ? playlistDescription
+        ? playlistDescription
+        : "playlist description"
+      : ""
   );
 
   const onChangeInput = (

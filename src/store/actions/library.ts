@@ -2,6 +2,7 @@ import { LibraryActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
 import {
   AddLibraryPlaylist,
+  EditLibraryPlaylist,
   ISetLibraryLoading,
   LibraryArtistsResult,
   LibraryPlaylistsResult,
@@ -174,6 +175,17 @@ export const addLibraryPlaylist: ActionCreator<AddLibraryPlaylist> = (
 ) => ({
   type: LibraryActionTypes.ADD_LIBRARY_PLAYLIST,
   payload: playlist,
+});
+
+export const editLibraryPlaylist: ActionCreator<EditLibraryPlaylist> = (
+  name: string,
+  id: string
+) => ({
+  type: LibraryActionTypes.EDIT_LIBRARY_PLAYLIST,
+  payload: {
+    id,
+    name,
+  },
 });
 
 export const getCurrentUserPlaylists: ActionCreator<AppThunk> = () => {
