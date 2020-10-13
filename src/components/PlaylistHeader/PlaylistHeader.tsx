@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
@@ -6,6 +6,8 @@ import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 import { FaHeart, FaEdit } from "react-icons/fa";
+import Modal from "react-modal";
+import CreatePlaylist from "../CreatePlaylist/CreatePlaylist";
 
 interface PlaylistProps {
   name: string;
@@ -40,15 +42,27 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
   ownerId,
   savePlaylist,
 }) => {
+  const [modalIsOpen, setModal] = useState(false);
+
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
   const saveRemovePlaylist = () => {
     const action = liked ? "remove" : "save";
     if (playlistId) {
       savePlaylist(playlistId, 0, action, name);
     }
   };
-
   return (
     <div className={PlaylistHeaderStyles.container}>
+      <Modal
+        className="Modal"
+        overlayClassName="Overlay"
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        closeTimeoutMS={400}
+      >
+        <CreatePlaylist edit={true} closeModal={closeModal} />
+      </Modal>
       <div className={PlaylistHeaderStyles["img-container"]}>
         <img src={img || NoImage} alt="Poster" />
       </div>
@@ -102,7 +116,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
                 <ul>
                   {userId === ownerId ? (
                     <li>
-                      <div className={DropdownStyles.link}>
+                      <div onClick={openModal} className={DropdownStyles.link}>
                         <FaEdit />
                         Edit Playlist
                       </div>

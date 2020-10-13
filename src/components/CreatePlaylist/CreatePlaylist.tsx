@@ -10,6 +10,7 @@ const mapStateToProps = (state: RootState) => ({
   playlists: state.library.playlists.filter(
     (playlist) => playlist.owner.id === state.user.userId
   ),
+  playlistName: state.playlist.name,
 });
 const mapDispatchToProps = {
   createPlaylist,
@@ -20,6 +21,7 @@ type ReduxProps = ConnectedProps<typeof connector>;
 
 type Props = {
   closeModal: () => void;
+  edit?: boolean;
 } & ReduxProps;
 
 const CreatePlaylist: React.FC<Props> = ({
@@ -27,8 +29,10 @@ const CreatePlaylist: React.FC<Props> = ({
   createPlaylist,
   playlists,
   loading,
+  edit,
+  playlistName,
 }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(edit ? playlistName : "");
   const [description, setDescription] = useState("");
 
   const onChangeInput = (
@@ -55,7 +59,7 @@ const CreatePlaylist: React.FC<Props> = ({
       <div className={`${CreatePlaylistStyles["icon-container"]}`}>
         <RiCloseLine onClick={closeModal} />
       </div>
-      <h2>Create Playlist</h2>
+      <h2>{edit ? "Edit Playlist Details" : "Create Playlist"}</h2>
       <form onSubmit={createNewPlaylist} className={CreatePlaylistStyles.form}>
         <div className={CreatePlaylistStyles.form__content}>
           <div className={CreatePlaylistStyles.form__inputs}>
@@ -89,8 +93,9 @@ const CreatePlaylist: React.FC<Props> = ({
         <button
           disabled={loading ? true : false}
           className="btn btn--green btn--circle"
+          type="submit"
         >
-          Create
+          {edit ? "Save" : "Create"}
         </button>
       </form>
     </div>
