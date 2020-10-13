@@ -204,7 +204,10 @@ export const createPlaylist = (name: string, description: string) => {
           },
         }
       );
-      dispatch(setCreatingPlaylist(false));
+      batch(() => {
+        dispatch(setCreatingPlaylist(false));
+        dispatch(addLibraryPlaylist(res.data));
+      });
     } catch (err) {
       console.log(err);
     }
