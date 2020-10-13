@@ -3,7 +3,7 @@ import { RiCloseLine } from "react-icons/ri";
 import CreatePlaylistStyles from "./CreatePlaylist.module.css";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
-import { createPlaylist } from "../../store/actions/user";
+import { createPlaylist, editPlaylistDetails } from "../../store/actions/user";
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.user.creatingPlaylist,
@@ -14,6 +14,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = {
   createPlaylist,
+  editPlaylistDetails,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -27,6 +28,7 @@ type Props = {
 const CreatePlaylist: React.FC<Props> = ({
   closeModal,
   createPlaylist,
+  editPlaylistDetails,
   playlists,
   loading,
   edit,
@@ -45,13 +47,17 @@ const CreatePlaylist: React.FC<Props> = ({
     }
   };
 
-  const createNewPlaylist = (e: FormEvent<HTMLFormElement>) => {
+  const createEditNewPlaylist = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let playlistName = name;
-    if (!name) playlistName = `Playlist #${playlists.length + 1}`;
-    createPlaylist(playlistName, description).then((_) => {
-      closeModal();
-    });
+    if (edit) {
+      editPlaylistDetails(playlistName, description).then((_) => closeModal());
+    } else {
+      if (!name) playlistName = `Playlist #${playlists.length + 1}`;
+      createPlaylist(playlistName, description).then((_) => {
+        closeModal();
+      });
+    }
   };
 
   return (
@@ -60,7 +66,10 @@ const CreatePlaylist: React.FC<Props> = ({
         <RiCloseLine onClick={closeModal} />
       </div>
       <h2>{edit ? "Edit Playlist Details" : "Create Playlist"}</h2>
-      <form onSubmit={createNewPlaylist} className={CreatePlaylistStyles.form}>
+      <form
+        onSubmit={createEditNewPlaylist}
+        className={CreatePlaylistStyles.form}
+      >
         <div className={CreatePlaylistStyles.form__content}>
           <div className={CreatePlaylistStyles.form__inputs}>
             <div className={`${CreatePlaylistStyles["form__input-control"]}`}>

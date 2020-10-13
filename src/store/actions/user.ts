@@ -214,6 +214,30 @@ export const createPlaylist = (name: string, description: string) => {
   };
 };
 
+export const editPlaylistDetails = (name: string, description: string) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const accessToken = getState().auth.accessToken;
+    const playlistId = getState().playlist.id;
+    dispatch(setCreatingPlaylist(true));
+    try {
+      const res = await api.put(
+        `/playlists/${playlistId}`,
+        { name, description },
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      dispatch(setCreatingPlaylist(false));
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 export const followUnfollowArtistForCurrentUser = (
   artistId: string | undefined,
   action: string
