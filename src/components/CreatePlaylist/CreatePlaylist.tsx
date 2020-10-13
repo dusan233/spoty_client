@@ -35,7 +35,9 @@ const CreatePlaylist: React.FC<Props> = ({
   playlistName,
 }) => {
   const [name, setName] = useState(edit ? playlistName : "");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(
+    edit ? "playlist description" : ""
+  );
 
   const onChangeInput = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -47,7 +49,7 @@ const CreatePlaylist: React.FC<Props> = ({
     }
   };
 
-  const createEditNewPlaylist = (e: FormEvent<HTMLFormElement>) => {
+  const createEditPlaylist = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let playlistName = name;
     if (edit) {
@@ -66,10 +68,7 @@ const CreatePlaylist: React.FC<Props> = ({
         <RiCloseLine onClick={closeModal} />
       </div>
       <h2>{edit ? "Edit Playlist Details" : "Create Playlist"}</h2>
-      <form
-        onSubmit={createEditNewPlaylist}
-        className={CreatePlaylistStyles.form}
-      >
+      <form onSubmit={createEditPlaylist} className={CreatePlaylistStyles.form}>
         <div className={CreatePlaylistStyles.form__content}>
           <div className={CreatePlaylistStyles.form__inputs}>
             <div className={`${CreatePlaylistStyles["form__input-control"]}`}>
