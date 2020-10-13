@@ -22,6 +22,12 @@ const reducer = (state = initialState, action: PlaylistActions) => {
         ...state,
         loading: action.payload,
       };
+    case PlaylistActionTypes.EDIT_PLAYLIST:
+      return {
+        ...state,
+        name: action.payload.name,
+        description: action.payload.description,
+      };
     case PlaylistActionTypes.SET_PLAYLIST_DATA:
       return {
         ...state,

@@ -14,6 +14,7 @@ import {
   PlaylistTrackObject,
   MorePlaylistTracks,
   SetPlaylistTracks,
+  EditPlaylist,
 } from "../types/playlist";
 import { AppThunk } from "../types/index";
 import { AxiosResponse } from "axios";
@@ -81,6 +82,19 @@ export const getMoreTracks = (
     },
   });
 };
+
+export const editPlaylist: ActionCreator<EditPlaylist> = (
+  id: string,
+  name: string,
+  description: string
+) => ({
+  type: PlaylistActionTypes.EDIT_PLAYLIST,
+  payload: {
+    id,
+    name,
+    description,
+  },
+});
 
 export const getPlaylistData: ActionCreator<AppThunk> = (
   playlistId: string | undefined

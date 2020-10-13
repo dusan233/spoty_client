@@ -18,6 +18,7 @@ import {
 import { UserActionTypes } from "./actionTypes";
 import { ActionCreator } from "redux";
 import { batch } from "react-redux";
+import { editPlaylist } from "./playlist";
 
 export const checkUserSavedPlaylist = (
   playlistId: string,
@@ -236,6 +237,7 @@ export const editPlaylistDetails = (name: string, description: string) => {
       );
       batch(() => {
         dispatch(editLibraryPlaylist(name, playlistId));
+        dispatch(editPlaylist(playlistId, name, description));
         dispatch(setCreatingPlaylist(false));
       });
       console.log(res);

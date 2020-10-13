@@ -26,6 +26,7 @@ export interface EditPlaylist {
   type: PlaylistActionTypes.EDIT_PLAYLIST;
   payload: {
     id: string;
+    name: string;
     description: string;
   };
 }
@@ -60,7 +61,8 @@ export type PlaylistActions =
   | ISetPlaylistLoading
   | ISetPlaylistData
   | IAddMoreTracks
-  | SetPlaylistTracks;
+  | SetPlaylistTracks
+  | EditPlaylist;
 
 // types for playlists
 
