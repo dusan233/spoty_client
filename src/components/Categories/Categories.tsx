@@ -42,6 +42,18 @@ const Categories: React.FC<ReduxProps> = ({
       ) : (
         <React.Fragment>
           <h1>Categories</h1>
+          <div className={CategoriesStyles.categories}>
+            {categories.map((categ) => {
+              return (
+                <div className={CategoriesStyles.category}>
+                  <img src={categ.icons[0].url} alt="" />
+                  <div className={CategoriesStyles.category__content}>
+                    <h2>{categ.name}</h2>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </React.Fragment>
       )}
     </div>
