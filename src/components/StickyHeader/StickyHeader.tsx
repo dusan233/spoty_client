@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import StickyHeaderStyles from "./StickyHeader.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
@@ -6,6 +6,8 @@ import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 import { FaEdit, FaHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Modal from "react-modal";
+import CreatePlaylist from "../CreatePlaylist/CreatePlaylist";
 
 type Props = {
   img: string | undefined;
@@ -53,6 +55,8 @@ const controllsVariants = {
   },
 };
 
+Modal.setAppElement("#modal");
+
 const StickyHeader: React.FC<Props> = ({
   img,
   title,
@@ -66,6 +70,10 @@ const StickyHeader: React.FC<Props> = ({
   playlistId,
   savePlaylist,
 }) => {
+  const [modalIsOpen, setModal] = useState(false);
+
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
   const saveRemovePlaylist = () => {
     const action = liked ? "remove" : "save";
     if (playlistId) {
@@ -74,6 +82,15 @@ const StickyHeader: React.FC<Props> = ({
   };
   return (
     <div className={`${StickyHeaderStyles["sticky-header-wrap"]}`}>
+      <Modal
+        className="Modal"
+        overlayClassName="Overlay"
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        closeTimeoutMS={400}
+      >
+        <CreatePlaylist edit={true} closeModal={closeModal} />
+      </Modal>
       <motion.div
         className={`${StickyHeaderStyles["sticky-header"]}`}
         initial="hidden"
@@ -134,10 +151,7 @@ const StickyHeader: React.FC<Props> = ({
                 <ul>
                   {userId === ownerId ? (
                     <li>
-                      <div
-                        onClick={saveRemovePlaylist}
-                        className={DropdownStyles.link}
-                      >
+                      <div onClick={openModal} className={DropdownStyles.link}>
                         <FaEdit />
                         Edit Playlist
                       </div>

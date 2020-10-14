@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
@@ -28,6 +28,8 @@ interface PlaylistProps {
     name: string
   ) => Promise<void>;
 }
+
+Modal.setAppElement("#modal");
 
 const PlaylistHeader: React.FC<PlaylistProps> = ({
   name,
