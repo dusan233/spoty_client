@@ -12,6 +12,7 @@ import Searchbar from "./Searchbar/Searchbar";
 import SearchResult from "./SearchResult/SearchResult";
 import MusicLibrary from "./MusicLibrary/MusicLibrary";
 import Artist from "./Artist/Artist";
+import Categories from "./Categories/Categories";
 
 const mapDispatchToProps = {
   getCurrentUserData,
@@ -47,6 +48,7 @@ const Main: React.FC<Props> = ({ getCurrentUserData }) => {
                 <Route path="/album/:albumId" exact component={Album} />
                 <Route path="/library/:term" exact component={MusicLibrary} />
                 <Route path="/artist/:artistId" exact component={Artist} />
+                <Route path="/categories" exact component={Categories} />
                 <Route
                   path="/search/:type/:searchTerm"
                   exact

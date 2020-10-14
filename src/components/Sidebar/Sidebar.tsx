@@ -50,7 +50,7 @@ const Sidebar = () => {
           <NavLink
             className={SidebarStyles.sidebar__link}
             activeClassName={SidebarStyles.sidebar__link_active}
-            to="/somewhere"
+            to="/categories"
           >
             <div className={SidebarStyles.link__content}>
               <FiSearch className={SidebarStyles.link__icon} />

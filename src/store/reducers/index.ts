@@ -8,6 +8,7 @@ import ErrorReducer from "./error";
 import UserReducer from "./user";
 import LibraryReducer from "./library";
 import ArtistReducer from "./artist";
+import CategoriesReducer from "./categories";
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -21,4 +22,5 @@ export const rootReducer = combineReducers({
   user: UserReducer,
   library: LibraryReducer,
   artist: ArtistReducer,
+  categories: CategoriesReducer,
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
@@ -52,6 +52,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
       savePlaylist(playlistId, 0, action, name);
     }
   };
+
   return (
     <div className={PlaylistHeaderStyles.container}>
       <Modal
@@ -63,7 +64,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
       >
         <CreatePlaylist edit={true} closeModal={closeModal} />
       </Modal>
-      <div className={PlaylistHeaderStyles["img-container"]}>
+      <div className={`${PlaylistHeaderStyles["img-container"]}`}>
         <img src={img || NoImage} alt="Poster" />
       </div>
       <div className={PlaylistHeaderStyles.content}>
