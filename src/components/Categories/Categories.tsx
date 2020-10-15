@@ -7,6 +7,7 @@ import {
   setCategLoading,
 } from "../../store/actions/categories";
 import Spinner from "../Spinner/Spinner";
+import {Link} from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.categories.loading,
@@ -45,12 +46,12 @@ const Categories: React.FC<ReduxProps> = ({
           <div className={CategoriesStyles.categories}>
             {categories.map((categ) => {
               return (
-                <div className={CategoriesStyles.category}>
+                <Link key={categ.id} to={`/category/${categ.id}`} className={CategoriesStyles.category}>
                   <img src={categ.icons[0].url} alt="" />
                   <div className={CategoriesStyles.category__content}>
                     <h2>{categ.name}</h2>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

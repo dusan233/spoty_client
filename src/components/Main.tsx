@@ -13,6 +13,7 @@ import SearchResult from "./SearchResult/SearchResult";
 import MusicLibrary from "./MusicLibrary/MusicLibrary";
 import Artist from "./Artist/Artist";
 import Categories from "./Categories/Categories";
+import Category from './Categories/Category';
 
 const mapDispatchToProps = {
   getCurrentUserData,
@@ -49,6 +50,7 @@ const Main: React.FC<Props> = ({ getCurrentUserData }) => {
                 <Route path="/library/:term" exact component={MusicLibrary} />
                 <Route path="/artist/:artistId" exact component={Artist} />
                 <Route path="/categories" exact component={Categories} />
+                <Route path="/category/:categoryId" exact component={Category} />
                 <Route
                   path="/search/:type/:searchTerm"
                   exact

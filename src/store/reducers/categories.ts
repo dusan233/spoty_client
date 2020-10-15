@@ -4,6 +4,8 @@ import { CategoriesState, CategoriesActions } from "../types/categories";
 const initialState: CategoriesState = {
   loading: true,
   categories: [],
+  categoryPlaylists: [],
+  total: 0
 };
 
 const reducer = (state = initialState, action: CategoriesActions) => {
@@ -18,6 +20,12 @@ const reducer = (state = initialState, action: CategoriesActions) => {
         ...state,
         categories: action.payload,
       };
+      case CategoriesActionTypes.SET_CATEGORY_PLAYLISTS:
+        return {
+          ...state,
+          categoryPlaylists: action.payload.items,
+          total: action.payload.total
+        }
     default:
       return state;
   }
