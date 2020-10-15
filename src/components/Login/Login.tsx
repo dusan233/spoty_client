@@ -6,18 +6,23 @@ import { connect, ConnectedProps } from "react-redux";
 import { storeAuthState } from "../../store/actions/auth";
 import { getCurrentUserData } from "../../store/actions/user";
 import { history } from "../..";
+import { RootState } from "../../store/reducers";
+import { Redirect } from "react-router-dom";
 
+const mapStateToProps = (state: RootState) => ({
+  isAuth: state.auth.accessToken
+})
 const mapDispatchToProps = {
   storeAuthState,
   getCurrentUserData,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ReduxProps = ConnectedProps<typeof connector>;
 type TProps = ReduxProps;
 
-const Login: React.FC<TProps> = ({ storeAuthState }) => {
+const Login: React.FC<TProps> = ({ storeAuthState, isAuth }) => {
   useEffect(() => {
     const querystring = window.location.search;
     const urlParams = new URLSearchParams(querystring);
@@ -30,6 +35,8 @@ const Login: React.FC<TProps> = ({ storeAuthState }) => {
       history.replace("/");
     }
   }, [storeAuthState]);
+
+  if(isAuth) return <Redirect to={{pathname: "/"}} />
 
   return (
     <div className={LoginStyles.login_container}>
