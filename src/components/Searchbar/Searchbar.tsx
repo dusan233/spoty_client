@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { setSearchTerm } from "../../store/actions/search";
+import { clearAuthState } from '../../store/actions/auth';
 import { history } from "../..";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/reducers/index";
@@ -20,6 +21,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = {
   setSearchTerm,
+  clearAuthState
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type ReduxProps = ConnectedProps<typeof connector>;
@@ -28,6 +30,7 @@ type Props = ReduxProps;
 const Searchbar: React.FC<Props> = ({
   term,
   setSearchTerm,
+  clearAuthState,
   image,
   name,
   product,
@@ -47,6 +50,12 @@ const Searchbar: React.FC<Props> = ({
 
     history.push(`/search/playlist/${searchValue}`);
   };
+
+  const logout = () => {
+    window.localStorage.removeItem("accessToken");
+    window.localStorage.removeItem("refreshToken");
+    clearAuthState();
+  }
 
   return (
     <div className={SearchbarStyles.wrap}>
@@ -86,10 +95,10 @@ const Searchbar: React.FC<Props> = ({
           <div className={` ${DropdownStyles["dropdown--card"]}`}>
             <ul>
               <li>
-                <Link className={DropdownStyles.link} to="/">
+                <div onClick={logout} className={DropdownStyles.link} >
                   <AiOutlineLogout />
                   Logout
-                </Link>
+                </div>
               </li>
             </ul>
           </div>
