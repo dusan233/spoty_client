@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import CategoriesStyles from "./Categories.module.css";
 import { RouteComponentProps } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
-import { getCategoryPlaylists, fetchCategoryPlaylists, setCategoryPlaylists } from '../../store/actions/categories';
+import { getCategoryPlaylists, fetchCategoryPlaylists, setCategoryPlaylists, setCategLoading } from '../../store/actions/categories';
 import {saveRemovePlaylistForCurrentUser} from '../../store/actions/user';
 import { RootState } from '../../store/reducers';
 import Spinner from '../Spinner/Spinner';
@@ -19,7 +19,8 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = {
     getCategoryPlaylists,
     saveRemovePlaylistForCurrentUser,
-    setCategoryPlaylists
+    setCategoryPlaylists,
+    setCategLoading
 }
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -34,7 +35,10 @@ type Props = RouteComponentProps<Params> & ReduxProps
 const Category: React.FC<Props> = ({ match, loading, accessToken, getCategoryPlaylists, setCategoryPlaylists, saveRemovePlaylistForCurrentUser, playlists, total, playlistLikes }) => {
     let containerEl = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        getCategoryPlaylists(match.params.categoryId)
+        getCategoryPlaylists(match.params.categoryId);
+        return () => {
+            setCategLoading(true);
+          };
     }, [getCategoryPlaylists, match.params.categoryId])
 
 

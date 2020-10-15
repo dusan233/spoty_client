@@ -14,14 +14,19 @@ import MusicLibrary from "./MusicLibrary/MusicLibrary";
 import Artist from "./Artist/Artist";
 import Categories from "./Categories/Categories";
 import Category from './Categories/Category';
+import { RootState } from "../store/reducers";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 
+const mapStateToProps = (state: RootState) => ({
+  isAuth: state.auth.accessToken
+})
 const mapDispatchToProps = {
   getCurrentUserData,
 };
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
-const Main: React.FC<Props> = ({ getCurrentUserData }) => {
+const Main: React.FC<Props> = ({ getCurrentUserData, isAuth }) => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -40,23 +45,25 @@ const Main: React.FC<Props> = ({ getCurrentUserData }) => {
             </div>
             <div className="root__content">
               <Switch>
-                <Route path="/" exact component={Home} />
-                <Route
+                <ProtectedRoute path="/" exact isAuth={!!isAuth} component={Home} />
+                <ProtectedRoute
                   path="/playlist/:playlistId"
                   exact
+                  isAuth={!!isAuth}
                   component={Playlist}
                 />
-                <Route path="/album/:albumId" exact component={Album} />
-                <Route path="/library/:term" exact component={MusicLibrary} />
-                <Route path="/artist/:artistId" exact component={Artist} />
-                <Route path="/categories" exact component={Categories} />
-                <Route path="/category/:categoryId" exact component={Category} />
-                <Route
+                <ProtectedRoute path="/album/:albumId" exact component={Album} isAuth={!!isAuth} />
+                <ProtectedRoute path="/library/:term" exact component={MusicLibrary} isAuth={!!isAuth} />
+                <ProtectedRoute path="/artist/:artistId" exact component={Artist} isAuth={!!isAuth} />
+                <ProtectedRoute path="/categories" exact component={Categories} isAuth={!!isAuth} />
+                <ProtectedRoute path="/category/:categoryId" exact component={Category} isAuth={!!isAuth} />
+                <ProtectedRoute
                   path="/search/:type/:searchTerm"
                   exact
                   component={SearchResult}
+                  isAuth={!!isAuth}
                 />
-                <Route path="*" component={NotFound} />
+                <ProtectedRoute path="*" component={NotFound} isAuth={!!isAuth} />
               </Switch>
             </div>
           </div>
