@@ -17,7 +17,8 @@ export interface SetCategoryPlaylists {
   type: CategoriesActionTypes.SET_CATEGORY_PLAYLISTS;
   payload: {
     items: PlaylistSimplified[],
-    total: number
+    total: number;
+    type: string;
   }
 }
 

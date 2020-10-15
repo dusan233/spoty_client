@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import CategoriesStyles from "./Categories.module.css";
 import { RouteComponentProps } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
-import { getCategoryPlaylists } from '../../store/actions/categories';
+import { getCategoryPlaylists, fetchCategoryPlaylists, setCategoryPlaylists } from '../../store/actions/categories';
 import {saveRemovePlaylistForCurrentUser} from '../../store/actions/user';
 import { RootState } from '../../store/reducers';
 import Spinner from '../Spinner/Spinner';
@@ -13,11 +13,13 @@ const mapStateToProps = (state: RootState) => ({
     loading: state.categories.loading,
     playlists: state.categories.categoryPlaylists,
     total: state.categories.total,
-    playlistLikes: state.user.playlistLikes
+    playlistLikes: state.user.playlistLikes,
+    accessToken: state.auth.accessToken
 })
 const mapDispatchToProps = {
     getCategoryPlaylists,
-    saveRemovePlaylistForCurrentUser
+    saveRemovePlaylistForCurrentUser,
+    setCategoryPlaylists
 }
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -29,11 +31,19 @@ type Params = {
 
 type Props = RouteComponentProps<Params> & ReduxProps
 
-const Category: React.FC<Props> = ({ match, loading, getCategoryPlaylists,saveRemovePlaylistForCurrentUser, playlists, total, playlistLikes }) => {
+const Category: React.FC<Props> = ({ match, loading, accessToken, getCategoryPlaylists, setCategoryPlaylists, saveRemovePlaylistForCurrentUser, playlists, total, playlistLikes }) => {
     let containerEl = useRef<HTMLDivElement>(null);
     useEffect(() => {
         getCategoryPlaylists(match.params.categoryId)
     }, [getCategoryPlaylists, match.params.categoryId])
+
+
+    const loadMorePlaylists = () => {
+       return fetchCategoryPlaylists(match.params.categoryId, playlists.length, accessToken )
+       .then(res => {
+        setCategoryPlaylists(res.data.playlists.items, res.data.playlists.total, "add")
+       }).catch(err => console.log(err))
+    }
 
     return (
 
@@ -51,7 +61,7 @@ const Category: React.FC<Props> = ({ match, loading, getCategoryPlaylists,saveRe
                         totalItems={total}
                         type="playlists"
                         containerEl={containerEl}
-                        loadMoreItems={(ds: any) => Promise.resolve()}
+                        loadMoreItems={loadMorePlaylists}
                         renderRow={({ key, index, style }: any) => {
                             const item = playlists[index];
                             const liked = playlistLikes[index];

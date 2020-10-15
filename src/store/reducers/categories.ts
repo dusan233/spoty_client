@@ -23,7 +23,7 @@ const reducer = (state = initialState, action: CategoriesActions) => {
       case CategoriesActionTypes.SET_CATEGORY_PLAYLISTS:
         return {
           ...state,
-          categoryPlaylists: action.payload.items,
+          categoryPlaylists: action.payload.type === "add" ? state.categoryPlaylists.concat(action.payload.items) : action.payload.items,
           total: action.payload.total
         }
     default:

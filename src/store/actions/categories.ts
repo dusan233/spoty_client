@@ -26,12 +26,13 @@ export const setCategories: ActionCreator<SetCategoriesData> = (
 });
 
 export const setCategoryPlaylists: ActionCreator<SetCategoryPlaylists> = (
-  items: PlaylistSimplified[], total: number
+  items: PlaylistSimplified[], total: number, type: string = ""
   ) => ({
   type: CategoriesActionTypes.SET_CATEGORY_PLAYLISTS,
   payload:  {
     items,
-    total
+    total,
+    type
   }
 })
 
