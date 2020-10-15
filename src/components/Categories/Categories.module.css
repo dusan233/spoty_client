@@ -11,6 +11,7 @@
 .container h1 {
   color: white;
   font-size: 28px;
+  margin-bottom: 50px;
 }
 .container::-webkit-scrollbar {
   width: 0.6em;
