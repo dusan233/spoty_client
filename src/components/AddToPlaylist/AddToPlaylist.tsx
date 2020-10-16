@@ -9,6 +9,7 @@ const mapStateToProps = (state: RootState) => ({
   playlists: state.library.playlists.filter(
     (playlist) => playlist.owner.id === state.user.userId
   ),
+  loading: state.playlist.addingTrack
 });
 
 const mapDispatchToProps = {
@@ -23,6 +24,7 @@ type Props = ReduxProps & { trackUri: string; closeModal: () => void };
 const AddToPlaylist: React.FC<Props> = ({
   playlists,
   trackUri,
+  loading,
   addTracksToPlaylist,
   closeModal,
 }) => {
@@ -38,7 +40,7 @@ const AddToPlaylist: React.FC<Props> = ({
             <div
               key={i}
               onClick={() =>
-                addTracksToPlaylist(trackUri, playlist.id).then((res) => {
+                loading ? null : addTracksToPlaylist(trackUri, playlist.id).then((res) => {
                   closeModal();
                 })
               }

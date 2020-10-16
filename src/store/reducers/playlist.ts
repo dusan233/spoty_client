@@ -13,6 +13,7 @@ const initialState: PlaylistState = {
   id: "",
   total: 0,
   type: "",
+  addingTrack: false
 };
 
 const reducer = (state = initialState, action: PlaylistActions) => {
@@ -28,6 +29,11 @@ const reducer = (state = initialState, action: PlaylistActions) => {
         name: action.payload.name,
         description: action.payload.description,
       };
+      case PlaylistActionTypes.SET_ADDING_TRACK:
+        return {
+          ...state,
+          addingTrack: action.payload
+        }
     case PlaylistActionTypes.SET_PLAYLIST_DATA:
       return {
         ...state,

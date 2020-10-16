@@ -13,6 +13,7 @@ export interface PlaylistState {
   id: string;
   total: number;
   type: string;
+  addingTrack: boolean
 }
 
 //actions
@@ -20,6 +21,10 @@ export interface PlaylistState {
 export interface ISetPlaylistLoading {
   type: PlaylistActionTypes.SET_PLAYLIST_LOADING;
   payload: boolean;
+}
+export interface SetAddingTrack {
+  type: PlaylistActionTypes.SET_ADDING_TRACK;
+  payload: boolean
 }
 
 export interface EditPlaylist {
@@ -62,7 +67,7 @@ export type PlaylistActions =
   | ISetPlaylistData
   | IAddMoreTracks
   | SetPlaylistTracks
-  | EditPlaylist;
+  | EditPlaylist | SetAddingTrack;
 
 // types for playlists
 

@@ -15,6 +15,7 @@ import {
   MorePlaylistTracks,
   SetPlaylistTracks,
   EditPlaylist,
+  SetAddingTrack,
 } from "../types/playlist";
 import { AppThunk } from "../types/index";
 import { AxiosResponse } from "axios";
@@ -95,6 +96,11 @@ export const editPlaylist: ActionCreator<EditPlaylist> = (
     description,
   },
 });
+
+export const setAddingTrack: ActionCreator<SetAddingTrack> = (loading: boolean) => ({
+  type: PlaylistActionTypes.SET_ADDING_TRACK,
+  payload: loading
+})
 
 export const getPlaylistData: ActionCreator<AppThunk> = (
   playlistId: string | undefined
@@ -199,7 +205,7 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
 export const addTracksToPlaylist = (trackUri: string, playlistId: string) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const accessToken = getState().auth.accessToken;
-
+    dispatch(setAddingTrack(true))
     try {
       const res = await api.post(`/playlists/${playlistId}/tracks`, null, {
         params: {
@@ -209,6 +215,8 @@ export const addTracksToPlaylist = (trackUri: string, playlistId: string) => {
           Authorization: "Bearer " + accessToken,
         },
       });
+      
+      dispatch(setAddingTrack(false));
       return res;
     } catch (err) {
       console.log(err);
