@@ -6,16 +6,20 @@ import {
   getAllCategories,
   setCategLoading,
 } from "../../store/actions/categories";
+import {setError} from '../../store/actions/error';
 import Spinner from "../Spinner/Spinner";
 import {Link} from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
   loading: state.categories.loading,
   categories: state.categories.categories,
+  errorMsg: state.error.errorMsg,
+  subMsg: state.error.subMsg
 });
 const mapDispatchToProps = {
   getAllCategories,
   setCategLoading,
+  setError
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -24,15 +28,31 @@ type ReduxProps = ConnectedProps<typeof connector>;
 const Categories: React.FC<ReduxProps> = ({
   getAllCategories,
   setCategLoading,
+  setError,
   loading,
+  errorMsg,
+  subMsg,
   categories,
 }) => {
   useEffect(() => {
     getAllCategories();
     return () => {
       setCategLoading(true);
+      setError("", "");
     };
-  }, [getAllCategories, setCategLoading]);
+  }, [getAllCategories, setCategLoading, setError]);
+
+
+  if (errorMsg) {
+    return (
+      <div className="error-container">
+        <div>
+          <h1 className="error-heading">{errorMsg}</h1>
+          <h3 className="error-text">{subMsg}</h3>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={CategoriesStyles.container}>

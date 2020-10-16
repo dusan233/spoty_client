@@ -8,19 +8,23 @@ import { RootState } from '../../store/reducers';
 import Spinner from '../Spinner/Spinner';
 import InfiniteVirtualizedList from '../InfiniteVirtualizedList/InfiniteVirtualizedList';
 import SearchPlaylistCard from '../Card/SearchPlaylist';
+import {setError} from '../../store/actions/error';
 
 const mapStateToProps = (state: RootState) => ({
     loading: state.categories.loading,
     playlists: state.categories.categoryPlaylists,
     total: state.categories.total,
     playlistLikes: state.user.playlistLikes,
-    accessToken: state.auth.accessToken
+    accessToken: state.auth.accessToken,
+    errorMsg: state.error.errorMsg,
+  subMsg: state.error.subMsg
 })
 const mapDispatchToProps = {
     getCategoryPlaylists,
     saveRemovePlaylistForCurrentUser,
     setCategoryPlaylists,
-    setCategLoading
+    setCategLoading,
+    setError
 }
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -32,14 +36,15 @@ type Params = {
 
 type Props = RouteComponentProps<Params> & ReduxProps
 
-const Category: React.FC<Props> = ({ match, loading, accessToken, getCategoryPlaylists, setCategoryPlaylists, saveRemovePlaylistForCurrentUser, playlists, total, playlistLikes }) => {
+const Category: React.FC<Props> = ({ match, loading, accessToken, setError, getCategoryPlaylists, setCategoryPlaylists, saveRemovePlaylistForCurrentUser, playlists, total, playlistLikes, errorMsg, subMsg }) => {
     let containerEl = useRef<HTMLDivElement>(null);
     useEffect(() => {
         getCategoryPlaylists(match.params.categoryId);
         return () => {
             setCategLoading(true);
+            setError("", "");
           };
-    }, [getCategoryPlaylists, match.params.categoryId])
+    }, [getCategoryPlaylists, setError,  match.params.categoryId])
 
 
     const loadMorePlaylists = () => {
@@ -48,6 +53,18 @@ const Category: React.FC<Props> = ({ match, loading, accessToken, getCategoryPla
         setCategoryPlaylists(res.data.playlists.items, res.data.playlists.total, "add")
        }).catch(err => console.log(err))
     }
+
+
+    if (errorMsg) {
+        return (
+          <div className="error-container">
+            <div>
+              <h1 className="error-heading">{errorMsg}</h1>
+              <h3 className="error-text">{subMsg}</h3>
+            </div>
+          </div>
+        );
+      }
 
     return (
 

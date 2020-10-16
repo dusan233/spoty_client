@@ -5,6 +5,7 @@ import {
   SetCategoriesLoading,
   SetCategoryPlaylists,
 } from "../types/categories";
+import {setError} from './error';
 import { ActionCreator, Dispatch } from "redux";
 import { RootState } from "../reducers";
 import { api } from "../../axios";
@@ -61,7 +62,13 @@ export const getAllCategories = () => {
         dispatch(setCategLoading(false));
       });
     } catch (err) {
-      console.log(err);
+      
+      let errorMsg = "Opps! Something went wrong!";
+       let subMsg = "Please refresh the page and try again";
+       batch(() => {
+        dispatch(setCategLoading(false));
+        dispatch(setError(errorMsg, subMsg));
+      });
     }
   };
 };
@@ -79,6 +86,19 @@ export const getCategoryPlaylists = (categoryId: string) => {
       })
     }catch(err) {
       console.log(err);
+      let errorMsg: string;
+      let subMsg: string;
+      if (err.response.status === 404) {
+        errorMsg = "Couldn't find that category";
+        subMsg = "Are you sure it exists?";
+      } else {
+        errorMsg = "Opps! Something went wrong!";
+        subMsg = "Please refresh the page and try again";
+      }
+      batch(() => {
+        dispatch(setCategLoading(false));
+        dispatch(setError(errorMsg, subMsg));
+      });
     }
   }
 }
