@@ -118,14 +118,14 @@ const AlbumHeader: React.FC<AlbumProps> = ({
             <button
               onClick={saveRemoveAlbum}
               className={
-                liked ? "btn-round--liked margin-left" : "btn-round margin-left"
+                liked ? "btn-round--liked margin-left margin-right" : "btn-round margin-right margin-left"
               }
             >
               {liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
             </button>
 
             <Dropdown>
-              <button className="btn-round margin-left">
+              <button className="btn-round ">
                 <BsThreeDots />
               </button>
               <div

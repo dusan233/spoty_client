@@ -129,8 +129,8 @@ const StickyHeader: React.FC<Props> = ({
                 onClick={saveRemovePlaylist}
                 className={
                   liked
-                    ? "btn-round--liked margin-left"
-                    : "btn-round margin-left"
+                    ? "btn-round--liked margin-left margin-right"
+                    : "btn-round margin-left margin-right"
                 }
                 variants={controllsVariants}
               >
@@ -140,7 +140,7 @@ const StickyHeader: React.FC<Props> = ({
 
             <Dropdown>
               <motion.button
-                className="btn-round margin-left"
+                className="btn-round"
                 variants={controllsVariants}
               >
                 <BsThreeDots />

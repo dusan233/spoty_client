@@ -101,8 +101,8 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
                 onClick={saveRemovePlaylist}
                 className={
                   liked
-                    ? "btn-round--liked margin-left"
-                    : "btn-round margin-left"
+                    ? "btn-round--liked margin-left  margin-right"
+                    : "btn-round margin-left margin-right"
                 }
               >
                 {liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
@@ -110,7 +110,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
             )}
 
             <Dropdown>
-              <button className="btn-round margin-left">
+              <button className="btn-round">
                 <BsThreeDots />
               </button>
               <div
