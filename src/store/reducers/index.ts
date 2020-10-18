@@ -9,6 +9,7 @@ import UserReducer from "./user";
 import LibraryReducer from "./library";
 import ArtistReducer from "./artist";
 import CategoriesReducer from "./categories";
+import MusicReducer from './music';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -23,4 +24,5 @@ export const rootReducer = combineReducers({
   library: LibraryReducer,
   artist: ArtistReducer,
   categories: CategoriesReducer,
+  music: MusicReducer
 });

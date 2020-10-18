@@ -13,7 +13,7 @@ import {
   getMoreTracks,
   removeTracksFromPlaylist,
 } from "../../store/actions/playlist";
-
+import { playPlaylistSongs } from '../../store/actions/music';
 import {
   saveRemoveTracksForCurrentUser,
   saveRemovePlaylistForCurrentUser,
@@ -57,6 +57,7 @@ const mapDispatchToProps = {
   saveRemoveTracksForCurrentUser,
   saveRemovePlaylistForCurrentUser,
   removeTracksFromPlaylist,
+  playPlaylistSongs
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -74,6 +75,7 @@ const Playlist: React.FC<Props> = ({
   saveRemoveTracksForCurrentUser,
   saveRemovePlaylistForCurrentUser,
   removeTracksFromPlaylist,
+  playPlaylistSongs,
   match,
   loading,
   name,
@@ -127,6 +129,12 @@ const Playlist: React.FC<Props> = ({
       }
     };
   }, []);
+
+  const playPlaylist = () => {
+    if(match.params.playlistId) {
+      playPlaylistSongs(match.params.playlistId);
+    }
+  }
 
   const loadMoreTracks = ({ startIndex }: { startIndex: number }) => {
     return getMoreTracks(startIndex, match.params.playlistId, accessToken)
@@ -214,6 +222,7 @@ const Playlist: React.FC<Props> = ({
             img={img}
             totalSongs={total}
             type="Playlist"
+            playPlaylist={playPlaylist}
           />
           {!tracks.length ? (
             <div className="error-container--small">

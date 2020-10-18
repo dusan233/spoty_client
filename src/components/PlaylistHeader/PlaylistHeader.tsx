@@ -27,6 +27,7 @@ interface PlaylistProps {
     action: string,
     name: string
   ) => Promise<void>;
+  playPlaylist: () => void;
 }
 
 Modal.setAppElement("#modal");
@@ -43,6 +44,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
   userId,
   ownerId,
   savePlaylist,
+  playPlaylist
 }) => {
   const [modalIsOpen, setModal] = useState(false);
 
@@ -93,7 +95,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
           </div>
           <div className={PlaylistHeaderStyles.controlls}>
             {totalSongs ? (
-              <button className="btn btn--green btn--circle">Play</button>
+              <button onClick={playPlaylist} className="btn btn--green btn--circle">Play</button>
             ) : null}
 
             {userId === ownerId ? null : (

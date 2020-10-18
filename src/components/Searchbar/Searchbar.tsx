@@ -79,7 +79,7 @@ const Searchbar: React.FC<Props> = ({
             href="https://www.spotify.com/us/premium/"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn--white btn--circle"
+            className="btn btn--white btn--circle margin-right"
           >
             Upgrade to Premium
           </a>
