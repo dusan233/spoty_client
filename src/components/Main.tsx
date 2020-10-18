@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import {  Switch } from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import { getCurrentUserData } from "../store/actions/user";
 
@@ -16,6 +16,8 @@ import Categories from "./Categories/Categories";
 import Category from './Categories/Category';
 import { RootState } from "../store/reducers";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import NowPlaying from './NowPlaying/NowPlaying';
+import Queue from './Queue/Queue';
 
 const mapStateToProps = (state: RootState) => ({
   isAuth: state.auth.accessToken
@@ -56,6 +58,7 @@ const Main: React.FC<Props> = ({ getCurrentUserData, isAuth }) => {
                 <ProtectedRoute path="/library/:term" exact component={MusicLibrary} isAuth={!!isAuth} />
                 <ProtectedRoute path="/artist/:artistId" exact component={Artist} isAuth={!!isAuth} />
                 <ProtectedRoute path="/categories" exact component={Categories} isAuth={!!isAuth} />
+                <ProtectedRoute path="/queue" exact component={Queue} isAuth={!!isAuth} />
                 <ProtectedRoute path="/category/:categoryId" exact component={Category} isAuth={!!isAuth} />
                 <ProtectedRoute
                   path="/search/:type/:searchTerm"
@@ -68,7 +71,9 @@ const Main: React.FC<Props> = ({ getCurrentUserData, isAuth }) => {
             </div>
           </div>
         </div>
-        <div className="root__audio-player"></div>
+        <div className="root__audio-player">
+          <NowPlaying />
+        </div>
       </div>
     </div>
   ) : (

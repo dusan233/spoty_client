@@ -1,0 +1,36 @@
+.now-playing-bar {
+  padding: 0 20px;
+  display: flex;
+  width: 100%;
+}
+.now-playing-bar__left {
+  width: 30%;
+  min-width: 180px;
+}
+.now-playing-bar__center {
+  width: 40%;
+  max-width: 722px;
+}
+.now-playing-bar__right {
+  width: 30%;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+}
+.extra-controls {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  align-items: center;
+}
+.show-queue-btn,
+.show-queue-btn-opened {
+  color: white;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.show-queue-btn-opened {
+  color: #1db954;
+}

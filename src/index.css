@@ -127,6 +127,8 @@
 .root__audio-player {
   flex-basis: 90px;
   background: #282828;
+  display: flex;
+  align-items: center;
 }
 .page-not-found {
   background: rgb(143, 27, 50);
