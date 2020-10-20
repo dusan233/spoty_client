@@ -207,6 +207,7 @@ const Artist: React.FC<Props> = ({
                         liked={liked}
                         albumId={track.album.id}
                         uri={track.uri}
+                        skipToCertainTrack={() => {}}
                       />
                     );
                   })}

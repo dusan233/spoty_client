@@ -48,6 +48,8 @@ const mapStateToProps = (state: RootState) => ({
   playlistLikes: state.user.playlistLikes,
   userId: state.user.userId,
   ownerId: state.playlist.ownerId,
+  isPlaying: state.music.playing,
+  currentPlayingList: state.music.currentListId
 });
 const mapDispatchToProps = {
   getPlaylistData,
@@ -92,6 +94,8 @@ const Playlist: React.FC<Props> = ({
   playlistLikes,
   userId,
   ownerId,
+  isPlaying,
+  currentPlayingList
 }) => {
   const [showSticky, setShowSticky] = useState(false);
   let containerEl = useRef<HTMLDivElement>(null);
@@ -132,8 +136,20 @@ const Playlist: React.FC<Props> = ({
 
   const playPlaylist = () => {
     if(match.params.playlistId) {
-      playPlaylistSongs(match.params.playlistId);
+      playPlaylistSongs(match.params.playlistId, 0, 50);
     }
+  }
+
+  const skipToCertainTrack = (trackIndex: number) => {
+    
+      if(isPlaying && match.params.playlistId === currentPlayingList) {
+
+      }else {
+       if(match.params.playlistId) {
+        playPlaylistSongs(match.params.playlistId, trackIndex, 50);
+       }
+      }
+   
   }
 
   const loadMoreTracks = ({ startIndex }: { startIndex: number }) => {
@@ -182,6 +198,7 @@ const Playlist: React.FC<Props> = ({
           trackId={track.track.id}
           saveTrack={saveRemoveTracksForCurrentUser}
           remvoeTrackFromPlaylist={removeTracksFromPlaylist}
+          skipToCertainTrack={() => skipToCertainTrack(index)}
         />
       );
     }
@@ -255,6 +272,7 @@ const Playlist: React.FC<Props> = ({
                   img={img}
                   title={name}
                   owner={owner}
+                  playPlaylist={playPlaylist}
                 />
               )}
               <WindowScroller scrollElement={containerEl.current}>

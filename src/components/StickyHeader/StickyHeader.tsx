@@ -26,6 +26,7 @@ type Props = {
     action: string,
     name: string
   ) => Promise<void>;
+  playPlaylist: () => void;
 };
 
 const containerVariants = {
@@ -69,6 +70,7 @@ const StickyHeader: React.FC<Props> = ({
   liked,
   playlistId,
   savePlaylist,
+  playPlaylist
 }) => {
   const [modalIsOpen, setModal] = useState(false);
 
@@ -117,6 +119,7 @@ const StickyHeader: React.FC<Props> = ({
           <div className={`${StickyHeaderStyles["sticky-header__controlls"]}`}>
             {totalSongs ? (
               <motion.button
+                onClick={playPlaylist}
                 className="btn btn--green btn--circle"
                 variants={controllsVariants}
               >

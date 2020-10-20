@@ -6,7 +6,9 @@ const initialState: MusicState = {
     currentSelectedSong: null,
     queueSongs: [],
     nextUpSongs: [],
-    currentListId: ""
+    currentListId: "",
+    currentSongIndex: 0,
+    repeatType: ""
 }
 
 const reducer = (state = initialState, action: MusicActions) => {
@@ -14,12 +16,24 @@ const reducer = (state = initialState, action: MusicActions) => {
         case MusicActionTypes.SET_CURRENT_SELECTED_SONG:
             return {
                 ...state,
-                currentSelectedSong: action.payload
+                currentSelectedSong: action.payload.track,
+                currentSongIndex: action.payload.trackIndex,
+                currentListId: action.payload.listId
             }
         case MusicActionTypes.SET_NEXT_UP_SONGS:
             return {
                 ...state,
                 nextUpSongs: action.payload
+            }
+        case MusicActionTypes.SET_PLAYING:
+            return {
+                ...state,
+                playing: action.payload
+            }
+        case MusicActionTypes.SET_REPEAT:
+            return {
+                ...state,
+                repeatType: action.payload
             }
         default:
             return state

@@ -68,4 +68,6 @@ export enum CategoriesActionTypes {
 export enum MusicActionTypes {
   SET_CURRENT_SELECTED_SONG = "SET_CURRENT_SELECTED_SONG",
   SET_NEXT_UP_SONGS = "SET_NEXT_UP_SONGS",
+  SET_PLAYING = "SET_PLAYING",
+  SET_REPEAT = "SET_REPEAT"
 }

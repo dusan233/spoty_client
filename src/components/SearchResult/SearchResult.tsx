@@ -372,6 +372,7 @@ const SearchResult: React.FC<Props> = ({
                   type="playlist"
                   liked={liked}
                   saveItem={saveRemovePlaylistForCurrentUser}
+                  
                 />
               );
             }
@@ -499,6 +500,7 @@ const SearchResult: React.FC<Props> = ({
                     trackId={track.id}
                     index={index}
                     saveTrack={saveRemoveTracksForCurrentUser}
+                    skipToCertainTrack={() => {}}
                     liked={liked}
                     albumId={track.album.id}
                   />

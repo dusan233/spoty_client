@@ -71,12 +71,14 @@ export const setPlaylistData: ActionCreator<ISetPlaylistData> = (
 export const getMoreTracks = (
   startIndex: number,
   playlistId: string | undefined,
-  accessToken: string | undefined
+  accessToken: string | undefined,
+  endIndex: number = 50,
 ) => {
   return api.get<MorePlaylistTracks>(`/playlists/${playlistId}/tracks`, {
     params: {
-      limit: 50,
+      limit: endIndex,
       offset: startIndex,
+      market: "US"
     },
     headers: {
       Authorization: "Bearer " + accessToken,

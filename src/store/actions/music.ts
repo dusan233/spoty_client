@@ -1,15 +1,21 @@
 import { batch } from "react-redux";
-import { Dispatch } from "redux"
+import { Dispatch, ActionCreator } from "redux"
 import { RootState } from "../reducers"
 import { TrackSimplified } from "../types";
 import { MusicActionTypes } from "./actionTypes";
 import {getMoreTracks} from './playlist';
+import { getMoreAlbumTracks } from './album';
 import {checkCurrentUserSavedTracks, setTrackLikes} from './user';
+import { SetPlaying } from "../types/music";
 
 
-export const setCurrentSelectedSong = (song: TrackSimplified ) => ({ 
+export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string ) => ({ 
     type: MusicActionTypes.SET_CURRENT_SELECTED_SONG,
-    payload: song
+    payload: {
+        track: song,
+        trackIndex,
+        listId
+    }
 })
 
 export const setNextUpSongs = (songs: TrackSimplified[]) => ({
@@ -17,12 +23,22 @@ export const setNextUpSongs = (songs: TrackSimplified[]) => ({
     payload: songs 
 })
 
-export const playPlaylistSongs = ( playlistId: string ) => {
+export const setPlaying: ActionCreator<SetPlaying> = (playing: boolean) => ({
+    type: MusicActionTypes.SET_PLAYING,
+    payload: playing
+})
+
+export const setRepeat = (type: string) => ({
+    type: MusicActionTypes.SET_REPEAT,
+    payload: type
+})
+
+export const playPlaylistSongs = ( playlistId: string, songIndex: number, endIndex: number ) => {
     return async (dispatch: Dispatch, getState: () => RootState) => {
         const accessToken = getState().auth.accessToken;
 
         try {
-            const resSongs = await getMoreTracks(0, playlistId, accessToken)
+            const resSongs = await getMoreTracks(songIndex, playlistId, accessToken, endIndex)
             let trackIds = "";
             resSongs.data.items.forEach((track) => {
                 if (trackIds === " ") {
@@ -35,7 +51,7 @@ export const playPlaylistSongs = ( playlistId: string ) => {
               
 
             batch(() => {
-                dispatch(setCurrentSelectedSong(resSongs.data.items[0].track))
+                dispatch(setCurrentSelectedSong(resSongs.data.items[0].track, songIndex, playlistId))
                 dispatch(setTrackLikes([...savedTracksRes.data]))
                 dispatch(setNextUpSongs(resSongs.data.items.map(item => item.track).slice(1, 51)))
             })
@@ -44,3 +60,14 @@ export const playPlaylistSongs = ( playlistId: string ) => {
         }
     }
 }
+
+// export const playAlbumSongs = (albumId: string) => {
+//     return async (dispatch: Dispatch, getState: () => RootState) => {
+//         const accessToken = getState().auth.accessToken;
+//         try {
+//             const resSongs = await getMoreAlbumTracks()
+//         }catch(err) {
+
+//         }
+//     }
+// }

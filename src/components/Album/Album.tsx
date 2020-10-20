@@ -148,6 +148,7 @@ const Album: React.FC<Props> = ({
           index={index}
           liked={liked}
           saveTrack={saveRemoveTracksForCurrentUser}
+          skipToCertainTrack={() => {}}
         />
       );
     }
@@ -207,6 +208,7 @@ const Album: React.FC<Props> = ({
                     trackId={track.id}
                     liked={liked}
                     saveTrack={saveRemoveTracksForCurrentUser}
+                    skipToCertainTrack={() => {}}
                   />
                 );
               })

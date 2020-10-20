@@ -308,6 +308,7 @@ const MusicLibrary: React.FC<Props> = ({
                   index={index}
                   uri={savedTrack.track.uri}
                   saveTrack={saveRemoveTracksForCurrentUser}
+                  skipToCertainTrack={() => {}}
                   liked={liked}
                   albumId={savedTrack.track.album.id}
                 />

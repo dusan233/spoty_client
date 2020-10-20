@@ -42,6 +42,7 @@ interface TrackProps {
     index: number,
     playlistId: string | undefined
   ) => Promise<void>;
+  skipToCertainTrack: () => void;
 }
 
 Modal.setAppElement("#modal");
@@ -67,6 +68,7 @@ const Track: React.FC<TrackProps> = React.memo(
     playlistId,
     saveTrack,
     remvoeTrackFromPlaylist,
+    skipToCertainTrack
   }) => {
     const [selected, rowRef] = useSelected();
     const [modalIsOpen, setModal] = useState(false);
@@ -171,6 +173,7 @@ const Track: React.FC<TrackProps> = React.memo(
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
         >
           <button
+            onClick={skipToCertainTrack}
             className={
               selected ? `${TrackStyles["btn--selected"]}` : TrackStyles.btn
             }

@@ -7,11 +7,27 @@ export interface MusicState {
     nextUpSongs: TrackSimplified[];
     queueSongs: TrackSimplified[];
     currentListId: string;
+    currentSongIndex: number;
+    repeatType: string;
 }
 
 export interface SetCurrentSelectedSong {
     type: MusicActionTypes.SET_CURRENT_SELECTED_SONG,
-    payload: TrackSimplified
+    payload: {
+        track: TrackSimplified,
+        trackIndex: number,
+        listId: string
+    }
+}
+
+export interface setRepeat {
+    type: MusicActionTypes.SET_REPEAT,
+    payload: string
+}
+
+export interface SetPlaying {
+    type: MusicActionTypes.SET_PLAYING,
+    payload: boolean
 }
 
 export interface SetNextUpSongs {
@@ -20,4 +36,4 @@ export interface SetNextUpSongs {
 }
 
 export type MusicActions = SetCurrentSelectedSong 
-| SetNextUpSongs
+| SetNextUpSongs | SetPlaying | setRepeat
