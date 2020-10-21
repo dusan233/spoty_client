@@ -9,6 +9,10 @@ export interface MusicState {
     currentListId: string;
     currentSongIndex: number;
     repeatType: string;
+    durationTime: string;
+    currentTime: string;
+    sliderPercent: number;
+    progressBarPercent: number;
 }
 
 export interface SetCurrentSelectedSong {
@@ -20,9 +24,25 @@ export interface SetCurrentSelectedSong {
     }
 }
 
+export interface setSlidersValue {
+    type: MusicActionTypes.SET_SLIDERS_VALUES,
+    payload: {
+        sliderPercent: number,
+        progressBarPercent: number
+    }
+}
+
 export interface setRepeat {
     type: MusicActionTypes.SET_REPEAT,
     payload: string
+}
+
+export interface setDurCurTime {
+    type: MusicActionTypes.SET_TIME,
+    payload: {
+        duration: string,
+        currentTime: string
+    }
 }
 
 export interface SetPlaying {
@@ -36,4 +56,4 @@ export interface SetNextUpSongs {
 }
 
 export type MusicActions = SetCurrentSelectedSong 
-| SetNextUpSongs | SetPlaying | setRepeat
+| SetNextUpSongs | SetPlaying | setRepeat | setDurCurTime | setSlidersValue

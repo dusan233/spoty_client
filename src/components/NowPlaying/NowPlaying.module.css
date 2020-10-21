@@ -56,8 +56,63 @@
   flex-flow: row nowrap;
 }
 .playback-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
+.playback-bar__progress-time {
+  color: #b3b3b3;
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.progress-bar {
+  height: 12px;
+  position: relative;
+  width: 100%;
+  margin: 0 10px;
+}
+.progress-bar:hover .progress-bar__slider {
+  opacity: 1;
+}
+.progress-bar:hover .progress-bar__fg {
+  background: #1db954;
+}
+.progress-bar__bg {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  display: flex;
+  border-radius: 2px;
+  background: #595959;
+  top: 50%;
+  transform: translateY(-50%);
+  overflow: hidden;
+}
+.progress-bar__slider {
+  background-color: #fff;
+  border: 0;
+  position: absolute;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  outline: 0;
+  z-index: 100;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  margin-left: -7px;
+}
+.progress-bar__fg {
+  transform: translateX(-87.4522%);
+  height: 4px;
+  width: 100%;
+  border-radius: 2px;
+  background: #b3b3b3;
+}
 .control-button {
   cursor: pointer;
   background: transparent;
@@ -76,7 +131,6 @@
 }
 .control-button--circled:hover {
   box-shadow: 0 0 0 0.08rem white;
-  transform: scale(1.05);
 }
 .control-button--circled {
   border-radius: 50%;

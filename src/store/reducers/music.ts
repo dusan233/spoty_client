@@ -8,7 +8,11 @@ const initialState: MusicState = {
     nextUpSongs: [],
     currentListId: "",
     currentSongIndex: 0,
-    repeatType: ""
+    repeatType: "",
+    durationTime: "0:00",
+    currentTime: "0:00",
+    sliderPercent: 0,
+    progressBarPercent: -100
 }
 
 const reducer = (state = initialState, action: MusicActions) => {
@@ -24,6 +28,18 @@ const reducer = (state = initialState, action: MusicActions) => {
             return {
                 ...state,
                 nextUpSongs: action.payload
+            }
+        case MusicActionTypes.SET_SLIDERS_VALUES:
+            return {
+                ...state,
+                sliderPercent: action.payload.sliderPercent,
+                progressBarPercent: action.payload.progressBarPercent
+            }
+        case MusicActionTypes.SET_TIME:
+            return {
+                ...state,
+                currentTime: action.payload.currentTime,
+                durationTime: action.payload.duration
             }
         case MusicActionTypes.SET_PLAYING:
             return {

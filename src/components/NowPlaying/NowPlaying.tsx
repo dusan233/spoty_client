@@ -8,6 +8,7 @@ import { RootState } from '../../store/reducers';
 import { TrackSimplified } from '../../store/types';
 import { setPlaying, setRepeat } from '../../store/actions/music';
 import {MdSkipPrevious, MdSkipNext, MdPlayArrow, MdRepeat, MdRepeatOne, MdPause} from 'react-icons/md';
+import PlaybackBar from './PlaybackBar';
 
 const mapStateToProps = (state: RootState) => ({
     isPlaying: state.music.playing,
@@ -101,7 +102,7 @@ const NowPlaying: React.FC<Props> = ({location, currentSelectedSong, repeatType,
                             <MdSkipNext />
                         </button>
                     </div>
-                    <div className={`${NowPlayingStyles["playback-bar"]}`}></div>
+                    <PlaybackBar audio={audio.current} />
                 </div>
             </div>
             <div className={`${NowPlayingStyles["now-playing-bar__right"]}`}>
