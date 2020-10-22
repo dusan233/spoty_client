@@ -142,7 +142,7 @@ const PlaybackBar: React.FC<Props> = ({audio, currentTime, durationTime, progres
                     <div style={{transform: `translateX(${progressBarPercent}%)`}} className={`${NowPlayingStyles["progress-bar__fg"]}`}></div>
                     
                 </div>
-                <button style={{left: `${sliderPercent}%`}} className={`${NowPlayingStyles["progress-bar__slider"]}`}></button>
+                <button style={{left: `${sliderPercent}%`}} className={`${mouseDown ? NowPlayingStyles["progress-bar__slider--show"] : NowPlayingStyles["progress-bar__slider"]}`}></button>
             </div>
             <div className={`${NowPlayingStyles["playback-bar__progress-time"]}`}>{durationTime}</div>
         </div>

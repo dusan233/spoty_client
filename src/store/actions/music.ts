@@ -6,7 +6,7 @@ import { MusicActionTypes } from "./actionTypes";
 import {getMoreTracks} from './playlist';
 import { getMoreAlbumTracks } from './album';
 import {checkCurrentUserSavedTracks, setTrackLikes} from './user';
-import { setDurCurTime, SetPlaying, setSlidersValue } from "../types/music";
+import { setDurCurTime, SetMute, SetPlaying, setSlidersValue, SetVolume } from "../types/music";
 
 
 export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string ) => ({ 
@@ -47,6 +47,16 @@ export const setProgressValues: ActionCreator<setSlidersValue> = (sliderPercent:
         sliderPercent,
         progressBarPercent
     }
+})
+
+export const setVolume: ActionCreator<SetVolume> = (volume: number) => ({
+    type: MusicActionTypes.SET_VOLUME,
+    payload: volume
+})
+
+export const setMute: ActionCreator<SetMute> = (muted: boolean) => ({
+    type: MusicActionTypes.SET_MUTE,
+    payload: muted
 })
 
 export const playPlaylistSongs = ( playlistId: string, songIndex: number, endIndex: number ) => {

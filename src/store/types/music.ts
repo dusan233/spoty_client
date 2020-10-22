@@ -13,6 +13,8 @@ export interface MusicState {
     currentTime: string;
     sliderPercent: number;
     progressBarPercent: number;
+    volume: number;
+    muted: boolean;
 }
 
 export interface SetCurrentSelectedSong {
@@ -37,6 +39,16 @@ export interface setRepeat {
     payload: string
 }
 
+export interface SetVolume {
+    type: MusicActionTypes.SET_VOLUME,
+    payload: number
+}
+
+export interface SetMute {
+    type: MusicActionTypes.SET_MUTE,
+    payload: boolean
+}
+
 export interface setDurCurTime {
     type: MusicActionTypes.SET_TIME,
     payload: {
@@ -56,4 +68,5 @@ export interface SetNextUpSongs {
 }
 
 export type MusicActions = SetCurrentSelectedSong 
-| SetNextUpSongs | SetPlaying | setRepeat | setDurCurTime | setSlidersValue
+| SetNextUpSongs | SetPlaying | setRepeat | setDurCurTime | setSlidersValue | SetVolume
+| SetMute

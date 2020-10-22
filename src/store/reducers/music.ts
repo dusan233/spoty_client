@@ -12,7 +12,9 @@ const initialState: MusicState = {
     durationTime: "0:00",
     currentTime: "0:00",
     sliderPercent: 0,
-    progressBarPercent: -100
+    progressBarPercent: -100,
+    volume: 0.5,
+    muted: false
 }
 
 const reducer = (state = initialState, action: MusicActions) => {
@@ -41,10 +43,20 @@ const reducer = (state = initialState, action: MusicActions) => {
                 currentTime: action.payload.currentTime,
                 durationTime: action.payload.duration
             }
+        case MusicActionTypes.SET_VOLUME:
+            return {
+                ...state,
+                volume: action.payload
+            }
         case MusicActionTypes.SET_PLAYING:
             return {
                 ...state,
                 playing: action.payload
+            }
+        case MusicActionTypes.SET_MUTE:
+            return {
+                ...state,
+                muted: action.payload
             }
         case MusicActionTypes.SET_REPEAT:
             return {
