@@ -24,7 +24,8 @@
   align-items: center;
 }
 
-.extra-controls-button {
+.extra-controls-button,
+.volume-bar__icon {
   color: #b3b3b3;
   font-size: 18px;
   display: flex;
@@ -67,12 +68,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 10px;
 }
 .progress-bar {
   height: 12px;
   position: relative;
   width: 100%;
-  margin: 0 10px;
 }
 .progress-bar:hover .progress-bar__slider {
   opacity: 1;
@@ -136,4 +137,19 @@
   border-radius: 50%;
   box-shadow: 0 0 0 0.08rem #b3b3b3;
   font-size: 23px;
+}
+.volume-bar {
+  width: 130px;
+  display: flex;
+  align-items: center;
+}
+.volume-bar__icon {
+  margin-right: 0px;
+  padding: 0 7px 0 0;
+  outline: 0;
+  background: transparent;
+  border: 0;
+}
+.volume-bar__icon:hover {
+  color: white;
 }

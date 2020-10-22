@@ -9,6 +9,7 @@ import { TrackSimplified } from '../../store/types';
 import { setPlaying, setRepeat } from '../../store/actions/music';
 import {MdSkipPrevious, MdSkipNext, MdPlayArrow, MdRepeat, MdRepeatOne, MdPause} from 'react-icons/md';
 import PlaybackBar from './PlaybackBar';
+import PlaybackVolume from './PlaybackVolume';
 
 const mapStateToProps = (state: RootState) => ({
     isPlaying: state.music.playing,
@@ -113,6 +114,7 @@ const NowPlaying: React.FC<Props> = ({location, currentSelectedSong, repeatType,
                     <div title={!repeatType ? "Enable repeat" : repeatType === "repeat" ? "Enable repeat-one" : "Disable repeat" } onClick={setRepeatType} className={repeatType === "" ? `${ NowPlayingStyles["extra-controls-button"]}` : `${ NowPlayingStyles["extra-controls-button"]} ${ NowPlayingStyles["extra-controls-button--opened"]}` }>
                         {repeatType === "repeat-one" ? <MdRepeatOne /> : <MdRepeat />}
                     </div>
+                    <PlaybackVolume audio={audio.current} />
                 </div>
             </div>
         </div>

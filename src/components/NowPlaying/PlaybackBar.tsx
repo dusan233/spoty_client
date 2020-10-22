@@ -32,7 +32,7 @@ const PlaybackBar: React.FC<Props> = ({audio, currentTime, durationTime, progres
         const onTimeUpdate = (e: Event) => {
             if(!mouseDown) {
                 const {duration, currentTime} = (e.composedPath()[0] as HTMLAudioElement);
-        
+                console.log(e);
                 const sliderPercent = (currentTime/duration) * 100;
                 const progressBarPercent = - (100 - sliderPercent);
         
@@ -122,10 +122,15 @@ const PlaybackBar: React.FC<Props> = ({audio, currentTime, durationTime, progres
             currentSeconds = `0${currentSeconds}`
             }
 
-            batch(() => {
-                setTime(durationTime, `${currentMinutes}:${currentSeconds}`);
-                setProgressValues(sliderPercent, progressBarPercent);
-            })
+            if(sliderPercent >= 0 && sliderPercent <= 100) {
+
+                batch(() => {
+                    setTime(durationTime, `${currentMinutes}:${currentSeconds}`);
+                    setProgressValues(sliderPercent, progressBarPercent);
+                })
+            }
+
+            
         }
     }
 
