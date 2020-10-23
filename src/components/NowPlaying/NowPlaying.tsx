@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import NowPlayingStyles from './NowPlaying.module.css';
 import {RiPlayListLine} from 'react-icons/ri';
 import { RouteComponentProps, withRouter} from 'react-router-dom'
@@ -35,6 +35,17 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
 
     const audio = useRef<HTMLAudioElement>();
 
+
+    const nextTrack = useCallback(() => {
+        const offset = currentSongIndex + 1;
+        playPlaylistSongs(currentListId, offset, 50)
+    }, [currentListId, currentSongIndex, playPlaylistSongs])
+
+    const prevTrack = () => {
+        const offset = currentSongIndex - 1;
+        playPlaylistSongs(currentListId, offset, 50)
+    }
+
     useEffect(() => {
         console.log('dadadaad')
 
@@ -48,15 +59,13 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
             audio.current.src = ((currentSelectedSong as TrackSimplified).preview_url) as string;
             setPlaying(true);
             
+        }else {
+            nextTrack()
         }
-        
-        
-        
-
         // return () => {
         //     audio.current?.removeEventListener("ended", onTrackEnded)
         // }
-    }, [currentSelectedSong, setPlaying]);
+    }, [currentSelectedSong, setPlaying, nextTrack]);
 
     useEffect(() => {
         const onTrackEnded = (e: Event) => {
@@ -107,6 +116,8 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
         }
     }, [isPlaying, currentSelectedSong])
 
+
+    
 
     
 
