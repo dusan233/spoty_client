@@ -9,12 +9,13 @@ import {checkCurrentUserSavedTracks, setTrackLikes} from './user';
 import { setDurCurTime, SetMute, SetPlaying, setSlidersValue, SetVolume } from "../types/music";
 
 
-export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string ) => ({ 
+export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string, total: number ) => ({ 
     type: MusicActionTypes.SET_CURRENT_SELECTED_SONG,
     payload: {
         track: song,
         trackIndex,
-        listId
+        listId,
+        total
     }
 })
 
@@ -75,9 +76,9 @@ export const playPlaylistSongs = ( playlistId: string, songIndex: number, endInd
               });
             const savedTracksRes = await checkCurrentUserSavedTracks(trackIds, accessToken)
               
-
+              console.log(resSongs, "ddaad")
             batch(() => {
-                dispatch(setCurrentSelectedSong(resSongs.data.items[0].track, songIndex, playlistId))
+                dispatch(setCurrentSelectedSong(resSongs.data.items[0].track, songIndex, playlistId, resSongs.data.total))
                 dispatch(setTrackLikes([...savedTracksRes.data]))
                 dispatch(setNextUpSongs(resSongs.data.items.map(item => item.track).slice(1, 51)))
             })

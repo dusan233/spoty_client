@@ -198,16 +198,20 @@ const Artist: React.FC<Props> = ({
                         index={i}
                         duration={track.duration_ms}
                         explicit={track.explicit}
+                        currentPlayingSongIndex={2}
                         trackId={track.id}
                         type="playlist"
                         saveTrack={saveRemoveTracksForCurrentUser}
+                        playPause={function(ds: boolean) {}}
                         album={track.album.name}
                         popularity={track.popularity}
                         key={track.id + i}
+                        isPlaying={true}
+                        currentPlayingListId="dssd"
                         liked={liked}
                         albumId={track.album.id}
                         uri={track.uri}
-                        skipToCertainTrack={() => {}}
+                        playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
                       />
                     );
                   })}

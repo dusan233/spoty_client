@@ -95,6 +95,7 @@ export interface PlaylistFull extends PlaylistSimplified {
 
 export interface MorePlaylistTracks {
   items: PlaylistTrackObject[];
+  total: number;
 }
 
 export interface FeaturedPlaylists {

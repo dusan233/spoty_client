@@ -17,6 +17,8 @@ import { Link } from "react-router-dom";
 import { ArtistSimplified } from "../../store/types/artist";
 import useSelected from "../../hooks/useSelected";
 import Dropdown from "../Dropdown/Dropdown";
+import { ActionCreator } from "redux";
+import { SetPlaying } from "../../store/types/music";
 
 interface TrackProps {
   title: string;
@@ -36,13 +38,18 @@ interface TrackProps {
   liked?: boolean;
   trackId: string;
   uri: string;
+  isPlaying: boolean;
+  currentPlayingListId: string;
+  currentPlayingSongIndex: number;
   saveTrack: (trackIds: string, index: number, action: string) => Promise<void>;
   remvoeTrackFromPlaylist?: (
     trackUri: string,
     index: number,
     playlistId: string | undefined
   ) => Promise<void>;
-  skipToCertainTrack: () => void;
+  playPlaylist: (playlistId: string, songIndex: number, endIndex: number) => Promise<void>
+  playPause: (isPlaying: boolean) => void
+  
 }
 
 Modal.setAppElement("#modal");
@@ -62,13 +69,17 @@ const Track: React.FC<TrackProps> = React.memo(
     albumId,
     liked,
     trackId,
+    isPlaying,
+    currentPlayingListId,
+    currentPlayingSongIndex,
     uri,
     userId,
     playlistOwnerId,
     playlistId,
     saveTrack,
     remvoeTrackFromPlaylist,
-    skipToCertainTrack
+    playPlaylist,
+    playPause
   }) => {
     const [selected, rowRef] = useSelected();
     const [modalIsOpen, setModal] = useState(false);
@@ -153,6 +164,18 @@ const Track: React.FC<TrackProps> = React.memo(
       return minutes + ":" + (parseInt(seconds) < 10 ? "0" : "") + seconds;
     }, []);
 
+
+
+    const skipToCertainTrack = useCallback((trackIndex: number) => {
+      if( playlistId === currentPlayingListId && currentPlayingSongIndex === index) {
+        playPause(!isPlaying);
+      }else {
+        if(playlistId) {
+          playPlaylist(playlistId, trackIndex, 50);
+         }
+      }
+    }, [isPlaying, currentPlayingListId, playPlaylist, playlistId, currentPlayingSongIndex, index, playPause])
+
     return (
       <div
         className={TrackStyles["datagrid-row"]}
@@ -173,7 +196,7 @@ const Track: React.FC<TrackProps> = React.memo(
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
         >
           <button
-            onClick={skipToCertainTrack}
+            onClick={() => skipToCertainTrack(index)}
             className={
               selected ? `${TrackStyles["btn--selected"]}` : TrackStyles.btn
             }

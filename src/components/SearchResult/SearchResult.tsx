@@ -499,8 +499,12 @@ const SearchResult: React.FC<Props> = ({
                     uri={track.uri}
                     trackId={track.id}
                     index={index}
+                    isPlaying={true}
+                    currentPlayingListId="dsds"
+                    currentPlayingSongIndex={2}
                     saveTrack={saveRemoveTracksForCurrentUser}
-                    skipToCertainTrack={() => {}}
+                    playPause={function(ds: boolean) {}}
+                    playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
                     liked={liked}
                     albumId={track.album.id}
                   />

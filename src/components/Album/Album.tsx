@@ -144,11 +144,15 @@ const Album: React.FC<Props> = ({
           explicit={track.explicit}
           uri={track.uri}
           hidePopularity={true}
+          currentPlayingSongIndex={2}
+          isPlaying={true}
+          currentPlayingListId="dssd"
           trackId={track.id}
           index={index}
           liked={liked}
           saveTrack={saveRemoveTracksForCurrentUser}
-          skipToCertainTrack={() => {}}
+          playPause={function(ds: boolean) {}}
+          playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
         />
       );
     }
@@ -200,15 +204,19 @@ const Album: React.FC<Props> = ({
                     index={index}
                     key={track.id + index}
                     title={track.name}
+                    currentPlayingSongIndex={2}
                     artists={track.artists}
                     duration={track.duration_ms}
                     uri={track.uri}
                     explicit={track.explicit}
                     hidePopularity={true}
                     trackId={track.id}
+                    isPlaying={true}
+                    currentPlayingListId="dssd"
                     liked={liked}
                     saveTrack={saveRemoveTracksForCurrentUser}
-                    skipToCertainTrack={() => {}}
+                    playPause={function(ds: boolean) {}}
+                    playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
                   />
                 );
               })

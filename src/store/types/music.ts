@@ -15,6 +15,7 @@ export interface MusicState {
     progressBarPercent: number;
     volume: number;
     muted: boolean;
+    total: number;
 }
 
 export interface SetCurrentSelectedSong {
@@ -22,7 +23,8 @@ export interface SetCurrentSelectedSong {
     payload: {
         track: TrackSimplified,
         trackIndex: number,
-        listId: string
+        listId: string,
+        total: number
     }
 }
 

@@ -32,7 +32,7 @@ const PlaybackBar: React.FC<Props> = ({audio, currentTime, durationTime, progres
         const onTimeUpdate = (e: Event) => {
             if(!mouseDown) {
                 const {duration, currentTime} = (e.composedPath()[0] as HTMLAudioElement);
-                console.log(e);
+                
                 const sliderPercent = (currentTime/duration) * 100;
                 const progressBarPercent = - (100 - sliderPercent);
         

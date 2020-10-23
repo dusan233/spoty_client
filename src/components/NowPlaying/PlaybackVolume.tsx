@@ -73,8 +73,8 @@ const PlaybackVolume: React.FC<Props> = ({setVolume, setMute, volume, audio, mut
         if(mouseDown) {
             const elementXOffset = event.currentTarget.getBoundingClientRect().left;
             const sliderPercent = (100 * (event.pageX - elementXOffset)) / event.currentTarget.clientWidth;
+          
             const volume = sliderPercent / 100;
-            console.log(sliderPercent);
             if(sliderPercent >= 0 && sliderPercent <= 100) {
                 batch(() => {
                     setVolume(volume);

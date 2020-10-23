@@ -307,8 +307,12 @@ const MusicLibrary: React.FC<Props> = ({
                   trackId={savedTrack.track.id}
                   index={index}
                   uri={savedTrack.track.uri}
+                  isPlaying={true}
+                  currentPlayingSongIndex={2}
+                  currentPlayingListId="dss"
                   saveTrack={saveRemoveTracksForCurrentUser}
-                  skipToCertainTrack={() => {}}
+                  playPause={function(ds: boolean) {}}
+                  playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
                   liked={liked}
                   albumId={savedTrack.track.album.id}
                 />

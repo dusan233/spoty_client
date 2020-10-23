@@ -13,7 +13,7 @@ import {
   getMoreTracks,
   removeTracksFromPlaylist,
 } from "../../store/actions/playlist";
-import { playPlaylistSongs } from '../../store/actions/music';
+import { playPlaylistSongs, setPlaying } from '../../store/actions/music';
 import {
   saveRemoveTracksForCurrentUser,
   saveRemovePlaylistForCurrentUser,
@@ -49,7 +49,8 @@ const mapStateToProps = (state: RootState) => ({
   userId: state.user.userId,
   ownerId: state.playlist.ownerId,
   isPlaying: state.music.playing,
-  currentPlayingList: state.music.currentListId
+  currentPlayingList: state.music.currentListId,
+  currentPlayingSongIndex: state.music.currentSongIndex
 });
 const mapDispatchToProps = {
   getPlaylistData,
@@ -59,7 +60,8 @@ const mapDispatchToProps = {
   saveRemoveTracksForCurrentUser,
   saveRemovePlaylistForCurrentUser,
   removeTracksFromPlaylist,
-  playPlaylistSongs
+  playPlaylistSongs,
+  setPlaying
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -78,6 +80,7 @@ const Playlist: React.FC<Props> = ({
   saveRemovePlaylistForCurrentUser,
   removeTracksFromPlaylist,
   playPlaylistSongs,
+  setPlaying,
   match,
   loading,
   name,
@@ -95,7 +98,8 @@ const Playlist: React.FC<Props> = ({
   userId,
   ownerId,
   isPlaying,
-  currentPlayingList
+  currentPlayingList,
+  currentPlayingSongIndex
 }) => {
   const [showSticky, setShowSticky] = useState(false);
   let containerEl = useRef<HTMLDivElement>(null);
@@ -140,17 +144,7 @@ const Playlist: React.FC<Props> = ({
     }
   }
 
-  const skipToCertainTrack = (trackIndex: number) => {
-    
-      if(isPlaying && match.params.playlistId === currentPlayingList) {
-
-      }else {
-       if(match.params.playlistId) {
-        playPlaylistSongs(match.params.playlistId, trackIndex, 50);
-       }
-      }
-   
-  }
+  
 
   const loadMoreTracks = ({ startIndex }: { startIndex: number }) => {
     return getMoreTracks(startIndex, match.params.playlistId, accessToken)
@@ -196,9 +190,13 @@ const Playlist: React.FC<Props> = ({
           playlistOwnerId={ownerId}
           uri={track.track.uri}
           trackId={track.track.id}
+          isPlaying={isPlaying}
+          currentPlayingListId={currentPlayingList}
+          currentPlayingSongIndex={currentPlayingSongIndex}
           saveTrack={saveRemoveTracksForCurrentUser}
           remvoeTrackFromPlaylist={removeTracksFromPlaylist}
-          skipToCertainTrack={() => skipToCertainTrack(index)}
+          playPlaylist={playPlaylistSongs}
+          playPause={setPlaying}
         />
       );
     }

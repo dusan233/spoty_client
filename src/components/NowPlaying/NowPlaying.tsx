@@ -6,7 +6,7 @@ import {history} from '../../index';
 import {connect, ConnectedProps} from 'react-redux';
 import { RootState } from '../../store/reducers';
 import { TrackSimplified } from '../../store/types';
-import { setPlaying, setRepeat } from '../../store/actions/music';
+import { setPlaying, setRepeat, playPlaylistSongs} from '../../store/actions/music';
 import {MdSkipPrevious, MdSkipNext, MdPlayArrow, MdRepeat, MdRepeatOne, MdPause} from 'react-icons/md';
 import PlaybackBar from './PlaybackBar';
 import PlaybackVolume from './PlaybackVolume';
@@ -14,11 +14,15 @@ import PlaybackVolume from './PlaybackVolume';
 const mapStateToProps = (state: RootState) => ({
     isPlaying: state.music.playing,
     currentSelectedSong: state.music.currentSelectedSong,
-    repeatType: state.music.repeatType
+    currentSongIndex: state.music.currentSongIndex,
+    repeatType: state.music.repeatType,
+    nextUpSongs: state.music.nextUpSongs,
+    currentListId: state.music.currentListId
 })
 const mapDispatchToProps = {
     setPlaying,
-    setRepeat
+    setRepeat,
+    playPlaylistSongs
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -27,19 +31,23 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>;
 
-const NowPlaying: React.FC<Props> = ({location, currentSelectedSong, repeatType, isPlaying, setRepeat,  setPlaying}) => {
+const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, currentSongIndex, currentSelectedSong, repeatType, isPlaying, playPlaylistSongs, setRepeat,  setPlaying}) => {
 
     const audio = useRef<HTMLAudioElement>();
 
     useEffect(() => {
         console.log('dadadaad')
+
+        
+
+
         if(!audio.current) audio.current = new Audio();
 
         if(currentSelectedSong && currentSelectedSong.preview_url !== null) {
             console.log('dadadaad')
             audio.current.src = ((currentSelectedSong as TrackSimplified).preview_url) as string;
             setPlaying(true);
-            audio.current.addEventListener('ended', onTrackEnded)
+            
         }
         
         
@@ -48,7 +56,48 @@ const NowPlaying: React.FC<Props> = ({location, currentSelectedSong, repeatType,
         // return () => {
         //     audio.current?.removeEventListener("ended", onTrackEnded)
         // }
-    }, [currentSelectedSong, setPlaying])
+    }, [currentSelectedSong, setPlaying]);
+
+    useEffect(() => {
+        const onTrackEnded = (e: Event) => {
+            console.log("track ended", e)
+            if(repeatType === "repeat-one") {
+                if(audio.current) {
+                    audio.current.currentTime = 0;
+                    audio.current.play()
+                }
+            }
+            if(repeatType === "repeat") {
+                if(!nextUpSongs.length) {
+                    playPlaylistSongs(currentListId, 0, 50);
+                }else {
+                    const offset = currentSongIndex + 1;
+                    playPlaylistSongs(currentListId, offset, 50)
+                }
+            }
+            if(repeatType === "") {
+                
+                if(!nextUpSongs.length) {
+                    setPlaying(false)
+                    console.log("big dick")
+                }else {
+                    const offset = currentSongIndex + 1;
+                    console.log("big dick")
+                    playPlaylistSongs(currentListId, offset, 50)
+                }
+            }
+        }
+
+        if(audio.current) {
+            audio.current.addEventListener('ended', onTrackEnded)
+        }
+
+        return () => {
+            if(audio.current) {
+                audio.current.removeEventListener('ended', onTrackEnded)
+            }
+        }
+    }, [repeatType, currentListId, currentSongIndex, nextUpSongs.length, setPlaying, playPlaylistSongs])
 
     useEffect(() => {
         if(isPlaying) {
@@ -59,9 +108,7 @@ const NowPlaying: React.FC<Props> = ({location, currentSelectedSong, repeatType,
     }, [isPlaying, currentSelectedSong])
 
 
-    const onTrackEnded = (e: Event) => {
-        console.log("track ended", e)
-    }
+    
 
     const play = () => {
         if(currentSelectedSong) {
