@@ -17,7 +17,8 @@ const mapStateToProps = (state: RootState) => ({
     currentSongIndex: state.music.currentSongIndex,
     repeatType: state.music.repeatType,
     nextUpSongs: state.music.nextUpSongs,
-    currentListId: state.music.currentListId
+    currentListId: state.music.currentListId,
+    total: state.music.total
 })
 const mapDispatchToProps = {
     setPlaying,
@@ -31,19 +32,30 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>;
 
-const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, currentSongIndex, currentSelectedSong, repeatType, isPlaying, playPlaylistSongs, setRepeat,  setPlaying}) => {
+const NowPlaying: React.FC<Props> = ({location, total, nextUpSongs, currentListId, currentSongIndex, currentSelectedSong, repeatType, isPlaying, playPlaylistSongs, setRepeat,  setPlaying}) => {
 
     const audio = useRef<HTMLAudioElement>();
 
 
     const nextTrack = useCallback(() => {
-        const offset = currentSongIndex + 1;
-        playPlaylistSongs(currentListId, offset, 50)
-    }, [currentListId, currentSongIndex, playPlaylistSongs])
+        if(!nextUpSongs.length) {
+            playPlaylistSongs(currentListId, 0, 50)
+        }else {
+            const offset = currentSongIndex + 1;
+            playPlaylistSongs(currentListId, offset, 50)
+        }
+        
+    }, [currentListId, currentSongIndex, playPlaylistSongs, nextUpSongs.length])
 
     const prevTrack = () => {
-        const offset = currentSongIndex - 1;
-        playPlaylistSongs(currentListId, offset, 50)
+        if(currentSongIndex === 0) {
+            const offset = total - 1
+            playPlaylistSongs(currentListId, offset, 50)
+        }else {
+            const offset = currentSongIndex - 1;
+            playPlaylistSongs(currentListId, offset, 50)
+        }
+        
     }
 
     useEffect(() => {
@@ -153,13 +165,13 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
             <div className={`${NowPlayingStyles["now-playing-bar__center"]}`}>
                 <div className={`${NowPlayingStyles["player-controls"]}`}>
                     <div className={`${NowPlayingStyles["player-controls__buttons"]}`}>
-                        <button disabled={prevBtnDisabled()} className={`${NowPlayingStyles["control-button"]}`}>
+                        <button onClick={prevTrack} disabled={prevBtnDisabled()} className={`${NowPlayingStyles["control-button"]}`}>
                             <MdSkipPrevious />
                         </button>
                         <button  onClick={play} className={`${NowPlayingStyles["control-button"]} ${NowPlayingStyles["control-button--circled"]}`}>
                             {isPlaying ?  <MdPause />: <MdPlayArrow />  } 
                         </button>
-                        <button disabled={nextBtnDisabled()} className={`${NowPlayingStyles["control-button"]}`}>
+                        <button onClick={nextTrack} disabled={nextBtnDisabled()} className={`${NowPlayingStyles["control-button"]}`}>
                             <MdSkipNext />
                         </button>
                     </div>
