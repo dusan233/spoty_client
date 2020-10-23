@@ -131,6 +131,10 @@
   justify-content: center;
   align-items: center;
 }
+.control-button:disabled {
+  cursor: not-allowed;
+  color: #6b6a6a;
+}
 .control-button:hover {
   color: white;
 }

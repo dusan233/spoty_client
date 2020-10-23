@@ -47,11 +47,6 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
     }
 
     useEffect(() => {
-        console.log('dadadaad')
-
-        
-
-
         if(!audio.current) audio.current = new Audio();
 
         if(currentSelectedSong && currentSelectedSong.preview_url !== null) {
@@ -62,14 +57,10 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
         }else {
             nextTrack()
         }
-        // return () => {
-        //     audio.current?.removeEventListener("ended", onTrackEnded)
-        // }
     }, [currentSelectedSong, setPlaying, nextTrack]);
 
     useEffect(() => {
         const onTrackEnded = (e: Event) => {
-            console.log("track ended", e)
             if(repeatType === "repeat-one") {
                 if(audio.current) {
                     audio.current.currentTime = 0;
@@ -88,10 +79,8 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
                 
                 if(!nextUpSongs.length) {
                     setPlaying(false)
-                    console.log("big dick")
                 }else {
                     const offset = currentSongIndex + 1;
-                    console.log("big dick")
                     playPlaylistSongs(currentListId, offset, 50)
                 }
             }
@@ -119,7 +108,20 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
 
     
 
-    
+    const nextBtnDisabled = () => {
+        if(repeatType !== "repeat") {
+            return !nextUpSongs.length
+        }
+        return false
+    }
+
+
+    const prevBtnDisabled = () => {
+        if(repeatType !== "repeat") {
+            return currentSongIndex === 0
+        }
+        return false
+    }
 
     const play = () => {
         if(currentSelectedSong) {
@@ -151,13 +153,13 @@ const NowPlaying: React.FC<Props> = ({location, nextUpSongs, currentListId, curr
             <div className={`${NowPlayingStyles["now-playing-bar__center"]}`}>
                 <div className={`${NowPlayingStyles["player-controls"]}`}>
                     <div className={`${NowPlayingStyles["player-controls__buttons"]}`}>
-                        <button className={`${NowPlayingStyles["control-button"]}`}>
+                        <button disabled={prevBtnDisabled()} className={`${NowPlayingStyles["control-button"]}`}>
                             <MdSkipPrevious />
                         </button>
-                        <button onClick={play} className={`${NowPlayingStyles["control-button"]} ${NowPlayingStyles["control-button--circled"]}`}>
+                        <button  onClick={play} className={`${NowPlayingStyles["control-button"]} ${NowPlayingStyles["control-button--circled"]}`}>
                             {isPlaying ?  <MdPause />: <MdPlayArrow />  } 
                         </button>
-                        <button className={`${NowPlayingStyles["control-button"]}`}>
+                        <button disabled={nextBtnDisabled()} className={`${NowPlayingStyles["control-button"]}`}>
                             <MdSkipNext />
                         </button>
                     </div>
