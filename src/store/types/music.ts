@@ -1,9 +1,9 @@
-import { TrackSimplified } from ".";
+import { TrackFull, TrackSimplified } from ".";
 import { MusicActionTypes} from '../actions/actionTypes';
 
 export interface MusicState {
     playing: boolean;
-    currentSelectedSong: TrackSimplified | null;
+    currentSelectedSong: TrackFull | null;
     nextUpSongs: TrackSimplified[];
     queueSongs: TrackSimplified[];
     currentListId: string;
@@ -21,7 +21,7 @@ export interface MusicState {
 export interface SetCurrentSelectedSong {
     type: MusicActionTypes.SET_CURRENT_SELECTED_SONG,
     payload: {
-        track: TrackSimplified,
+        track: TrackFull,
         trackIndex: number,
         listId: string,
         total: number

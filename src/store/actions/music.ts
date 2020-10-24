@@ -1,7 +1,7 @@
 import { batch } from "react-redux";
 import { Dispatch, ActionCreator } from "redux"
 import { RootState } from "../reducers"
-import { TrackSimplified } from "../types";
+import { TrackFull, TrackSimplified } from "../types";
 import { MusicActionTypes } from "./actionTypes";
 import {getMoreTracks} from './playlist';
 import { getMoreAlbumTracks } from './album';

@@ -10,6 +10,7 @@ import { setPlaying, setRepeat, playPlaylistSongs} from '../../store/actions/mus
 import {MdSkipPrevious, MdSkipNext, MdPlayArrow, MdRepeat, MdRepeatOne, MdPause} from 'react-icons/md';
 import PlaybackBar from './PlaybackBar';
 import PlaybackVolume from './PlaybackVolume';
+import SongInfo from './SongInfo';
 
 const mapStateToProps = (state: RootState) => ({
     isPlaying: state.music.playing,
@@ -18,7 +19,7 @@ const mapStateToProps = (state: RootState) => ({
     repeatType: state.music.repeatType,
     nextUpSongs: state.music.nextUpSongs,
     currentListId: state.music.currentListId,
-    total: state.music.total
+    total: state.music.total,
 })
 const mapDispatchToProps = {
     setPlaying,
@@ -163,9 +164,7 @@ const NowPlaying: React.FC<Props> = ({location, total, nextUpSongs, currentListI
     return (
         <div className={`${NowPlayingStyles["now-playing-bar"]}`}>
             <div className={`${NowPlayingStyles["now-playing-bar__left"]}`}>
-                <span>
-                    dsa
-                </span>
+                {currentSelectedSong && <SongInfo artists={currentSelectedSong.artists} albumId={currentSelectedSong.album.id} img={currentSelectedSong.album.images[0].url} title={currentSelectedSong.name} />}
             </div>
             <div className={`${NowPlayingStyles["now-playing-bar__center"]}`}>
                 <div className={`${NowPlayingStyles["player-controls"]}`}>
