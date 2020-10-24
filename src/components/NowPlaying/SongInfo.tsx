@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import NowPlayingStyles from './NowPlaying.module.css';
 import {Link} from 'react-router-dom';
 import { ArtistSimplified } from '../../store/types/artist';
+import { FaRegHeart } from 'react-icons/fa';
 
 type Props = {
     img: string | undefined,
@@ -53,6 +54,9 @@ const SongInfo: React.FC<Props> = ({img, title, albumId, artists}) => {
                     {getArtists()}
                 </div>
             </div>
+            <button className={`${NowPlayingStyles["extra-controls-button"]} margin-left`}>
+                <FaRegHeart />
+            </button>
         </div>
     )
 }

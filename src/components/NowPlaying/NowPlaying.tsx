@@ -184,7 +184,7 @@ const NowPlaying: React.FC<Props> = ({location, total, nextUpSongs, currentListI
             </div>
             <div className={`${NowPlayingStyles["now-playing-bar__right"]}`}>
                 <div className={`${NowPlayingStyles["extra-controls"]}`}>
-                    <div onClick={openCloseQueue} className={`${location.pathname === "/queue" ? NowPlayingStyles["extra-controls-button--opened"] : NowPlayingStyles["extra-controls-button"]}`} >
+                    <div title="Queue" onClick={openCloseQueue} className={`${location.pathname === "/queue" ? NowPlayingStyles["extra-controls-button--opened"] : NowPlayingStyles["extra-controls-button"]}`} >
                         <RiPlayListLine />
                     </div>
                     <div title={!repeatType ? "Enable repeat" : repeatType === "repeat" ? "Enable repeat-one" : "Disable repeat" } onClick={setRepeatType} className={repeatType === "" ? `${ NowPlayingStyles["extra-controls-button"]}` : `${ NowPlayingStyles["extra-controls-button"]} ${ NowPlayingStyles["extra-controls-button--opened"]}` }>
