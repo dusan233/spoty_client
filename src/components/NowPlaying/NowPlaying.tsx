@@ -69,6 +69,9 @@ const NowPlaying: React.FC<Props> = ({location, total, nextUpSongs, currentListI
         }else {
             //problem on first load.
             // nextTrack()
+            if(currentSelectedSong) {
+                nextTrack()
+            }
         }
 
     }, [currentSelectedSong, setPlaying, nextTrack]);

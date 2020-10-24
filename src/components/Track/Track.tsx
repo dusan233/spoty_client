@@ -196,6 +196,7 @@ const Track: React.FC<TrackProps> = React.memo(
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
         >
           <button
+            title={preview_url ? 'play' : 'no song preview'}
             disabled={!preview_url}
             onClick={() => skipToCertainTrack(index)}
             className={
