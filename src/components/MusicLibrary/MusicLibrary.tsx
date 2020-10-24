@@ -308,6 +308,7 @@ const MusicLibrary: React.FC<Props> = ({
                   index={index}
                   uri={savedTrack.track.uri}
                   isPlaying={true}
+                  preview_url={savedTrack.track.preview_url}
                   currentPlayingSongIndex={2}
                   currentPlayingListId="dss"
                   saveTrack={saveRemoveTracksForCurrentUser}

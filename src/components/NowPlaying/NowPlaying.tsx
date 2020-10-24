@@ -67,8 +67,10 @@ const NowPlaying: React.FC<Props> = ({location, total, nextUpSongs, currentListI
             setPlaying(true);
             
         }else {
-            nextTrack()
+            //problem on first load.
+            // nextTrack()
         }
+
     }, [currentSelectedSong, setPlaying, nextTrack]);
 
     useEffect(() => {

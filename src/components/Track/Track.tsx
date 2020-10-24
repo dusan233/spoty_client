@@ -17,8 +17,6 @@ import { Link } from "react-router-dom";
 import { ArtistSimplified } from "../../store/types/artist";
 import useSelected from "../../hooks/useSelected";
 import Dropdown from "../Dropdown/Dropdown";
-import { ActionCreator } from "redux";
-import { SetPlaying } from "../../store/types/music";
 
 interface TrackProps {
   title: string;
@@ -39,6 +37,7 @@ interface TrackProps {
   trackId: string;
   uri: string;
   isPlaying: boolean;
+  preview_url: string | null;
   currentPlayingListId: string;
   currentPlayingSongIndex: number;
   saveTrack: (trackIds: string, index: number, action: string) => Promise<void>;
@@ -76,6 +75,7 @@ const Track: React.FC<TrackProps> = React.memo(
     userId,
     playlistOwnerId,
     playlistId,
+    preview_url,
     saveTrack,
     remvoeTrackFromPlaylist,
     playPlaylist,
@@ -196,6 +196,7 @@ const Track: React.FC<TrackProps> = React.memo(
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
         >
           <button
+            disabled={!preview_url}
             onClick={() => skipToCertainTrack(index)}
             className={
               selected ? `${TrackStyles["btn--selected"]}` : TrackStyles.btn

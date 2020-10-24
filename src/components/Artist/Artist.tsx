@@ -198,6 +198,7 @@ const Artist: React.FC<Props> = ({
                         index={i}
                         duration={track.duration_ms}
                         explicit={track.explicit}
+                        preview_url={track.preview_url}
                         currentPlayingSongIndex={2}
                         trackId={track.id}
                         type="playlist"

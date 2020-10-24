@@ -211,6 +211,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.btn:disabled,
+.btn--selected:disabled {
+  border: 2px solid #989898;
+  background: black;
+}
 .btn--selected {
   display: flex;
 }

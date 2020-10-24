@@ -500,6 +500,7 @@ const SearchResult: React.FC<Props> = ({
                     trackId={track.id}
                     index={index}
                     isPlaying={true}
+                    preview_url={track.preview_url}
                     currentPlayingListId="dsds"
                     currentPlayingSongIndex={2}
                     saveTrack={saveRemoveTracksForCurrentUser}

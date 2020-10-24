@@ -61,6 +61,7 @@ const PlaybackBar: React.FC<Props> = ({audio, currentTime, durationTime, progres
         return (() => {
             if(audio) {
                 audio.removeEventListener("timeupdate", onTimeUpdate);
+                
             }
         })
     }, [audio, setTime, setProgressValues, mouseDown])
