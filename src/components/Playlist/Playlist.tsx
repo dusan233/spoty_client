@@ -239,6 +239,9 @@ const Playlist: React.FC<Props> = ({
             totalSongs={total}
             type="Playlist"
             playPlaylist={playPlaylist}
+            currentPlayingList={currentPlayingList}
+            isPlaying={isPlaying}
+            playPause={setPlaying}
           />
           {!tracks.length ? (
             <div className="error-container--small">
@@ -271,6 +274,9 @@ const Playlist: React.FC<Props> = ({
                   img={img}
                   title={name}
                   owner={owner}
+                  currentPlayingList={currentPlayingList}
+                  isPlaying={isPlaying}
+                  playPause={setPlaying}
                   playPlaylist={playPlaylist}
                 />
               )}

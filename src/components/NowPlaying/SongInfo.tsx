@@ -54,9 +54,7 @@ const SongInfo: React.FC<Props> = ({img, title, albumId, artists}) => {
                     {getArtists()}
                 </div>
             </div>
-            <button className={`${NowPlayingStyles["extra-controls-button"]} margin-left`}>
-                <FaRegHeart />
-            </button>
+            
         </div>
     )
 }

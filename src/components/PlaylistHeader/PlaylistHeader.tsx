@@ -8,6 +8,8 @@ import Dropdown from "../Dropdown/Dropdown";
 import { FaHeart, FaEdit } from "react-icons/fa";
 import Modal from "react-modal";
 import CreatePlaylist from "../CreatePlaylist/CreatePlaylist";
+import { ActionCreator } from "redux";
+import { SetPlaying } from "../../store/types/music";
 
 interface PlaylistProps {
   name: string;
@@ -21,6 +23,8 @@ interface PlaylistProps {
   liked: boolean;
   playlistId: string | undefined;
   userId: string;
+  currentPlayingList: string;
+  isPlaying: boolean;
   savePlaylist: (
     playlistId: string,
     index: number,
@@ -28,6 +32,7 @@ interface PlaylistProps {
     name: string
   ) => Promise<void>;
   playPlaylist: () => void;
+  playPause: ActionCreator<SetPlaying>;
 }
 
 Modal.setAppElement("#modal");
@@ -43,6 +48,9 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
   playlistId,
   userId,
   ownerId,
+  currentPlayingList,
+  isPlaying,
+  playPause,
   savePlaylist,
   playPlaylist
 }) => {
@@ -56,6 +64,14 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
       savePlaylist(playlistId, 0, action, name);
     }
   };
+
+  const playSong = () => {
+    if(currentPlayingList === playlistId) {
+      playPause(!isPlaying);
+    }else {
+      playPlaylist();
+    }
+  }
 
   return (
     <div className={PlaylistHeaderStyles.container}>
@@ -95,7 +111,9 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
           </div>
           <div className={PlaylistHeaderStyles.controlls}>
             {totalSongs ? (
-              <button onClick={playPlaylist} className="btn btn--green btn--circle">Play</button>
+              <button onClick={playSong} className="btn btn--green btn--circle">
+                {isPlaying ? "Pause": "Play"}
+              </button>
             ) : null}
 
             {userId === ownerId ? null : (

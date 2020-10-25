@@ -8,6 +8,8 @@ import { FaEdit, FaHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Modal from "react-modal";
 import CreatePlaylist from "../CreatePlaylist/CreatePlaylist";
+import { ActionCreator } from "redux";
+import { SetPlaying } from "../../store/types/music";
 
 type Props = {
   img: string | undefined;
@@ -20,6 +22,8 @@ type Props = {
   liked: boolean;
   ownerId: string;
   userId: string;
+  currentPlayingList: string;
+  isPlaying: boolean;
   savePlaylist: (
     playlistId: string,
     index: number,
@@ -27,6 +31,7 @@ type Props = {
     name: string
   ) => Promise<void>;
   playPlaylist: () => void;
+  playPause: ActionCreator<SetPlaying>
 };
 
 const containerVariants = {
@@ -68,6 +73,9 @@ const StickyHeader: React.FC<Props> = ({
   userId,
   totalSongs,
   liked,
+  currentPlayingList,
+  isPlaying,
+  playPause,
   playlistId,
   savePlaylist,
   playPlaylist
@@ -82,6 +90,16 @@ const StickyHeader: React.FC<Props> = ({
       savePlaylist(playlistId, 0, action, title);
     }
   };
+
+
+  const playSong = () => {
+    if(currentPlayingList === playlistId) {
+      playPause(!isPlaying);
+    }else {
+      playPlaylist();
+    }
+  }
+
   return (
     <div className={`${StickyHeaderStyles["sticky-header-wrap"]}`}>
       <Modal
@@ -119,11 +137,11 @@ const StickyHeader: React.FC<Props> = ({
           <div className={`${StickyHeaderStyles["sticky-header__controlls"]}`}>
             {totalSongs ? (
               <motion.button
-                onClick={playPlaylist}
+                onClick={playSong}
                 className="btn btn--green btn--circle"
                 variants={controllsVariants}
               >
-                Play
+                {isPlaying ? "Pause" : "Play"}
               </motion.button>
             ) : null}
 
