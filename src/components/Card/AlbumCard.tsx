@@ -3,16 +3,22 @@ import CardStyles from "./Card.module.css";
 import { ArtistSimplified } from "../../store/types/artist";
 import { Link } from "react-router-dom";
 
-import { BsPlayFill } from "react-icons/bs";
+import { BsPlayFill, BsPauseFill } from "react-icons/bs";
+import { ActionCreator } from "redux";
+import { SetPlaying } from "../../store/types/music";
 
 interface IProps {
   img: string | undefined;
   name: string;
   artists: ArtistSimplified[];
   albumId: string;
+  currentPlayingList: string;
+  isPlaying: boolean;
+  playPause: ActionCreator<SetPlaying>
+  playSongs: (albumId: string, songIndex: number, endIndex: number) => Promise<void>
 }
 
-const AlbumCard: React.FC<IProps> = ({ name, img, artists, albumId }) => {
+const AlbumCard: React.FC<IProps> = ({ name, img, artists, albumId, currentPlayingList, isPlaying,playPause, playSongs }) => {
   const renderArtists = () => {
     let artistsString = "";
     artists.forEach((artist) => {
@@ -20,6 +26,15 @@ const AlbumCard: React.FC<IProps> = ({ name, img, artists, albumId }) => {
     });
     return artistsString;
   };
+
+
+  const playSong = () => {
+    if(currentPlayingList === albumId) {
+      playPause(!isPlaying);
+    }else {
+      playSongs(albumId, 0, 50);
+    }
+  }
 
   return (
     <div className={CardStyles.card}>
@@ -33,8 +48,8 @@ const AlbumCard: React.FC<IProps> = ({ name, img, artists, albumId }) => {
         </div>
         <div className={CardStyles.card__overlay}>
           <div className={CardStyles.card__overlay__content}>
-            <button className={`${CardStyles.btn} ${CardStyles["btn--play"]}`}>
-              <BsPlayFill />
+            <button onClick={playSong} className={`${CardStyles.btn} ${CardStyles["btn--play"]}`}>
+            {isPlaying && currentPlayingList === albumId ? <BsPauseFill /> : <BsPlayFill />} 
             </button>
           </div>
         </div>

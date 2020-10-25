@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { getHomeData, setHomeLoading } from "../../store/actions/home";
 import { RootState } from "../../store/reducers/index";
 import { setError } from "../../store/actions/error";
-import { setPlaying, playPlaylistSongs } from "../../store/actions/music";
+import { setPlaying, playPlaylistSongs, playAlbumSongs } from "../../store/actions/music";
 
 import HomeStyles from "./Home.module.css";
 import Spinner from "../Spinner/Spinner";
@@ -24,7 +24,8 @@ const mapDispatchToProps = {
   setHomeLoading,
   setError,
   setPlaying,
-  playPlaylistSongs
+  playPlaylistSongs,
+  playAlbumSongs
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -38,6 +39,7 @@ const Home: React.FC<Props> = ({
   setError,
   setPlaying,
   playPlaylistSongs,
+  playAlbumSongs,
   loading,
   currentPlayingList,
   isPlaying,
@@ -105,6 +107,10 @@ const Home: React.FC<Props> = ({
                     name={album.name}
                     artists={album.artists}
                     albumId={album.id}
+                    currentPlayingList={currentPlayingList}
+                    isPlaying={isPlaying}
+                    playPause={setPlaying}
+                    playSongs={playAlbumSongs}
                   />
                 );
               })}

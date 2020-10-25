@@ -57,6 +57,7 @@ export interface AlbumSimplified {
 
 export interface MoreAlbumTracks {
   items: TrackSimplified[];
+  total: number;
 }
 
 export interface SavedAlbum {

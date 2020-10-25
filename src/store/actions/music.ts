@@ -7,6 +7,7 @@ import {getMoreTracks} from './playlist';
 import { getMoreAlbumTracks } from './album';
 import {checkCurrentUserSavedTracks, setTrackLikes} from './user';
 import { setDurCurTime, SetMute, SetPlaying, setSlidersValue, SetVolume } from "../types/music";
+import { api } from "../../axios";
 
 
 export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string, total: number ) => ({ 
@@ -66,20 +67,9 @@ export const playPlaylistSongs = ( playlistId: string, songIndex: number, endInd
 
         try {
             const resSongs = await getMoreTracks(songIndex, playlistId, accessToken, endIndex)
-            let trackIds = "";
-            resSongs.data.items.forEach((track) => {
-                if (trackIds === " ") {
-                  trackIds += track.track.id;
-                } else {
-                  trackIds += "," + track.track.id;
-                }
-              });
-            const savedTracksRes = await checkCurrentUserSavedTracks(trackIds, accessToken)
-              
-              console.log(resSongs, "ddaad")
+           
             batch(() => {
                 dispatch(setCurrentSelectedSong(resSongs.data.items[0].track, songIndex, playlistId, resSongs.data.total))
-                dispatch(setTrackLikes([...savedTracksRes.data]))
                 dispatch(setNextUpSongs(resSongs.data.items.map(item => item.track).slice(1, 51)))
             })
         }catch(err) {
@@ -88,13 +78,26 @@ export const playPlaylistSongs = ( playlistId: string, songIndex: number, endInd
     }
 }
 
-// export const playAlbumSongs = (albumId: string) => {
-//     return async (dispatch: Dispatch, getState: () => RootState) => {
-//         const accessToken = getState().auth.accessToken;
-//         try {
-//             const resSongs = await getMoreAlbumTracks()
-//         }catch(err) {
+export const playAlbumSongs = (albumId: string, songIndex: number, endIndex: number) => {
+    return async (dispatch: Dispatch, getState: () => RootState) => {
+        const accessToken = getState().auth.accessToken;
+        try {
+            const resSongs = await getMoreAlbumTracks(songIndex, albumId, accessToken);
+            const resCurrentSong = await api.get<TrackFull>(`/tracks/${resSongs.data.items[0].id}`, {
+                params: {
+                    market: "US"
+                },
+                headers: {
+                    Authorization: "Bearer " + accessToken,
+                  },
+            })
 
-//         }
-//     }
-// }
+            batch(() => {
+                dispatch(setCurrentSelectedSong(resCurrentSong.data, songIndex, albumId, resSongs.data.total))
+                dispatch(setNextUpSongs(resSongs.data.items.map(item => item).slice(1, 51)))
+            })
+        }catch(err) {
+            console.log(err)
+        }
+    }
+}
