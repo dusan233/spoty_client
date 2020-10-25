@@ -141,7 +141,7 @@ const StickyHeader: React.FC<Props> = ({
                 className="btn btn--green btn--circle"
                 variants={controllsVariants}
               >
-                {isPlaying ? "Pause" : "Play"}
+                {isPlaying && currentPlayingList === playlistId ? "Pause" : "Play"}
               </motion.button>
             ) : null}
 

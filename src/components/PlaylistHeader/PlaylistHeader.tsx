@@ -112,7 +112,7 @@ const PlaylistHeader: React.FC<PlaylistProps> = ({
           <div className={PlaylistHeaderStyles.controlls}>
             {totalSongs ? (
               <button onClick={playSong} className="btn btn--green btn--circle">
-                {isPlaying ? "Pause": "Play"}
+                {isPlaying && currentPlayingList === playlistId ? "Pause" : "Play"}
               </button>
             ) : null}
 

@@ -2,17 +2,32 @@ import React from "react";
 import CardStyles from "./Card.module.css";
 import { Link } from "react-router-dom";
 
-import { BsPlayFill } from "react-icons/bs";
+import { BsPlayFill, BsPauseFill } from "react-icons/bs";
+import { ActionCreator } from "redux";
+import { SetPlaying } from "../../store/types/music";
 
 interface IProps {
   img: string | undefined;
   name: string;
   description: string | null;
   playlistId: string;
+  currentPlayingList: string;
+  isPlaying: boolean;
+  playPause: ActionCreator<SetPlaying>
+  playSongs: (playlistId: string, songIndex: number, endIndex: number) => Promise<void>
 }
 
 const PlaylistCard: React.FC<IProps> = React.memo(
-  ({ name, img, description, playlistId }) => {
+  ({ name, img, description, playlistId, currentPlayingList, isPlaying, playPause, playSongs }) => {
+
+    const playSong = () => {
+      if(currentPlayingList === playlistId) {
+        playPause(!isPlaying);
+      }else {
+        playSongs(playlistId, 0, 50);
+      }
+    }
+
     return (
       <div className={CardStyles.card}>
         <div className={CardStyles.card__image_container}>
@@ -26,9 +41,10 @@ const PlaylistCard: React.FC<IProps> = React.memo(
           <div className={CardStyles.card__overlay}>
             <div className={CardStyles.card__overlay__content}>
               <button
+              onClick={playSong}
                 className={`${CardStyles.btn} ${CardStyles["btn--play"]}`}
               >
-                <BsPlayFill />
+                 {isPlaying && currentPlayingList === playlistId ? <BsPauseFill /> : <BsPlayFill />} 
               </button>
             </div>
           </div>

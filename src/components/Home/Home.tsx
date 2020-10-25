@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { getHomeData, setHomeLoading } from "../../store/actions/home";
 import { RootState } from "../../store/reducers/index";
 import { setError } from "../../store/actions/error";
+import { setPlaying, playPlaylistSongs } from "../../store/actions/music";
 
 import HomeStyles from "./Home.module.css";
 import Spinner from "../Spinner/Spinner";
@@ -15,11 +16,15 @@ const mapStateToProps = (state: RootState) => ({
   loading: state.home.loading,
   error: state.error.errorMsg,
   subErrorMsg: state.error.subMsg,
+  currentPlayingList: state.music.currentListId,
+  isPlaying: state.music.playing,
 });
 const mapDispatchToProps = {
   getHomeData,
   setHomeLoading,
   setError,
+  setPlaying,
+  playPlaylistSongs
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -31,7 +36,11 @@ const Home: React.FC<Props> = ({
   getHomeData,
   setHomeLoading,
   setError,
+  setPlaying,
+  playPlaylistSongs,
   loading,
+  currentPlayingList,
+  isPlaying,
   featuredPlaylists,
   newReleases,
   error,
@@ -75,6 +84,10 @@ const Home: React.FC<Props> = ({
                     name={playlist.name}
                     description={playlist.description}
                     playlistId={playlist.id}
+                    currentPlayingList={currentPlayingList}
+                    isPlaying={isPlaying}
+                    playPause={setPlaying}
+                    playSongs={playPlaylistSongs}
                   />
                 );
               })}
