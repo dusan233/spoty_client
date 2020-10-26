@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   List,
   AutoSizer,
@@ -171,35 +171,33 @@ const Playlist: React.FC<Props> = ({
         </div>
       );
     } else {
-      return (
-        <Track
-          type="playlist"
-          index={index}
-          key={track.track.id + index}
-          style={style}
-          title={track.track.name}
-          artists={track.track.artists}
-          album={track.track.album.name}
-          duration={track.track.duration_ms}
-          explicit={track.track.explicit}
-          popularity={track.track.popularity}
-          albumId={track.track.album.id}
-          liked={liked}
-          playlistId={match.params.playlistId}
-          userId={userId}
-          preview_url={track.track.preview_url}
-          playlistOwnerId={ownerId}
-          uri={track.track.uri}
-          trackId={track.track.id}
-          isPlaying={isPlaying}
-          currentPlayingListId={currentPlayingList}
-          currentPlayingSongIndex={currentPlayingSongIndex}
-          saveTrack={saveRemoveTracksForCurrentUser}
-          remvoeTrackFromPlaylist={removeTracksFromPlaylist}
-          playPlaylist={playPlaylistSongs}
-          playPause={setPlaying}
-        />
-      );
+      return (<Track
+      type="playlist"
+      index={index}
+      key={track.track.id + index}
+      style={style}
+      title={track.track.name}
+      artists={track.track.artists}
+      album={track.track.album.name}
+      duration={track.track.duration_ms}
+      explicit={track.track.explicit}
+      popularity={track.track.popularity}
+      albumId={track.track.album.id}
+      liked={liked}
+      playlistId={match.params.playlistId}
+      userId={userId}
+      preview_url={track.track.preview_url}
+      playlistOwnerId={ownerId}
+      uri={track.track.uri}
+      trackId={track.track.id}
+      isPlaying={isPlaying}
+      currentPlayingListId={currentPlayingList}
+      currentPlayingSongIndex={currentPlayingSongIndex}
+      saveTrack={saveRemoveTracksForCurrentUser}
+      remvoeTrackFromPlaylist={removeTracksFromPlaylist}
+      playPlaylist={playPlaylistSongs}
+      playPause={setPlaying}
+    />) 
     }
   };
 

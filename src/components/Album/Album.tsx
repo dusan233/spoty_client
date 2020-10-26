@@ -159,19 +159,20 @@ const Album: React.FC<Props> = ({
           title={track.name}
           artists={track.artists}
           duration={track.duration_ms}
+          albumId={match.params.albumId}
           explicit={track.explicit}
           preview_url={track.preview_url}
           uri={track.uri}
           hidePopularity={true}
-          currentPlayingSongIndex={2}
-          isPlaying={true}
-          currentPlayingListId="dssd"
+          currentPlayingSongIndex={currentPlayingSongIndex}
+          isPlaying={isPlaying}
+          currentPlayingListId={currentPlayingList}
           trackId={track.id}
           index={index}
           liked={liked}
           saveTrack={saveRemoveTracksForCurrentUser}
-          playPause={function(ds: boolean) {}}
-          playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
+          playPause={setPlaying}
+          playPlaylist={playAlbumSongs}
         />
       );
     }
@@ -227,20 +228,21 @@ const Album: React.FC<Props> = ({
                     index={index}
                     key={track.id + index}
                     title={track.name}
+                    albumId={match.params.albumId}
                     preview_url={track.preview_url}
-                    currentPlayingSongIndex={2}
+                    currentPlayingSongIndex={currentPlayingSongIndex}
                     artists={track.artists}
                     duration={track.duration_ms}
                     uri={track.uri}
                     explicit={track.explicit}
                     hidePopularity={true}
                     trackId={track.id}
-                    isPlaying={true}
-                    currentPlayingListId="dssd"
+                    isPlaying={isPlaying}
+                    currentPlayingListId={currentPlayingList}
                     liked={liked}
                     saveTrack={saveRemoveTracksForCurrentUser}
-                    playPause={function(ds: boolean) {}}
-                    playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
+                    playPause={setPlaying}
+                    playPlaylist={playAlbumSongs}
                   />
                 );
               })

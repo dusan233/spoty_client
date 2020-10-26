@@ -3,11 +3,13 @@ import TrackStyles from "./Track.module.css";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Modal from "react-modal";
 import AddToPlaylist from "../AddToPlaylist/AddToPlaylist";
+import platingGif from '../../assets/equaliser-animated-green.73b73928.gif'
 import {
   BsPlayFill,
   BsMusicNote,
   BsThreeDots,
   BsFillPersonFill,
+  BsPauseFill,
 } from "react-icons/bs";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { RiPlayListLine, RiPlayListAddLine, RiAlbumLine } from "react-icons/ri";
@@ -53,7 +55,8 @@ interface TrackProps {
 
 Modal.setAppElement("#modal");
 
-const Track: React.FC<TrackProps> = React.memo(
+const Track: React.FC<TrackProps> = 
+React.memo(
   ({
     title,
     artists,
@@ -166,15 +169,48 @@ const Track: React.FC<TrackProps> = React.memo(
 
 
 
+    const skipToCertainTrackAlbum = useCallback((trackIndex: number) => {
+      if(albumId) {
+        console.log(albumId, currentPlayingListId)
+        console.log(currentPlayingSongIndex, index)
+              if(albumId === currentPlayingListId && currentPlayingSongIndex === index) {
+                console.log(isPlaying)
+                playPause(!isPlaying)
+              }else {
+                playPlaylist(albumId, trackIndex, 50);
+              }
+            }
+    }, [isPlaying, currentPlayingSongIndex, currentPlayingListId, playPlaylist, playPause, albumId, index])
+
     const skipToCertainTrack = useCallback((trackIndex: number) => {
-      if( playlistId === currentPlayingListId && currentPlayingSongIndex === index) {
-        playPause(!isPlaying);
-      }else {
-        if(playlistId) {
-          playPlaylist(playlistId, trackIndex, 50);
-         }
+      if(playlistId) {
+        if( playlistId === currentPlayingListId && currentPlayingSongIndex === index) {
+          playPause(!isPlaying);
+        }else {
+            playPlaylist(playlistId, trackIndex, 50);
+        }
       }
+      
     }, [isPlaying, currentPlayingListId, playPlaylist, playlistId, currentPlayingSongIndex, index, playPause])
+
+
+    const returnPlayPauseButton = () => {
+      if(type === "album") {
+        return albumId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
+      }else {
+        return playlistId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
+      }
+    }
+
+    const songSelected = () => {
+      let listId: string | undefined = "";
+      if(type === "album") {
+        listId = albumId
+      }else {
+        listId = playlistId
+      }
+        return listId === currentPlayingListId && currentPlayingSongIndex === index 
+   }
 
     return (
       <div
@@ -198,14 +234,20 @@ const Track: React.FC<TrackProps> = React.memo(
           <button
             title={preview_url ? 'play' : 'no song preview'}
             disabled={!preview_url}
-            onClick={() => skipToCertainTrack(index)}
+            onClick={() => {
+              if(type === "album") {
+                skipToCertainTrackAlbum(index);
+              }else {
+                skipToCertainTrack(index);
+              }
+            }}
             className={
               selected ? `${TrackStyles["btn--selected"]}` : TrackStyles.btn
             }
           >
-            <BsPlayFill />
+             {returnPlayPauseButton()}
           </button>
-          <BsMusicNote />
+          {songSelected() && isPlaying ? <img src={platingGif} alt=""/> : <BsMusicNote /> }
         </div>
         <div
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-love"]}`}
@@ -229,7 +271,7 @@ const Track: React.FC<TrackProps> = React.memo(
           )}
         </div>
         <div
-          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-title"]}`}
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-title"]} ${songSelected() && TrackStyles["datagrid-cell--playing"]}`}
         >
           <span title={title}>{title}</span>
         </div>
@@ -250,9 +292,9 @@ const Track: React.FC<TrackProps> = React.memo(
           </div>
         )}
         <div
-          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-album"]} `}
+          className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-album"]} ${songSelected() && TrackStyles["datagrid-cell--playing"]}  `}
         >
-          <Link title={album} to={`/album/${albumId}`}>
+          <Link title={album}  to={`/album/${albumId}`}>
             {album}
           </Link>
         </div>
