@@ -10,13 +10,14 @@ import { setDurCurTime, SetMute, SetPlaying, setSlidersValue, SetVolume } from "
 import { api } from "../../axios";
 
 
-export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string, total: number ) => ({ 
+export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string, total: number, type: string ) => ({ 
     type: MusicActionTypes.SET_CURRENT_SELECTED_SONG,
     payload: {
         track: song,
         trackIndex,
         listId,
-        total
+        total,
+        type
     }
 })
 
@@ -69,7 +70,7 @@ export const playPlaylistSongs = ( playlistId: string, songIndex: number, endInd
             const resSongs = await getMoreTracks(songIndex, playlistId, accessToken, endIndex)
            
             batch(() => {
-                dispatch(setCurrentSelectedSong(resSongs.data.items[0].track, songIndex, playlistId, resSongs.data.total))
+                dispatch(setCurrentSelectedSong(resSongs.data.items[0].track, songIndex, playlistId, resSongs.data.total, "playlist"))
                 dispatch(setNextUpSongs(resSongs.data.items.map(item => item.track).slice(1, 51)))
             })
         }catch(err) {
@@ -93,7 +94,7 @@ export const playAlbumSongs = (albumId: string, songIndex: number, endIndex: num
             })
 
             batch(() => {
-                dispatch(setCurrentSelectedSong(resCurrentSong.data, songIndex, albumId, resSongs.data.total))
+                dispatch(setCurrentSelectedSong(resCurrentSong.data, songIndex, albumId, resSongs.data.total, "album"))
                 dispatch(setNextUpSongs(resSongs.data.items.map(item => item).slice(1, 51)))
             })
         }catch(err) {

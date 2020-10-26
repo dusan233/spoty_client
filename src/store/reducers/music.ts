@@ -15,7 +15,8 @@ const initialState: MusicState = {
     progressBarPercent: -100,
     volume: 0.5,
     muted: false,
-    total: 0
+    total: 0,
+    type: ""
 }
 
 const reducer = (state = initialState, action: MusicActions) => {
@@ -26,7 +27,8 @@ const reducer = (state = initialState, action: MusicActions) => {
                 currentSelectedSong: action.payload.track,
                 currentSongIndex: action.payload.trackIndex,
                 currentListId: action.payload.listId,
-                total: action.payload.total
+                total: action.payload.total,
+                type: action.payload.type
             }
         case MusicActionTypes.SET_NEXT_UP_SONGS:
             return {

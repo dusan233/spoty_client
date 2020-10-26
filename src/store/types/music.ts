@@ -16,6 +16,7 @@ export interface MusicState {
     volume: number;
     muted: boolean;
     total: number;
+    type: string;
 }
 
 export interface SetCurrentSelectedSong {
@@ -24,7 +25,8 @@ export interface SetCurrentSelectedSong {
         track: TrackFull,
         trackIndex: number,
         listId: string,
-        total: number
+        total: number,
+        type: string
     }
 }
 
