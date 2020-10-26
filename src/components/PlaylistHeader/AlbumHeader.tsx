@@ -10,6 +10,8 @@ import Dropdown from "../Dropdown/Dropdown";
 import { FaHeart } from "react-icons/fa";
 import Modal from "react-modal";
 import AddToPlaylist from "../AddToPlaylist/AddToPlaylist";
+import { ActionCreator } from "redux";
+import { SetPlaying } from "../../store/types/music";
 
 interface AlbumProps {
   albumId: string | undefined;
@@ -22,7 +24,11 @@ interface AlbumProps {
   liked: boolean;
   totalTracks: number;
   trackUris: string;
+  currentPlayingList: string;
+  isPlaying: boolean;
   saveAlbum: (albumIds: string, index: number, action: string) => Promise<void>;
+  playAlbum: () => void;
+  playPause: ActionCreator<SetPlaying>;
 }
 
 Modal.setAppElement("#modal");
@@ -37,6 +43,10 @@ const AlbumHeader: React.FC<AlbumProps> = ({
   liked,
   totalTracks,
   trackUris,
+  currentPlayingList,
+  isPlaying,
+  playAlbum,
+  playPause,
   saveAlbum,
   albumId,
 }) => {
@@ -60,6 +70,14 @@ const AlbumHeader: React.FC<AlbumProps> = ({
       saveAlbum(albumId, 0, action);
     }
   };
+
+  const playSong = () => {
+    if(currentPlayingList === albumId) {
+      playPause(!isPlaying);
+    }else {
+      playAlbum();
+    }
+  }
 
   const getArtists = useCallback(() => {
     let artistsString: any[] = [];
@@ -114,7 +132,10 @@ const AlbumHeader: React.FC<AlbumProps> = ({
             <span> {dateAdded && dateAdded.slice(0, 4)}</span>
           </div>
           <div className={PlaylistHeaderStyles.controlls}>
-            <button className="btn btn--green btn--circle">Play</button>
+            <button onClick={playSong} className="btn btn--green btn--circle">
+              
+            {isPlaying && currentPlayingList === albumId ? "Pause" : "Play"}
+            </button>
             <button
               onClick={saveRemoveAlbum}
               className={

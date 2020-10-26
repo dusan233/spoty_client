@@ -20,6 +20,7 @@ import {
 import { setError } from "../../store/actions/error";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "../../store/reducers/index";
+import { playAlbumSongs, setPlaying } from '../../store/actions/music';
 
 import { BsMusicNoteBeamed } from "react-icons/bs";
 import AlbumStyles from "./Album.module.css";
@@ -42,6 +43,9 @@ const mapStateToProps = (state: RootState) => ({
   subErrorMsg: state.error.subMsg,
   trackLikes: state.user.trackLikes,
   albumLikes: state.user.albumLikes,
+  isPlaying: state.music.playing,
+  currentPlayingList: state.music.currentListId,
+  currentPlayingSongIndex: state.music.currentSongIndex
 });
 
 const mapDispatchToProps = {
@@ -52,6 +56,8 @@ const mapDispatchToProps = {
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
   addTracksToPlaylist,
+  setPlaying,
+  playAlbumSongs
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -71,6 +77,8 @@ const Album: React.FC<Props> = ({
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
   addTracksToPlaylist,
+  setPlaying,
+  playAlbumSongs,
   trackLikes,
   albumLikes,
   loading,
@@ -80,6 +88,9 @@ const Album: React.FC<Props> = ({
   img,
   total,
   type,
+  isPlaying,
+  currentPlayingList,
+  currentPlayingSongIndex,
   tracks,
   error,
   subErrorMsg,
@@ -107,6 +118,13 @@ const Album: React.FC<Props> = ({
     });
     return uris;
   };
+
+
+  const playAlbum = () => {
+    if(match.params.albumId) {
+      playAlbumSongs(match.params.albumId, 0, 50);
+    }
+  }
 
   const isRowLoaded = ({ index }: { index: number }) => {
     return !!tracks[index];
@@ -192,6 +210,10 @@ const Album: React.FC<Props> = ({
             totalSongs={total}
             type={type}
             dateAdded={date}
+            currentPlayingList={currentPlayingList}
+            isPlaying={isPlaying}
+            playPause={setPlaying}
+            playAlbum={playAlbum}
             saveAlbum={saveRemoveAlbumsForCurrentUser}
           />
           <div style={{ padding: "30px" }}>
