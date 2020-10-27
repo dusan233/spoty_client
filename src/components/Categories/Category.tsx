@@ -9,6 +9,7 @@ import Spinner from '../Spinner/Spinner';
 import InfiniteVirtualizedList from '../InfiniteVirtualizedList/InfiniteVirtualizedList';
 import SearchPlaylistCard from '../Card/SearchPlaylist';
 import {setError} from '../../store/actions/error';
+import { setPlaying, playPlaylistSongs } from '../../store/actions/music';
 
 const mapStateToProps = (state: RootState) => ({
     loading: state.categories.loading,
@@ -17,14 +18,18 @@ const mapStateToProps = (state: RootState) => ({
     playlistLikes: state.user.playlistLikes,
     accessToken: state.auth.accessToken,
     errorMsg: state.error.errorMsg,
-  subMsg: state.error.subMsg
+    subMsg: state.error.subMsg,
+    isPlaying: state.music.playing,
+    currentPlayingList: state.music.currentListId,
 })
 const mapDispatchToProps = {
     getCategoryPlaylists,
     saveRemovePlaylistForCurrentUser,
     setCategoryPlaylists,
     setCategLoading,
-    setError
+    setError,
+    setPlaying,
+    playPlaylistSongs
 }
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -36,7 +41,7 @@ type Params = {
 
 type Props = RouteComponentProps<Params> & ReduxProps
 
-const Category: React.FC<Props> = ({ match, loading, accessToken, setError, getCategoryPlaylists, setCategoryPlaylists, saveRemovePlaylistForCurrentUser, playlists, total, playlistLikes, errorMsg, subMsg }) => {
+const Category: React.FC<Props> = ({ match, loading, isPlaying, currentPlayingList, accessToken, playPlaylistSongs, setError, setPlaying, getCategoryPlaylists, setCategoryPlaylists, saveRemovePlaylistForCurrentUser, playlists, total, playlistLikes, errorMsg, subMsg }) => {
     let containerEl = useRef<HTMLDivElement>(null);
     useEffect(() => {
         getCategoryPlaylists(match.params.categoryId);
@@ -112,7 +117,11 @@ const Category: React.FC<Props> = ({ match, loading, accessToken, setError, getC
                                   totalTracks={item.tracks.total}
                                   type="playlist"
                                   liked={liked}
+                                  currentPlayingList={currentPlayingList}
+                                  isPlaying={isPlaying}
+                                  playListSongs={playPlaylistSongs}
                                   saveItem={saveRemovePlaylistForCurrentUser}
+                                  playPause={setPlaying}
                                 />
                               );
                             }

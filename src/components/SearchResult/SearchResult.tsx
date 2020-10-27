@@ -17,6 +17,7 @@ import { PlaylistSimplified } from "../../store/types/playlist";
 import { AlbumSimplified } from "../../store/types/album";
 import { TrackFull } from "../../store/types/index";
 import { ArtistFull } from "../../store/types/artist";
+import { setPlaying, playAlbumSongs, playPlaylistSongs } from '../../store/actions/music';
 import {
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
@@ -41,6 +42,7 @@ import TrackHeader from "../Track/TrackHeader";
 import Spinner from "../Spinner/Spinner";
 import InfiniteVirtualizedList from "../InfiniteVirtualizedList/InfiniteVirtualizedList";
 
+
 const mapStateToProps = (state: RootState) => ({
   loading: state.search.loading,
   playlists: state.search.searchPlaylists,
@@ -62,6 +64,8 @@ const mapStateToProps = (state: RootState) => ({
   trackLikes: state.user.trackLikes,
   albumLikes: state.user.albumLikes,
   playlistLikes: state.user.playlistLikes,
+  isPlaying: state.music.playing,
+  currentPlayingList: state.music.currentListId,
 });
 const mapDispatchToProps = {
   fetchSearchData,
@@ -78,6 +82,9 @@ const mapDispatchToProps = {
   setTrackLikes,
   setPlaylistLikes,
   cleanSearchState,
+  setPlaying,
+  playAlbumSongs,
+  playPlaylistSongs
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -108,6 +115,11 @@ const SearchResult: React.FC<Props> = ({
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
   saveRemovePlaylistForCurrentUser,
+  setPlaying,
+  playAlbumSongs,
+  playPlaylistSongs,
+  isPlaying,
+  currentPlayingList,
   trackLikes,
   albumLikes,
   playlistLikes,
@@ -371,8 +383,11 @@ const SearchResult: React.FC<Props> = ({
                   totalTracks={(playlist as PlaylistSimplified).tracks.total}
                   type="playlist"
                   liked={liked}
+                  currentPlayingList={currentPlayingList}
+                  isPlaying={isPlaying}
                   saveItem={saveRemovePlaylistForCurrentUser}
-                  
+                  playListSongs={playPlaylistSongs}
+                  playPause={setPlaying}
                 />
               );
             }
@@ -434,7 +449,11 @@ const SearchResult: React.FC<Props> = ({
                   totalTracks={(album as AlbumSimplified).total_tracks}
                   type="album"
                   liked={liked}
+                  currentPlayingList={currentPlayingList}
+                  isPlaying={isPlaying}
                   saveItem={saveRemoveAlbumsForCurrentUser}
+                  playListSongs={playAlbumSongs}
+                  playPause={setPlaying}
                 />
               );
             }

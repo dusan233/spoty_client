@@ -66,6 +66,7 @@ export const getMoreAlbumTracks = (
     params: {
       limit: 50,
       offset: startIndex,
+      market: "US"
     },
     headers: {
       Authorization: "Bearer " + accessToken,
@@ -82,6 +83,9 @@ export const getAlbumData: ActionCreator<AppThunk> = (
 
     try {
       const data = await api.get<AlbumFull>(`/albums/${albumId}`, {
+        params: {
+          market: "US"
+        },
         headers: {
           Authorization: "Bearer " + accessToken,
         },

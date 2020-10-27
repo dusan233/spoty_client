@@ -28,6 +28,7 @@ import {
   checkCurrentUserSavedTracks,
   checkCurrentUserSavedAlbums,
 } from "../../store/actions/user";
+import { playAlbumSongs, setPlaying } from '../../store/actions/music';
 import { AlbumFull, SavedAlbum } from "../../store/types/album";
 
 import Spinner from "../Spinner/Spinner";
@@ -53,6 +54,9 @@ const mapStateToProps = (state: RootState) => ({
   library: state.library,
   errorMsg: state.error.errorMsg,
   subError: state.error.subMsg,
+  isPlaying: state.music.playing,
+  currentPlayingList: state.music.currentListId,
+  currentPlayingSongIndex: state.music.currentSongIndex
 });
 
 const mapDispatchToProps = {
@@ -67,6 +71,8 @@ const mapDispatchToProps = {
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
   getCurrentUserFollowedArtists,
+  setPlaying,
+  playAlbumSongs
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -92,6 +98,11 @@ const MusicLibrary: React.FC<Props> = ({
   getCurrentUserFollowedArtists,
   saveRemoveAlbumsForCurrentUser,
   saveRemoveTracksForCurrentUser,
+  setPlaying,
+  playAlbumSongs,
+  currentPlayingList,
+  currentPlayingSongIndex,
+  isPlaying,
   loading,
   albums,
   albumLikes,
@@ -248,7 +259,11 @@ const MusicLibrary: React.FC<Props> = ({
                   totalTracks={(savedAlbum.album as AlbumFull).tracks.total}
                   type="album"
                   liked={liked}
+                  currentPlayingList={currentPlayingList}
+                  isPlaying={isPlaying}
                   saveItem={saveRemoveAlbumsForCurrentUser}
+                  playListSongs={playAlbumSongs}
+                  playPause={setPlaying}
                 />
               );
             }

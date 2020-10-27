@@ -12,7 +12,7 @@ import {
   setAlbumLikes,
 } from "../../store/actions/user";
 import { fetchArtistAlbums, setMoreAlbums } from "../../store/actions/artist";
-
+import { setPlaying, playAlbumSongs } from '../../store/actions/music';
 import Spinner from "../Spinner/Spinner";
 import ArtistHeader from "./ArtistHeader";
 import ClassicTab from "../Tabs/ClassicTab";
@@ -38,6 +38,8 @@ const mapStateToProps = (state: RootState) => ({
   accessToken: state.auth.accessToken,
   errorMsg: state.error.errorMsg,
   subError: state.error.subMsg,
+  isPlaying: state.music.playing,
+  currentPlayingList: state.music.currentListId,
 });
 const mapDispatchToProps = {
   getArtist,
@@ -47,6 +49,8 @@ const mapDispatchToProps = {
   setArtistLoading,
   setMoreAlbums,
   setAlbumLikes,
+  setPlaying,
+  playAlbumSongs
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -66,6 +70,10 @@ const Artist: React.FC<Props> = ({
   setArtistLoading,
   setMoreAlbums,
   setAlbumLikes,
+  setPlaying,
+  playAlbumSongs,
+  isPlaying,
+  currentPlayingList,
   match,
   name,
   followers,
@@ -254,6 +262,10 @@ const Artist: React.FC<Props> = ({
                             type="album"
                             liked={liked}
                             saveItem={saveRemoveAlbumsForCurrentUser}
+                            currentPlayingList={currentPlayingList}
+                            isPlaying={isPlaying}
+                            playListSongs={playAlbumSongs}
+                            playPause={setPlaying}
                           />
                         );
                       }

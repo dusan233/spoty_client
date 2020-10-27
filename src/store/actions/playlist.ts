@@ -113,6 +113,9 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
     dispatch(setPlaylistLoading(true));
     try {
       const response = await api.get<PlaylistFull>(`/playlists/${playlistId}`, {
+        params: {
+          market: "US"
+        },
         headers: {
           Authorization: "Bearer " + accessToken,
         },

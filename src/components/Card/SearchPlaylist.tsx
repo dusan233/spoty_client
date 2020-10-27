@@ -2,12 +2,14 @@ import React from "react";
 import CardStyles from "./Card.module.css";
 import { Link } from "react-router-dom";
 import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
-import { BsPlayFill, BsThreeDots } from "react-icons/bs";
+import { BsPauseFill, BsPlayFill, BsThreeDots } from "react-icons/bs";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { RiPlayListAddLine, RiPlayListLine } from "react-icons/ri";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 import useSelected from "../../hooks/useSelected";
+import { Action, ActionCreator } from "redux";
+import { SetPlaying } from "../../store/types/music";
 
 interface IProps {
   img: string | undefined;
@@ -20,12 +22,16 @@ interface IProps {
   type: string;
   liked: boolean;
   userId: string;
+  currentPlayingList: string;
+  isPlaying: boolean;
   saveItem: (
     albumIds: string,
     index: number,
     action: string,
     name?: string
   ) => Promise<void>;
+  playListSongs: (listId: string, songIndex: number, endIndex: number) => Promise<void>;
+  playPause: ActionCreator<SetPlaying>
 }
 const SearchPlaylist: React.FC<IProps> = React.memo(
   ({
@@ -39,7 +45,11 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
     type,
     liked,
     userId,
+    currentPlayingList,
+    isPlaying,
     saveItem,
+    playListSongs,
+    playPause
   }) => {
     const [selected, rowRef] = useSelected();
 
@@ -52,6 +62,14 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
       }
     };
 
+    const playSong = () => {
+      if(currentPlayingList === itemId) {
+        playPause(!isPlaying)
+      }else {
+        playListSongs(itemId, 0, 50);
+      }
+    }
+
     return (
       <div
         ref={rowRef}
@@ -60,13 +78,14 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
       >
         <div className={`${CardStyles["search-card__action"]}`}>
           <button
+            onClick={playSong}
             className={` ${
               selected
                 ? CardStyles["search-btn--selected"]
                 : CardStyles["search-btn"]
             }`}
           >
-            <BsPlayFill />
+        {isPlaying && currentPlayingList === itemId ? <BsPauseFill /> : <BsPlayFill />}
           </button>
           {index + 1}
         </div>
