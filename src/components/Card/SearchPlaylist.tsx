@@ -76,7 +76,7 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
         style={{ ...style, background: selected && "#ffffff29" }}
         className={`${CardStyles["search-card"]}`}
       >
-        <div className={`${CardStyles["search-card__action"]}`}>
+        <div className={`${currentPlayingList === itemId  ? CardStyles["search-card__action--active"] : CardStyles["search-card__action"]}`}>
           <button
             onClick={playSong}
             className={` ${
@@ -98,7 +98,7 @@ const SearchPlaylist: React.FC<IProps> = React.memo(
           <div>
             <Link
               to={`/${type === "playlist" ? "playlist" : "album"}/${itemId}`}
-              className={`${CardStyles["search-card__name"]}`}
+              className={`${currentPlayingList === itemId ? CardStyles["search-card__name--active"] :  CardStyles["search-card__name"]}`}
             >
               {name}
             </Link>

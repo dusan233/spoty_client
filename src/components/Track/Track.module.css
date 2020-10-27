@@ -53,10 +53,7 @@
   -webkit-box-orient: vertical;
 }
 .datagrid-cell--playing {
-  color: #1db954;
-}
-.datagrid-cell--playing a {
-  color: #1db954;
+  color: #32cf69;
 }
 
 .datagrid-cell-explicit,
