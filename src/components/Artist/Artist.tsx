@@ -12,7 +12,7 @@ import {
   setAlbumLikes,
 } from "../../store/actions/user";
 import { fetchArtistAlbums, setMoreAlbums } from "../../store/actions/artist";
-import { setPlaying, playAlbumSongs } from '../../store/actions/music';
+import { setPlaying, playAlbumSongs, playArtistSongs } from '../../store/actions/music';
 import Spinner from "../Spinner/Spinner";
 import ArtistHeader from "./ArtistHeader";
 import ClassicTab from "../Tabs/ClassicTab";
@@ -40,6 +40,7 @@ const mapStateToProps = (state: RootState) => ({
   subError: state.error.subMsg,
   isPlaying: state.music.playing,
   currentPlayingList: state.music.currentListId,
+  currentPlayingSongIndex: state.music.currentSongIndex
 });
 const mapDispatchToProps = {
   getArtist,
@@ -50,7 +51,8 @@ const mapDispatchToProps = {
   setMoreAlbums,
   setAlbumLikes,
   setPlaying,
-  playAlbumSongs
+  playAlbumSongs,
+  playArtistSongs
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -72,8 +74,10 @@ const Artist: React.FC<Props> = ({
   setAlbumLikes,
   setPlaying,
   playAlbumSongs,
+  playArtistSongs,
   isPlaying,
   currentPlayingList,
+  currentPlayingSongIndex,
   match,
   name,
   followers,
@@ -207,20 +211,21 @@ const Artist: React.FC<Props> = ({
                         duration={track.duration_ms}
                         explicit={track.explicit}
                         preview_url={track.preview_url}
-                        currentPlayingSongIndex={2}
+                        currentPlayingSongIndex={currentPlayingSongIndex}
                         trackId={track.id}
-                        type="playlist"
+                        type="artist"
                         saveTrack={saveRemoveTracksForCurrentUser}
-                        playPause={function(ds: boolean) {}}
+                        playPause={setPlaying}
+                        artistId={match.params.artistId}
                         album={track.album.name}
                         popularity={track.popularity}
                         key={track.id + i}
-                        isPlaying={true}
-                        currentPlayingListId="dssd"
+                        isPlaying={isPlaying}
+                        currentPlayingListId={currentPlayingList}
                         liked={liked}
                         albumId={track.album.id}
                         uri={track.uri}
-                        playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
+                        playPlaylist={playArtistSongs}
                       />
                     );
                   })}

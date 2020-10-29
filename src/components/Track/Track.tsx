@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { ArtistSimplified } from "../../store/types/artist";
 import useSelected from "../../hooks/useSelected";
 import Dropdown from "../Dropdown/Dropdown";
+import { playPlaylistSongs } from "../../store/actions/music";
 
 interface TrackProps {
   title: string;
@@ -27,6 +28,8 @@ interface TrackProps {
   albumId?: string;
   playlistOwnerId?: string;
   playlistId?: string;
+  artistId?: string;
+  searchId?: string;
   userId?: string;
   style?: any;
   index: number;
@@ -53,7 +56,7 @@ interface TrackProps {
   
 }
 
-Modal.setAppElement("#modal");
+// Modal.setAppElement("#modal");
 
 const Track: React.FC<TrackProps> = 
 React.memo(
@@ -76,6 +79,7 @@ React.memo(
     currentPlayingSongIndex,
     uri,
     userId,
+    artistId,
     playlistOwnerId,
     playlistId,
     preview_url,
@@ -194,11 +198,23 @@ React.memo(
     }, [isPlaying, currentPlayingListId, playPlaylist, playlistId, currentPlayingSongIndex, index, playPause])
 
 
+    const skipToCertainTrackArtist = useCallback((trackIndex: number) => {
+      if(artistId) {
+        if(artistId === currentPlayingListId && currentPlayingSongIndex === index) {
+          playPause(!isPlaying)
+        }else {
+          playPlaylist(artistId, trackIndex, 50);
+        }
+      } 
+    }, [artistId, currentPlayingSongIndex, currentPlayingListId, index, playPlaylist, playPause, isPlaying])
+
     const returnPlayPauseButton = () => {
       if(type === "album") {
         return albumId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
-      }else {
+      }else if(type === "playlist") {
         return playlistId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
+      }else if(type === "artist") {
+        return artistId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
       }
     }
 
@@ -206,8 +222,10 @@ React.memo(
       let listId: string | undefined = "";
       if(type === "album") {
         listId = albumId
-      }else {
+      }else if(type === "playlist") {
         listId = playlistId
+      }else if(type === "artist") {
+        listId = artistId
       }
         return listId === currentPlayingListId && currentPlayingSongIndex === index 
    }
@@ -218,7 +236,7 @@ React.memo(
         style={{ ...style, background: selected && "#ffffff29" }}
         ref={rowRef}
       >
-        <Modal
+        {/* <Modal
           className="Modal"
           overlayClassName="Overlay"
           isOpen={modalIsOpen}
@@ -226,7 +244,7 @@ React.memo(
           closeTimeoutMS={400}
         >
           <AddToPlaylist trackUri={uri} closeModal={closeModal} />
-        </Modal>
+        </Modal> */}
 
         <div
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
@@ -237,8 +255,10 @@ React.memo(
             onClick={() => {
               if(type === "album") {
                 skipToCertainTrackAlbum(index);
-              }else {
+              }else if(type === "playlist") {
                 skipToCertainTrack(index);
+              }else if(artistId) {
+                skipToCertainTrackArtist(index);
               }
             }}
             className={

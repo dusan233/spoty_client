@@ -8,6 +8,7 @@ import { getMoreAlbumTracks } from './album';
 import {checkCurrentUserSavedTracks, setTrackLikes} from './user';
 import { setDurCurTime, SetMute, SetPlaying, setSlidersValue, SetVolume } from "../types/music";
 import { api } from "../../axios";
+import { fetchArtistTopTracks } from "./artist";
 
 
 export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string, total: number, type: string ) => ({ 
@@ -77,6 +78,23 @@ export const playPlaylistSongs = ( playlistId: string, songIndex: number, endInd
             console.log(err)
         }
     }
+}
+
+
+export const playArtistSongs = (listId: string, songIndex: number, endIndex: number) => {
+     return async (dispatch: Dispatch, getState: () => RootState ) => {
+        const accessToken = getState().auth.accessToken;
+
+        try {
+            const resSongs = await fetchArtistTopTracks(listId, accessToken);
+            batch(() => {
+                dispatch(setCurrentSelectedSong(resSongs.data.tracks[songIndex], songIndex, listId, resSongs.data.tracks.length, "artist"))
+                dispatch(setNextUpSongs(resSongs.data.tracks.slice(songIndex + 1, resSongs.data.tracks.length)))
+            })
+        }catch(err) {
+            console.log(err)
+        }
+     }
 }
 
 export const playAlbumSongs = (albumId: string, songIndex: number, endIndex: number) => {

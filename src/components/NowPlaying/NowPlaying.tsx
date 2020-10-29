@@ -6,7 +6,7 @@ import {history} from '../../index';
 import {connect, ConnectedProps} from 'react-redux';
 import { RootState } from '../../store/reducers';
 import { TrackSimplified } from '../../store/types';
-import { setPlaying, setRepeat, playPlaylistSongs, playAlbumSongs} from '../../store/actions/music';
+import { setPlaying, setRepeat, playPlaylistSongs, playAlbumSongs, playArtistSongs} from '../../store/actions/music';
 import {MdSkipPrevious, MdSkipNext, MdPlayArrow, MdRepeat, MdRepeatOne, MdPause} from 'react-icons/md';
 import PlaybackBar from './PlaybackBar';
 import PlaybackVolume from './PlaybackVolume';
@@ -26,7 +26,8 @@ const mapDispatchToProps = {
     setPlaying,
     setRepeat,
     playPlaylistSongs,
-    playAlbumSongs
+    playAlbumSongs,
+    playArtistSongs,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -35,7 +36,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>;
 
-const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, currentListId, currentSongIndex, currentSelectedSong, repeatType, isPlaying, playPlaylistSongs, playAlbumSongs, setRepeat,  setPlaying}) => {
+const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, currentListId, currentSongIndex, currentSelectedSong, repeatType, isPlaying, playPlaylistSongs, playAlbumSongs, setRepeat, playArtistSongs, setPlaying}) => {
 
     const audio = useRef<HTMLAudioElement>();
 
@@ -45,24 +46,27 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
             
             if(type === "playlist") playPlaylistSongs(currentListId, 0, 50)
             if(type === "album") playAlbumSongs(currentListId, 0, 50);
+            if(type === "artist") playArtistSongs(currentListId, 0, 50);
         }else {
             const offset = currentSongIndex + 1;
             if(type === "playlist") playPlaylistSongs(currentListId, offset, 50);
             if(type === "album") playAlbumSongs(currentListId, offset, 50);
-            
+            if(type === "artist") playArtistSongs(currentListId, offset, 50); 
         }
         
-    }, [currentListId, currentSongIndex, playPlaylistSongs, playAlbumSongs, type, nextUpSongs.length])
+    }, [currentListId, currentSongIndex, playPlaylistSongs, playAlbumSongs, type, nextUpSongs.length, playArtistSongs])
 
     const prevTrack = () => {
         if(currentSongIndex === 0) {
             const offset = total - 1
             if(type === "playlist") playPlaylistSongs(currentListId, offset, 50);
             if(type === "album") playAlbumSongs(currentListId, offset, 50);
+            if(type === "artist") playArtistSongs(currentListId, offset, 50); 
         }else {
             const offset = currentSongIndex - 1;
             if(type === "playlist") playPlaylistSongs(currentListId, offset, 50);
             if(type === "album") playAlbumSongs(currentListId, offset, 50);
+            if(type === "artist") playArtistSongs(currentListId, offset, 50); 
         }
         
     }
@@ -97,10 +101,12 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
                 if(!nextUpSongs.length) {
                     if(type === "playlist") playPlaylistSongs(currentListId, 0, 50)
                     if(type === "album") playAlbumSongs(currentListId, 0, 50);
+                    if(type === "artist") playArtistSongs(currentListId, 0, 50);
                 }else {
                     const offset = currentSongIndex + 1;
                     if(type === "playlist") playPlaylistSongs(currentListId, offset, 50);
                     if(type === "album") playAlbumSongs(currentListId, offset, 50);
+                    if(type === "artist") playArtistSongs(currentListId, offset, 50);
                 }
             }
             if(repeatType === "") {
@@ -111,6 +117,7 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
                     const offset = currentSongIndex + 1;
                     if(type === "playlist") playPlaylistSongs(currentListId, offset, 50);
                     if(type === "album") playAlbumSongs(currentListId, offset, 50);
+                    if(type === "artist") playArtistSongs(currentListId, offset, 50);
                 }
             }
         }
@@ -124,7 +131,7 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
                 audio.current.removeEventListener('ended', onTrackEnded)
             }
         }
-    }, [repeatType, currentListId, type, currentSongIndex, nextUpSongs.length, playAlbumSongs,  setPlaying, playPlaylistSongs])
+    }, [repeatType, currentListId, type, currentSongIndex, nextUpSongs.length, playArtistSongs, playAlbumSongs,  setPlaying, playPlaylistSongs])
 
     useEffect(() => {
         if(isPlaying) {

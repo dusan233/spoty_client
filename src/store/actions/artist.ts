@@ -96,7 +96,7 @@ export const fetchArtistTopTracks = (
 ) => {
   return api.get<ArtistTopTracksResponse>(`/artists/${artistId}/top-tracks`, {
     params: {
-      market: "us",
+      market: "US",
     },
     headers: {
       Authorization: "Bearer " + accessToken,
