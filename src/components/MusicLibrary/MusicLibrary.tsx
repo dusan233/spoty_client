@@ -28,7 +28,7 @@ import {
   checkCurrentUserSavedTracks,
   checkCurrentUserSavedAlbums,
 } from "../../store/actions/user";
-import { playAlbumSongs, setPlaying } from '../../store/actions/music';
+import { playAlbumSongs,playLikedSongs, setPlaying } from '../../store/actions/music';
 import { AlbumFull, SavedAlbum } from "../../store/types/album";
 
 import Spinner from "../Spinner/Spinner";
@@ -72,7 +72,8 @@ const mapDispatchToProps = {
   saveRemoveTracksForCurrentUser,
   getCurrentUserFollowedArtists,
   setPlaying,
-  playAlbumSongs
+  playAlbumSongs,
+  playLikedSongs
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -100,6 +101,7 @@ const MusicLibrary: React.FC<Props> = ({
   saveRemoveTracksForCurrentUser,
   setPlaying,
   playAlbumSongs,
+  playLikedSongs,
   currentPlayingList,
   currentPlayingSongIndex,
   isPlaying,
@@ -314,7 +316,7 @@ const MusicLibrary: React.FC<Props> = ({
                   artists={savedTrack.track.artists}
                   duration={savedTrack.track.duration_ms}
                   explicit={savedTrack.track.explicit}
-                  type="playlist"
+                  type="liked"
                   popularity={savedTrack.track.popularity}
                   album={savedTrack.track.album.name}
                   style={style}
@@ -322,13 +324,13 @@ const MusicLibrary: React.FC<Props> = ({
                   trackId={savedTrack.track.id}
                   index={index}
                   uri={savedTrack.track.uri}
-                  isPlaying={true}
+                  isPlaying={isPlaying}
                   preview_url={savedTrack.track.preview_url}
-                  currentPlayingSongIndex={2}
-                  currentPlayingListId="dss"
+                  currentPlayingSongIndex={currentPlayingSongIndex}
+                  currentPlayingListId={currentPlayingList}
                   saveTrack={saveRemoveTracksForCurrentUser}
-                  playPause={function(ds: boolean) {}}
-                  playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
+                  playPause={setPlaying}
+                  playPlaylist={playLikedSongs}
                   liked={liked}
                   albumId={savedTrack.track.album.id}
                 />

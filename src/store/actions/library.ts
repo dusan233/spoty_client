@@ -108,6 +108,7 @@ export const fetchUserTracks = (
     params: {
       limit: 50,
       offset: offset,
+      market: "US"
     },
     headers: {
       Authorization: "Bearer " + accessToken,

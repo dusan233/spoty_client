@@ -9,6 +9,7 @@ import {checkCurrentUserSavedTracks, setTrackLikes} from './user';
 import { setDurCurTime, SetMute, SetPlaying, setSlidersValue, SetVolume } from "../types/music";
 import { api } from "../../axios";
 import { fetchArtistTopTracks } from "./artist";
+import { fetchUserTracks } from "./library";
 
 
 export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string, total: number, type: string ) => ({ 
@@ -95,6 +96,23 @@ export const playArtistSongs = (listId: string, songIndex: number, endIndex: num
             console.log(err)
         }
      }
+}
+
+export const playLikedSongs = (listId: string, songIndex: number, endIndex: number) => {
+    return async (dispatch: Dispatch, getState: () => RootState) => {
+        const accessToken = getState().auth.accessToken;
+
+        try {
+            const resSongs = await fetchUserTracks(songIndex, accessToken);
+
+            batch(() => {
+                dispatch(setCurrentSelectedSong(resSongs.data.items[0].track, songIndex, listId, resSongs.data.total, "liked"))
+                dispatch(setNextUpSongs(resSongs.data.items.map(item => item.track).slice(1, 51)))
+            })
+        }catch(err) {
+            console.log(err)
+        }
+    }
 }
 
 export const playAlbumSongs = (albumId: string, songIndex: number, endIndex: number) => {

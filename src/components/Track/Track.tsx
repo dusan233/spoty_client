@@ -198,6 +198,16 @@ React.memo(
     }, [isPlaying, currentPlayingListId, playPlaylist, playlistId, currentPlayingSongIndex, index, playPause])
 
 
+    const skipToCertainTrackLiked = useCallback((trackIndex: number) => {
+      if(type === "liked") {
+        if( type === currentPlayingListId && currentPlayingSongIndex === index) {
+          playPause(!isPlaying);
+        }else {
+            playPlaylist(type, trackIndex, 50);
+        }
+      }
+    }, [type, currentPlayingSongIndex, currentPlayingListId, isPlaying, playPause, playPlaylist, index ])
+
     const skipToCertainTrackArtist = useCallback((trackIndex: number) => {
       if(artistId) {
         if(artistId === currentPlayingListId && currentPlayingSongIndex === index) {
@@ -215,6 +225,8 @@ React.memo(
         return playlistId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
       }else if(type === "artist") {
         return artistId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
+      }else if(type === "liked") {
+        return type === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
       }
     }
 
@@ -226,6 +238,8 @@ React.memo(
         listId = playlistId
       }else if(type === "artist") {
         listId = artistId
+      }else if(type === "liked") {
+        listId = type
       }
         return listId === currentPlayingListId && currentPlayingSongIndex === index 
    }
@@ -259,6 +273,8 @@ React.memo(
                 skipToCertainTrack(index);
               }else if(artistId) {
                 skipToCertainTrackArtist(index);
+              }else if(type === "liked") {
+                skipToCertainTrackLiked(index);
               }
             }}
             className={
