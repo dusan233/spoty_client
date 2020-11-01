@@ -6,7 +6,7 @@ import {history} from '../../index';
 import {connect, ConnectedProps} from 'react-redux';
 import { RootState } from '../../store/reducers';
 import { TrackSimplified } from '../../store/types';
-import { setPlaying, setRepeat, playPlaylistSongs, playAlbumSongs, playLikedSongs, playArtistSongs} from '../../store/actions/music';
+import { setPlaying, setRepeat, playPlaylistSongs, playAlbumSongs, playLikedSongs, playSearchedSongs, playArtistSongs} from '../../store/actions/music';
 import {MdSkipPrevious, MdSkipNext, MdPlayArrow, MdRepeat, MdRepeatOne, MdPause} from 'react-icons/md';
 import PlaybackBar from './PlaybackBar';
 import PlaybackVolume from './PlaybackVolume';
@@ -28,7 +28,8 @@ const mapDispatchToProps = {
     playPlaylistSongs,
     playAlbumSongs,
     playArtistSongs,
-    playLikedSongs
+    playLikedSongs,
+    playSearchedSongs
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -37,7 +38,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>;
 
-const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, currentListId, currentSongIndex, currentSelectedSong, repeatType, isPlaying, playPlaylistSongs, playLikedSongs, playAlbumSongs, setRepeat, playArtistSongs, setPlaying}) => {
+const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, currentListId, currentSongIndex, currentSelectedSong, repeatType, isPlaying, playPlaylistSongs, playSearchedSongs, playLikedSongs, playAlbumSongs, setRepeat, playArtistSongs, setPlaying}) => {
 
     const audio = useRef<HTMLAudioElement>();
 
@@ -48,7 +49,8 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
             if(type === "playlist") playPlaylistSongs(currentListId, 0, 50)
             if(type === "album") playAlbumSongs(currentListId, 0, 50);
             if(type === "artist") playArtistSongs(currentListId, 0, 50);
-            if(type === "liked") playLikedSongs(currentListId, 0, 50); 
+            if(type === "liked") playLikedSongs(currentListId, 0, 50);
+            if(type === "search" && audio.current)  audio.current.currentTime = 0;
         }else {
             const offset = currentSongIndex + 1;
             if(type === "playlist") playPlaylistSongs(currentListId, offset, 50);
@@ -57,7 +59,7 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
             if(type === "liked") playLikedSongs(currentListId, offset, 50);  
         }
         
-    }, [currentListId, currentSongIndex, playPlaylistSongs, playAlbumSongs, type, nextUpSongs.length, playArtistSongs])
+    }, [currentListId, currentSongIndex, playPlaylistSongs, playLikedSongs, playAlbumSongs, type, nextUpSongs.length, playArtistSongs])
 
     const prevTrack = () => {
         if(currentSongIndex === 0) {
@@ -71,7 +73,8 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
             if(type === "playlist") playPlaylistSongs(currentListId, offset, 50);
             if(type === "album") playAlbumSongs(currentListId, offset, 50);
             if(type === "artist") playArtistSongs(currentListId, offset, 50);
-            if(type === "liked") playLikedSongs(currentListId, offset, 50); 
+            if(type === "liked") playLikedSongs(currentListId, offset, 50);
+            if(type === "search" && audio.current)  audio.current.currentTime = 0; 
         }
         
     }
@@ -107,7 +110,11 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
                     if(type === "playlist") playPlaylistSongs(currentListId, 0, 50)
                     if(type === "album") playAlbumSongs(currentListId, 0, 50);
                     if(type === "artist") playArtistSongs(currentListId, 0, 50);
-                    if(type === "liked") playLikedSongs(currentListId, 0, 50); 
+                    if(type === "liked") playLikedSongs(currentListId, 0, 50);
+                    if(type === "search" && audio.current)  {
+                        audio.current.currentTime = 0; 
+                        audio.current.play();
+                    }
                 }else {
                     const offset = currentSongIndex + 1;
                     if(type === "playlist") playPlaylistSongs(currentListId, offset, 50);
@@ -162,6 +169,7 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
 
     const prevBtnDisabled = () => {
         if(repeatType !== "repeat") {
+            if(type === "search") return true;
             return currentSongIndex === 0
         }
         return false

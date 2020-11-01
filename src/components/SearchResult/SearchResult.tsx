@@ -17,7 +17,7 @@ import { PlaylistSimplified } from "../../store/types/playlist";
 import { AlbumSimplified } from "../../store/types/album";
 import { TrackFull } from "../../store/types/index";
 import { ArtistFull } from "../../store/types/artist";
-import { setPlaying, playAlbumSongs, playPlaylistSongs } from '../../store/actions/music';
+import { setPlaying, playAlbumSongs, playPlaylistSongs, playSearchedSongs } from '../../store/actions/music';
 import {
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
@@ -66,6 +66,7 @@ const mapStateToProps = (state: RootState) => ({
   playlistLikes: state.user.playlistLikes,
   isPlaying: state.music.playing,
   currentPlayingList: state.music.currentListId,
+  currentPlayingSongIndex: state.music.currentSongIndex
 });
 const mapDispatchToProps = {
   fetchSearchData,
@@ -84,7 +85,8 @@ const mapDispatchToProps = {
   cleanSearchState,
   setPlaying,
   playAlbumSongs,
-  playPlaylistSongs
+  playPlaylistSongs,
+  playSearchedSongs
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -115,9 +117,11 @@ const SearchResult: React.FC<Props> = ({
   saveRemoveTracksForCurrentUser,
   saveRemoveAlbumsForCurrentUser,
   saveRemovePlaylistForCurrentUser,
+  currentPlayingSongIndex,
   setPlaying,
   playAlbumSongs,
   playPlaylistSongs,
+  playSearchedSongs,
   isPlaying,
   currentPlayingList,
   trackLikes,
@@ -510,7 +514,8 @@ const SearchResult: React.FC<Props> = ({
                     artists={track.artists}
                     duration={track.duration_ms}
                     explicit={track.explicit}
-                    type="playlist"
+                    type="search"
+                    searchId={match.params.searchTerm}
                     popularity={track.popularity}
                     album={track.album.name}
                     style={style}
@@ -518,13 +523,13 @@ const SearchResult: React.FC<Props> = ({
                     uri={track.uri}
                     trackId={track.id}
                     index={index}
-                    isPlaying={true}
+                    isPlaying={isPlaying}
                     preview_url={track.preview_url}
-                    currentPlayingListId="dsds"
-                    currentPlayingSongIndex={2}
+                    currentPlayingListId={currentPlayingList}
+                    currentPlayingSongIndex={currentPlayingSongIndex}
                     saveTrack={saveRemoveTracksForCurrentUser}
-                    playPause={function(ds: boolean) {}}
-                    playPlaylist={(playlistId: string, songIndex: number, endIndex: number) => Promise.resolve()}
+                    playPause={setPlaying}
+                    playPlaylist={playSearchedSongs}
                     liked={liked}
                     albumId={track.album.id}
                   />

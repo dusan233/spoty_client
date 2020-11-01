@@ -10,6 +10,9 @@ import { setDurCurTime, SetMute, SetPlaying, setSlidersValue, SetVolume } from "
 import { api } from "../../axios";
 import { fetchArtistTopTracks } from "./artist";
 import { fetchUserTracks } from "./library";
+import { getSearchData } from "./search";
+import { SearchResultPlaylists } from "../types/search";
+
 
 
 export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number, listId: string, total: number, type: string ) => ({ 
@@ -22,7 +25,7 @@ export const setCurrentSelectedSong = (song: TrackSimplified, trackIndex: number
         type
     }
 })
-
+ 
 export const setNextUpSongs = (songs: TrackSimplified[]) => ({
     type: MusicActionTypes.SET_NEXT_UP_SONGS,
     payload: songs 
@@ -96,6 +99,38 @@ export const playArtistSongs = (listId: string, songIndex: number, endIndex: num
             console.log(err)
         }
      }
+}
+
+export const playSearchedSongs = (listId: string, songIndex: number, endIndex: number) => {
+    return async (dispatch: Dispatch, getState: () => RootState) => {
+        const accessToken = getState().auth.accessToken;
+
+        try{
+            const resSongs = await api.get<{tracks: {
+                items: TrackFull[],
+                total: number
+            }}>("https://api.spotify.com/v1/search", {
+                params: {
+                  q: listId,
+                  type: "track",
+                  limit: 1,
+                  offset: songIndex,
+                },
+                headers: {
+                  Authorization: "Bearer " + accessToken,
+                },
+              });
+            if("tracks" in resSongs.data) {
+                batch(() => {
+                    dispatch(setCurrentSelectedSong(resSongs.data.tracks.items[0] , songIndex, resSongs.data.tracks.items[0].id, 1, "search"))
+                    dispatch(setNextUpSongs([]))
+                })
+            }
+            
+        }catch(err) {
+            console.log(err)
+        }
+    }
 }
 
 export const playLikedSongs = (listId: string, songIndex: number, endIndex: number) => {

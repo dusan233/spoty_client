@@ -83,6 +83,7 @@ React.memo(
     playlistOwnerId,
     playlistId,
     preview_url,
+    searchId,
     saveTrack,
     remvoeTrackFromPlaylist,
     playPlaylist,
@@ -218,6 +219,17 @@ React.memo(
       } 
     }, [artistId, currentPlayingSongIndex, currentPlayingListId, index, playPlaylist, playPause, isPlaying])
 
+
+    const skipToCertainTrackSearch = useCallback((trackIndex: number) => {
+      if(type === "search" && searchId) {
+        if(trackId === currentPlayingListId && currentPlayingSongIndex === index) {
+          playPause(!isPlaying)
+        }else {
+          playPlaylist(searchId, trackIndex, 0);
+        }
+      }
+    }, [playPause, playPlaylist, isPlaying, type, index, currentPlayingListId, currentPlayingSongIndex, searchId, trackId])
+
     const returnPlayPauseButton = () => {
       if(type === "album") {
         return albumId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
@@ -227,6 +239,8 @@ React.memo(
         return artistId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
       }else if(type === "liked") {
         return type === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
+      }else if(type === "search") {
+        return trackId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
       }
     }
 
@@ -240,6 +254,8 @@ React.memo(
         listId = artistId
       }else if(type === "liked") {
         listId = type
+      }else if(type === "search") {
+        listId = trackId
       }
         return listId === currentPlayingListId && currentPlayingSongIndex === index 
    }
@@ -275,6 +291,8 @@ React.memo(
                 skipToCertainTrackArtist(index);
               }else if(type === "liked") {
                 skipToCertainTrackLiked(index);
+              }else if(type === "search") {
+                skipToCertainTrackSearch(index);
               }
             }}
             className={
@@ -320,7 +338,7 @@ React.memo(
         >
           {explicit && <span>Explicit</span>}
         </div>
-        {type === "playlist" && (
+        {(type !== "album") && (
           <div
             className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-artist"]}`}
           >

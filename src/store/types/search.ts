@@ -1,4 +1,4 @@
-import { TrackFull } from "./index";
+import { TrackFull, TrackSimplified } from "./index";
 import { PlaylistSimplified } from "./playlist";
 import { AlbumSimplified } from "./album";
 import { ArtistFull } from "./artist";
