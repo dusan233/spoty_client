@@ -25,7 +25,8 @@
 }
 
 .extra-controls-button,
-.volume-bar__icon {
+.volume-bar__icon,
+.extra-controls-button--opened {
   color: #b3b3b3;
   font-size: 18px;
   display: flex;

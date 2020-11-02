@@ -43,6 +43,7 @@ interface TrackProps {
   uri: string;
   isPlaying: boolean;
   preview_url: string | null;
+  listId: string | undefined;
   currentPlayingListId: string;
   currentPlayingSongIndex: number;
   saveTrack: (trackIds: string, index: number, action: string) => Promise<void>;
@@ -82,8 +83,8 @@ React.memo(
     artistId,
     playlistOwnerId,
     playlistId,
+    listId,
     preview_url,
-    searchId,
     saveTrack,
     remvoeTrackFromPlaylist,
     playPlaylist,
@@ -173,62 +174,23 @@ React.memo(
     }, []);
 
 
-
-    const skipToCertainTrackAlbum = useCallback((trackIndex: number) => {
-      if(albumId) {
-        console.log(albumId, currentPlayingListId)
-        console.log(currentPlayingSongIndex, index)
-              if(albumId === currentPlayingListId && currentPlayingSongIndex === index) {
-                console.log(isPlaying)
-                playPause(!isPlaying)
-              }else {
-                playPlaylist(albumId, trackIndex, 50);
-              }
-            }
-    }, [isPlaying, currentPlayingSongIndex, currentPlayingListId, playPlaylist, playPause, albumId, index])
-
     const skipToCertainTrack = useCallback((trackIndex: number) => {
-      if(playlistId) {
-        if( playlistId === currentPlayingListId && currentPlayingSongIndex === index) {
-          playPause(!isPlaying);
-        }else {
-            playPlaylist(playlistId, trackIndex, 50);
-        }
-      }
-      
-    }, [isPlaying, currentPlayingListId, playPlaylist, playlistId, currentPlayingSongIndex, index, playPause])
-
-
-    const skipToCertainTrackLiked = useCallback((trackIndex: number) => {
-      if(type === "liked") {
-        if( type === currentPlayingListId && currentPlayingSongIndex === index) {
-          playPause(!isPlaying);
-        }else {
-            playPlaylist(type, trackIndex, 50);
-        }
-      }
-    }, [type, currentPlayingSongIndex, currentPlayingListId, isPlaying, playPause, playPlaylist, index ])
-
-    const skipToCertainTrackArtist = useCallback((trackIndex: number) => {
-      if(artistId) {
-        if(artistId === currentPlayingListId && currentPlayingSongIndex === index) {
-          playPause(!isPlaying)
-        }else {
-          playPlaylist(artistId, trackIndex, 50);
-        }
-      } 
-    }, [artistId, currentPlayingSongIndex, currentPlayingListId, index, playPlaylist, playPause, isPlaying])
-
-
-    const skipToCertainTrackSearch = useCallback((trackIndex: number) => {
-      if(type === "search" && searchId) {
+      if(type === "search" && listId) {
         if(trackId === currentPlayingListId && currentPlayingSongIndex === index) {
+          playPause(!isPlaying);
+        }else {
+          playPlaylist(listId, trackIndex, 0);
+        }
+      }else {
+        if(listId === currentPlayingListId && currentPlayingSongIndex === index) {
           playPause(!isPlaying)
         }else {
-          playPlaylist(searchId, trackIndex, 0);
+          if(listId) playPlaylist(listId, trackIndex, 50);
         }
       }
-    }, [playPause, playPlaylist, isPlaying, type, index, currentPlayingListId, currentPlayingSongIndex, searchId, trackId])
+    }, [index, isPlaying, listId, trackId, playPause, playPlaylist, currentPlayingSongIndex, currentPlayingListId, type])
+
+    
 
     const returnPlayPauseButton = () => {
       if(type === "album") {
@@ -283,17 +245,7 @@ React.memo(
             title={preview_url ? 'play' : 'no song preview'}
             disabled={!preview_url}
             onClick={() => {
-              if(type === "album") {
-                skipToCertainTrackAlbum(index);
-              }else if(type === "playlist") {
-                skipToCertainTrack(index);
-              }else if(artistId) {
-                skipToCertainTrackArtist(index);
-              }else if(type === "liked") {
-                skipToCertainTrackLiked(index);
-              }else if(type === "search") {
-                skipToCertainTrackSearch(index);
-              }
+              skipToCertainTrack(index);
             }}
             className={
               selected ? `${TrackStyles["btn--selected"]}` : TrackStyles.btn

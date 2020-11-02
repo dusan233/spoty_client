@@ -323,6 +323,7 @@ const MusicLibrary: React.FC<Props> = ({
                   key={savedTrack.track.id + index}
                   trackId={savedTrack.track.id}
                   index={index}
+                  listId="liked"
                   uri={savedTrack.track.uri}
                   isPlaying={isPlaying}
                   preview_url={savedTrack.track.preview_url}

@@ -185,6 +185,7 @@ const Playlist: React.FC<Props> = ({
       albumId={track.track.album.id}
       liked={liked}
       playlistId={match.params.playlistId}
+      listId={match.params.playlistId}
       userId={userId}
       preview_url={track.track.preview_url}
       playlistOwnerId={ownerId}

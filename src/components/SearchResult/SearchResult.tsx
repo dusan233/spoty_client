@@ -516,6 +516,7 @@ const SearchResult: React.FC<Props> = ({
                     explicit={track.explicit}
                     type="search"
                     searchId={match.params.searchTerm}
+                    listId={match.params.searchTerm}
                     popularity={track.popularity}
                     album={track.album.name}
                     style={style}
