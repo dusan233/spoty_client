@@ -28,7 +28,6 @@ interface TrackProps {
   albumId?: string;
   playlistOwnerId?: string;
   playlistId?: string;
-  artistId?: string;
   searchId?: string;
   userId?: string;
   style?: any;
@@ -46,6 +45,7 @@ interface TrackProps {
   listId: string | undefined;
   currentPlayingListId: string;
   currentPlayingSongIndex: number;
+  selectedSong?: boolean;
   saveTrack: (trackIds: string, index: number, action: string) => Promise<void>;
   remvoeTrackFromPlaylist?: (
     trackUri: string,
@@ -79,8 +79,8 @@ React.memo(
     currentPlayingListId,
     currentPlayingSongIndex,
     uri,
+    selectedSong,
     userId,
-    artistId,
     playlistOwnerId,
     playlistId,
     listId,
@@ -131,7 +131,12 @@ React.memo(
 
     const saveRemoveUserTracks = () => {
       const action = liked ? "remove" : "save";
-      saveTrack(trackId, index, action);
+      if(type === "queue" && !selectedSong) {
+        saveTrack(trackId,  index + 1, action);
+      }else {
+        saveTrack(trackId, index, action);
+      }
+     
     };
 
     const definePopularity = useCallback(() => {
@@ -181,6 +186,12 @@ React.memo(
         }else {
           playPlaylist(listId, trackIndex, 0);
         }
+      }else if(type === "queue"){
+        if(index === 0  && selectedSong) {
+          playPause(!isPlaying)
+        }else {
+          if(listId) playPlaylist(listId, currentPlayingSongIndex + trackIndex + 1, 50);
+        }
       }else {
         if(listId === currentPlayingListId && currentPlayingSongIndex === index) {
           playPause(!isPlaying)
@@ -188,37 +199,17 @@ React.memo(
           if(listId) playPlaylist(listId, trackIndex, 50);
         }
       }
-    }, [index, isPlaying, listId, trackId, playPause, playPlaylist, currentPlayingSongIndex, currentPlayingListId, type])
+    }, [index, isPlaying, listId, trackId, playPause, selectedSong, playPlaylist, currentPlayingSongIndex, currentPlayingListId, type])
 
     
 
     const returnPlayPauseButton = () => {
-      if(type === "album") {
-        return albumId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
-      }else if(type === "playlist") {
-        return playlistId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
-      }else if(type === "artist") {
-        return artistId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
-      }else if(type === "liked") {
-        return type === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
-      }else if(type === "search") {
-        return trackId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill /> : <BsPlayFill /> : <BsPlayFill />
-      }
+      if(type === "queue") return index === 0  && selectedSong &&  isPlaying ? <BsPauseFill /> : <BsPlayFill />
+        return listId === currentPlayingListId && currentPlayingSongIndex === index ? isPlaying ? <BsPauseFill />  : <BsPlayFill />: <BsPlayFill />
     }
 
     const songSelected = () => {
-      let listId: string | undefined = "";
-      if(type === "album") {
-        listId = albumId
-      }else if(type === "playlist") {
-        listId = playlistId
-      }else if(type === "artist") {
-        listId = artistId
-      }else if(type === "liked") {
-        listId = type
-      }else if(type === "search") {
-        listId = trackId
-      }
+      if(type === "queue") return index === 0 && selectedSong;
         return listId === currentPlayingListId && currentPlayingSongIndex === index 
    }
 

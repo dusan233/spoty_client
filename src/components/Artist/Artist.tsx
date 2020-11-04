@@ -216,7 +216,6 @@ const Artist: React.FC<Props> = ({
                         type="artist"
                         saveTrack={saveRemoveTracksForCurrentUser}
                         playPause={setPlaying}
-                        artistId={match.params.artistId}
                         listId={match.params.artistId}
                         album={track.album.name}
                         popularity={track.popularity}
