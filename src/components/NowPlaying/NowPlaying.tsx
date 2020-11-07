@@ -95,6 +95,10 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
             }
         }
 
+        return () => {
+            audio.current?.pause();
+        }
+
     }, [currentSelectedSong, setPlaying, nextTrack]);
 
     useEffect(() => {

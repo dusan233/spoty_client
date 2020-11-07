@@ -70,6 +70,7 @@ React.memo(
     duration,
     explicit,
     popularity,
+    searchId,
     type,
     hidePopularity,
     albumId,
@@ -184,7 +185,7 @@ React.memo(
         if(trackId === currentPlayingListId && currentPlayingSongIndex === index) {
           playPause(!isPlaying);
         }else {
-          playPlaylist(listId, trackIndex, 0);
+          if(searchId) playPlaylist(searchId, trackIndex, 0);
         }
       }else if(type === "queue"){
         if(index === 0  && selectedSong) {
