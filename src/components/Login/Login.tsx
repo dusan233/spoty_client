@@ -9,6 +9,7 @@ import { history } from "../..";
 import { RootState } from "../../store/reducers";
 import { Redirect } from "react-router-dom";
 
+
 const mapStateToProps = (state: RootState) => ({
   isAuth: state.auth.accessToken
 })
@@ -28,7 +29,7 @@ const Login: React.FC<TProps> = ({ storeAuthState, isAuth }) => {
     const urlParams = new URLSearchParams(querystring);
     const accessToken = urlParams.get("access_token");
     const refreshToken = urlParams.get("refresh_token");
-    console.log(accessToken, refreshToken);
+    
     if (accessToken && refreshToken) {
       storeAuthState(accessToken, refreshToken);
       getCurrentUserData();
