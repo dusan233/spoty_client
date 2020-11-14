@@ -81,52 +81,54 @@ const Category: React.FC<Props> = ({ match, loading, isPlaying, currentPlayingLi
             ) :
                 <React.Fragment>
                     <h1>Playlists for {match.params.categoryId} category</h1>
-                    <InfiniteVirtualizedList
-                        rowHeight={85}
-                        items={playlists}
-                        totalItems={total}
-                        type="playlists"
-                        containerEl={containerEl}
-                        loadMoreItems={loadMorePlaylists}
-                        renderRow={({ key, index, style }: any) => {
-                            const item = playlists[index];
-                            const liked = playlistLikes[index];
-                            if (!playlists[index]) {
-                              return (
-                                <div
-                                  style={{ ...style }}
-                                  key={key}
-                                  className="loader-container"
-                                >
-                                  <Spinner />
-                                </div>
-                              );
-                            } else {
-                              return (
-                                <SearchPlaylistCard
-                                  img={
-                                    item.images[0] && item.images[0].url
-                                  }
-                                  description={item.owner.display_name}
-                                  name={item.name}
-                                  itemId={item.id}
-                                  index={index}
-                                  style={style}
-                                  userId={item.owner.id}
-                                  key={item.id + index}
-                                  totalTracks={item.tracks.total}
-                                  type="playlist"
-                                  liked={liked}
-                                  currentPlayingList={currentPlayingList}
-                                  isPlaying={isPlaying}
-                                  playListSongs={playPlaylistSongs}
-                                  saveItem={saveRemovePlaylistForCurrentUser}
-                                  playPause={setPlaying}
-                                />
-                              );
-                            }
-                          }}
-                    />
+                    {containerEl.current ?
+                      <InfiniteVirtualizedList
+                      rowHeight={85}
+                      items={playlists}
+                      totalItems={total}
+                      type="playlists"
+                      containerEl={containerEl}
+                      loadMoreItems={loadMorePlaylists}
+                      renderRow={({ key, index, style }: any) => {
+                          const item = playlists[index];
+                          const liked = playlistLikes[index];
+                          if (!playlists[index]) {
+                            return (
+                              <div
+                                style={{ ...style }}
+                                key={key}
+                                className="loader-container"
+                              >
+                                <Spinner />
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <SearchPlaylistCard
+                                img={
+                                  item.images[0] && item.images[0].url
+                                }
+                                description={item.owner.display_name}
+                                name={item.name}
+                                itemId={item.id}
+                                index={index}
+                                style={style}
+                                userId={item.owner.id}
+                                key={item.id + index}
+                                totalTracks={item.tracks.total}
+                                type="playlist"
+                                liked={liked}
+                                currentPlayingList={currentPlayingList}
+                                isPlaying={isPlaying}
+                                playListSongs={playPlaylistSongs}
+                                saveItem={saveRemovePlaylistForCurrentUser}
+                                playPause={setPlaying}
+                              />
+                            );
+                          }
+                        }}
+                  />
+                    : null}
 
                 </React.Fragment>
             }</div>
