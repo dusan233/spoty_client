@@ -46,7 +46,7 @@ const Login: React.FC<TProps> = ({ storeAuthState, isAuth }) => {
         <div className={LoginStyles.btn_wrap}>
           <button
             onClick={() => {
-              window.location.assign("http://localhost:8888/login");
+              window.location.assign("https://spoty-back.herokuapp.com/login");
             }}
             className="btn btn--large btn--circle"
           >

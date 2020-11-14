@@ -200,7 +200,7 @@ React.memo(
           if(listId) playPlaylist(listId, trackIndex, 50);
         }
       }
-    }, [index, isPlaying, listId, trackId, playPause, selectedSong, playPlaylist, currentPlayingSongIndex, currentPlayingListId, type])
+    }, [index, isPlaying, searchId, listId, trackId, playPause, selectedSong, playPlaylist, currentPlayingSongIndex, currentPlayingListId, type])
 
     
 
@@ -318,12 +318,7 @@ React.memo(
                     {liked ? "Remove from Liked Songs" : "Save to Liked Songs"}
                   </div>
                 </li>
-                <li>
-                  <Link className={DropdownStyles.link} to="/">
-                    <RiPlayListLine />
-                    Add to Queue
-                  </Link>
-                </li>
+                
                 <li>
                   <div onClick={openModal} className={DropdownStyles.link}>
                     <RiPlayListAddLine />

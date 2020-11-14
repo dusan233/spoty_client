@@ -173,12 +173,7 @@ const AlbumHeader: React.FC<AlbumProps> = ({
                           Add to Playlist
                         </div>
                       </li>
-                      <li>
-                        <div className={DropdownStyles.link}>
-                          <RiPlayListLine />
-                          Add to Queue
-                        </div>
-                      </li>
+                      
                     </React.Fragment>
                   ) : null}
                 </ul>

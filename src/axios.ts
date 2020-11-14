@@ -13,10 +13,9 @@ api.interceptors.response.use(function (res) {
   if(error.response.status === 401 && !originalRequest._retry) {
     const { dispatch } = store;
     originalRequest._retry = true;
-    return axios.get(`http://localhost:8888/refresh_token?refresh_token=${window.localStorage.getItem("refreshToken")}`)
+    return axios.get(`https://spoty-back.herokuapp.com/refresh_token?refresh_token=${window.localStorage.getItem("refreshToken")}`)
     .then(res => {
       dispatch(storeAuthState(res.data.access_token, window.localStorage.getItem("refreshToken")));
-      // api.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.access_token;
       originalRequest.headers["Authorization"] = 'Bearer ' + res.data.access_token;
       return api(originalRequest)
     } )
