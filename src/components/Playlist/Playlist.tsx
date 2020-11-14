@@ -279,7 +279,8 @@ const Playlist: React.FC<Props> = ({
                   playPlaylist={playPlaylist}
                 />
               )}
-              <WindowScroller scrollElement={containerEl.current}>
+              {containerEl.current ?
+                <WindowScroller scrollElement={containerEl.current}>
                 {({ height, isScrolling, onChildScroll, scrollTop }) => (
                   <AutoSizer disableHeight>
                     {({ width }) => (
@@ -309,6 +310,7 @@ const Playlist: React.FC<Props> = ({
                   </AutoSizer>
                 )}
               </WindowScroller>
+              : null}
             </div>
           )}
         </React.Fragment>

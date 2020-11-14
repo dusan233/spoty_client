@@ -248,38 +248,38 @@ const Album: React.FC<Props> = ({
                   />
                 );
               })
-            ) : (
-              <WindowScroller scrollElement={containerEl.current}>
-                {({ height, isScrolling, onChildScroll, scrollTop }) => (
-                  <AutoSizer disableHeight>
-                    {({ width }) => (
-                      <InfiniteLoader
-                        isRowLoaded={isRowLoaded}
-                        loadMoreRows={loadMoreTracks}
+            ) : containerEl.current ? 
+            <WindowScroller scrollElement={containerEl.current}>
+            {({ height, isScrolling, onChildScroll, scrollTop }) => (
+              <AutoSizer disableHeight>
+                {({ width }) => (
+                  <InfiniteLoader
+                    isRowLoaded={isRowLoaded}
+                    loadMoreRows={loadMoreTracks}
+                    rowCount={itemsCount}
+                  >
+                    {({ onRowsRendered, registerChild }) => (
+                      <List
+                        autoHeight
+                        className="List"
+                        height={height}
+                        onRowsRendered={onRowsRendered}
+                        ref={registerChild}
+                        isScrolling={isScrolling}
+                        onScroll={onChildScroll}
+                        scrollTop={scrollTop}
+                        rowHeight={44}
                         rowCount={itemsCount}
-                      >
-                        {({ onRowsRendered, registerChild }) => (
-                          <List
-                            autoHeight
-                            className="List"
-                            height={height}
-                            onRowsRendered={onRowsRendered}
-                            ref={registerChild}
-                            isScrolling={isScrolling}
-                            onScroll={onChildScroll}
-                            scrollTop={scrollTop}
-                            rowHeight={44}
-                            rowCount={itemsCount}
-                            rowRenderer={renderRow}
-                            width={width}
-                          />
-                        )}
-                      </InfiniteLoader>
+                        rowRenderer={renderRow}
+                        width={width}
+                      />
                     )}
-                  </AutoSizer>
+                  </InfiniteLoader>
                 )}
-              </WindowScroller>
+              </AutoSizer>
             )}
+          </WindowScroller>
+            : null}
           </div>
         </React.Fragment>
       )}

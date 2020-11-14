@@ -109,7 +109,8 @@ const Queue: React.FC<ReduxProps> = ({currentSong, nextUp, trackLikes, accessTok
                       {nextUp.length ? <React.Fragment>
                         <h2 className={QueueStyles.heading}>Next Up</h2>
                       <TrackHeader />
-                      <InfiniteVirtualizedList
+                      {containerEl.current ?
+                        <InfiniteVirtualizedList
                         items={nextUp}
                         totalItems={nextUp.length}
                         rowHeight={44}
@@ -160,6 +161,7 @@ const Queue: React.FC<ReduxProps> = ({currentSong, nextUp, trackLikes, accessTok
                             }
                           }}
                       />
+                      : null}
                         </React.Fragment>: null}
                 </div>
             : <Spinner />}

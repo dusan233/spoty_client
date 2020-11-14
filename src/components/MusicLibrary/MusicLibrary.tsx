@@ -208,6 +208,7 @@ const MusicLibrary: React.FC<Props> = ({
   //   });
 
   const renderList = () => {
+    if(containerEl.current) {
     if (match.params.term === "albums") {
       if (!albums.length)
         return (
@@ -391,7 +392,10 @@ const MusicLibrary: React.FC<Props> = ({
           }}
         />
       );
-    }
+        }
+      }else {
+        return null;
+      }
   };
 
   const formatHeading = () => {

@@ -76,50 +76,50 @@ const SidebarPlaylists: React.FC<Props> = ({
             </div>
           </div>
         </React.Fragment>
-      ) : (
-        <InfiniteVirtualizedList
-          items={playlists}
-          totalItems={playlistsTotal}
-          rowHeight={30}
-          containerEl={containerEl}
-          type="playlists"
-          loadMoreItems={loadMorePlaylists}
-          renderRow={({ key, index, style }: any) => {
-            const item = playlists[index];
-            let playlist = item as PlaylistSimplified;
-            if (!playlists[index]) {
-              return (
-                <div
-                  key={key}
-                  style={{ ...style }}
-                  className={SidebarPlaylistsStyles.item__placeholder}
-                >
-                  <div
-                    className={`${SidebarPlaylistsStyles["item__text-placeholder"]}`}
-                  >
-                    s
-                  </div>
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  style={{ ...style }}
-                  key={playlist.id}
-                  className={SidebarPlaylistsStyles.item}
-                >
-                  <Link
-                    to={`/playlist/${playlist.id}`}
-                    className={SidebarPlaylistsStyles.item__text}
-                  >
-                    {playlist.name}
-                  </Link>
-                </div>
-              );
-            }
-          }}
-        />
-      )}
+      ) : containerEl.current ?
+      <InfiniteVirtualizedList
+      items={playlists}
+      totalItems={playlistsTotal}
+      rowHeight={30}
+      containerEl={containerEl}
+      type="playlists"
+      loadMoreItems={loadMorePlaylists}
+      renderRow={({ key, index, style }: any) => {
+        const item = playlists[index];
+        let playlist = item as PlaylistSimplified;
+        if (!playlists[index]) {
+          return (
+            <div
+              key={key}
+              style={{ ...style }}
+              className={SidebarPlaylistsStyles.item__placeholder}
+            >
+              <div
+                className={`${SidebarPlaylistsStyles["item__text-placeholder"]}`}
+              >
+                s
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div
+              style={{ ...style }}
+              key={playlist.id}
+              className={SidebarPlaylistsStyles.item}
+            >
+              <Link
+                to={`/playlist/${playlist.id}`}
+                className={SidebarPlaylistsStyles.item__text}
+              >
+                {playlist.name}
+              </Link>
+            </div>
+          );
+        }
+      }}
+    />
+      : null}
       ;
     </div>
   );

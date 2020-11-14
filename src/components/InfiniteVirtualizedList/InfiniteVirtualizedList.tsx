@@ -51,8 +51,8 @@ const InfiniteVirtualizedList: React.FC<Props> = ({
     return !!items[index];
   };
 
-  return (
-    <WindowScroller scrollElement={containerEl.current}>
+  return containerEl.current ? 
+  <WindowScroller scrollElement={containerEl.current}>
       {({ height, isScrolling, onChildScroll, scrollTop }) => (
         <AutoSizer disableHeight>
           {({ width }) => (
@@ -82,8 +82,7 @@ const InfiniteVirtualizedList: React.FC<Props> = ({
           )}
         </AutoSizer>
       )}
-    </WindowScroller>
-  );
+    </WindowScroller> : null
 };
 
 export default InfiniteVirtualizedList;

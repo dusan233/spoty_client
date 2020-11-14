@@ -330,6 +330,7 @@ const SearchResult: React.FC<Props> = ({
   };
 
   const renderLists = () => {
+    if(containerEl.current) {
     if (match.params.type === "playlist") {
       if (match.params.searchTerm !== playlistsTerm) {
         return null;
@@ -596,6 +597,9 @@ const SearchResult: React.FC<Props> = ({
         />
       );
     }
+  }else {
+    return null
+  }
   };
 
   return (
