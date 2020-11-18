@@ -57,7 +57,7 @@ interface TrackProps {
   
 }
 
-// Modal.setAppElement("#modal");
+Modal.setAppElement("#modal");
 
 const Track: React.FC<TrackProps> = 
 React.memo(
@@ -220,7 +220,7 @@ React.memo(
         style={{ ...style, background: selected && "#ffffff29" }}
         ref={rowRef}
       >
-        {/* <Modal
+        <Modal
           className="Modal"
           overlayClassName="Overlay"
           isOpen={modalIsOpen}
@@ -228,7 +228,7 @@ React.memo(
           closeTimeoutMS={400}
         >
           <AddToPlaylist trackUri={uri} closeModal={closeModal} />
-        </Modal> */}
+        </Modal>
 
         <div
           className={`${TrackStyles["datagrid-cell"]} ${TrackStyles["datagrid-cell-action"]}`}
