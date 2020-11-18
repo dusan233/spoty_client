@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from './store/index';
 import { storeAuthState } from "./store/actions/auth";
+import { history } from './index';
 
 export const api = axios.create({
   baseURL: "https://api.spotify.com/v1",
@@ -12,6 +13,9 @@ api.interceptors.response.use(function (res) {
   console.log(error.response);
   if(error.response.status === 401 && !originalRequest._retry) {
     const { dispatch } = store;
+    if(!window.localStorage.getItem("refreshToken")) {
+      history.push('/login');
+    }
     originalRequest._retry = true;
     return axios.get(`https://spoty-back.herokuapp.com/refresh_token?refresh_token=${window.localStorage.getItem("refreshToken")}`)
     .then(res => {
