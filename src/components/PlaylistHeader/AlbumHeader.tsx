@@ -3,7 +3,7 @@ import PlaylistHeaderStyles from "./PlaylistHeader.module.css";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
 
-import { RiPlayListAddLine, RiPlayListLine } from "react-icons/ri";
+import { RiPlayListAddLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";

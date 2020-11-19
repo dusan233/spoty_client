@@ -7,7 +7,6 @@ import { RootState } from "../../store/reducers/index";
 import SearchbarStyles from "./Searchbar.module.css";
 import { RiSearchLine } from "react-icons/ri";
 import Dropdown from "../Dropdown/Dropdown";
-import { Link } from "react-router-dom";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { AiOutlineLogout } from "react-icons/ai";

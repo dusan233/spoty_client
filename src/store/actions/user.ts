@@ -223,7 +223,7 @@ export const editPlaylistDetails = (name: string, description: string) => {
     const playlistId = getState().playlist.id;
     dispatch(setCreatingPlaylist(true));
     try {
-      const res = await api.put(
+       await api.put(
         `/playlists/${playlistId}`,
         { name, description },
         {
@@ -254,7 +254,7 @@ export const followUnfollowArtistForCurrentUser = (
     const artisFollows = getState().user.artistsLikes;
     try {
       const method = action === "save" ? "PUT" : "DELETE";
-      const res = await api({
+       await api({
         method: method,
         params: {
           type: "artist",

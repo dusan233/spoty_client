@@ -4,11 +4,10 @@ import { Link } from "react-router-dom";
 import NoImage from "../../assets/264x264-000000-80-0-0.jpg";
 import { BsPauseFill, BsPlayFill, BsThreeDots } from "react-icons/bs";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { RiPlayListAddLine, RiPlayListLine } from "react-icons/ri";
 import DropdownStyles from "../Dropdown/Dropdown.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 import useSelected from "../../hooks/useSelected";
-import { Action, ActionCreator } from "redux";
+import { ActionCreator } from "redux";
 import { SetPlaying } from "../../store/types/music";
 
 interface IProps {

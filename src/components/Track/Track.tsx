@@ -12,14 +12,14 @@ import {
   BsPauseFill,
 } from "react-icons/bs";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { RiPlayListLine, RiPlayListAddLine, RiAlbumLine } from "react-icons/ri";
+import { RiPlayListAddLine, RiAlbumLine } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
 
 import { ArtistSimplified } from "../../store/types/artist";
 import useSelected from "../../hooks/useSelected";
 import Dropdown from "../Dropdown/Dropdown";
-import { playPlaylistSongs } from "../../store/actions/music";
+
 
 interface TrackProps {
   title: string;

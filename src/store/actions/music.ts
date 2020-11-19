@@ -5,13 +5,10 @@ import { TrackFull, TrackSimplified } from "../types";
 import { MusicActionTypes } from "./actionTypes";
 import {getMoreTracks} from './playlist';
 import { getMoreAlbumTracks } from './album';
-import {checkCurrentUserSavedTracks, setTrackLikes} from './user';
 import { setDurCurTime, SetMute, SetPlaying, setSlidersValue, SetVolume } from "../types/music";
 import { api } from "../../axios";
 import { fetchArtistTopTracks } from "./artist";
 import { fetchUserTracks } from "./library";
-import { getSearchData } from "./search";
-import { SearchResultPlaylists } from "../types/search";
 
 
 

@@ -18,7 +18,7 @@ import {
   SetAddingTrack,
 } from "../types/playlist";
 import { AppThunk } from "../types/index";
-import { AxiosResponse } from "axios";
+
 
 export const setPlaylistLoading: ActionCreator<ISetPlaylistLoading> = (
   loading: boolean
@@ -238,7 +238,7 @@ export const removeTracksFromPlaylist = (
     const tracks = getState().playlist.tracks;
     const trackLikes = getState().user.trackLikes;
     try {
-      const res = await api.delete(`/playlists/${playlistId}/tracks`, {
+       await api.delete(`/playlists/${playlistId}/tracks`, {
         data: JSON.stringify({
           tracks: [{ uri: trackUri, position: index }],
         }),
