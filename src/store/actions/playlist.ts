@@ -120,7 +120,6 @@ export const getPlaylistData: ActionCreator<AppThunk> = (
           Authorization: "Bearer " + accessToken,
         },
       });
-      console.log(response);
 
       const savedPlaylistRes = checkUserSavedPlaylist(
         response.data.id,
@@ -239,7 +238,6 @@ export const removeTracksFromPlaylist = (
     const tracks = getState().playlist.tracks;
     const trackLikes = getState().user.trackLikes;
     try {
-      console.log(playlistId);
       const res = await api.delete(`/playlists/${playlistId}/tracks`, {
         data: JSON.stringify({
           tracks: [{ uri: trackUri, position: index }],
@@ -255,7 +253,7 @@ export const removeTracksFromPlaylist = (
         dispatch(setTracks(newTracks));
         dispatch(setTrackLikes(newLikes));
       });
-      console.log(res);
+      
     } catch (err) {
       console.log(err);
     }

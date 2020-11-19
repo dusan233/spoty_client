@@ -143,7 +143,6 @@ export const getCurrentUserData = () => {
           Authorization: "Bearer " + accessToken,
         },
       });
-      console.log(res);
       dispatch(
         setUserData(
           res.data.display_name,
@@ -169,7 +168,6 @@ export const saveRemoveAlbumsForCurrentUser = (
 
     try {
       const method = action === "save" ? "PUT" : "DELETE";
-      console.log(method);
       const response = await api({
         method,
         url: "/me/albums",
@@ -181,7 +179,7 @@ export const saveRemoveAlbumsForCurrentUser = (
           Authorization: "Bearer " + accessToken,
         },
       });
-      console.log(response);
+      
       if (response.status === 200) {
         const likes = [...albumLikes];
         likes[index] = !likes[index];
@@ -240,7 +238,7 @@ export const editPlaylistDetails = (name: string, description: string) => {
         dispatch(editPlaylist(playlistId, name, description));
         dispatch(setCreatingPlaylist(false));
       });
-      console.log(res);
+      
     } catch (err) {
       console.log(err);
     }
@@ -293,7 +291,7 @@ export const saveRemovePlaylistForCurrentUser = (
           "Content-Type": "application/json",
         },
       });
-      console.log(res);
+      
       if (res.status === 200) {
         const likes = [...playlistLikes];
         likes[index] = !likes[index];
@@ -334,7 +332,7 @@ export const saveRemoveTracksForCurrentUser = (
     const tracksLikes = getState().user.trackLikes;
     try {
       const method = action === "save" ? "PUT" : "DELETE";
-      console.log(method);
+      
       const response = await api({
         method,
         url: "/me/tracks",
@@ -346,7 +344,7 @@ export const saveRemoveTracksForCurrentUser = (
           Authorization: "Bearer " + accessToken,
         },
       });
-      console.log(response);
+      
       if (response.status === 200) {
         const likes = [...tracksLikes];
         likes[index] = !likes[index];

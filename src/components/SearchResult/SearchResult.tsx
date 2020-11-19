@@ -159,7 +159,7 @@ const SearchResult: React.FC<Props> = ({
     } else if (match.params.type === "track") {
       // fetchSearchData(match.params.type, match.params.searchTerm);
       if (match.params.searchTerm !== tracksTerm) {
-        console.log("huhu");
+        
         fetchSearchData(match.params.type, match.params.searchTerm);
       }
     } else if (match.params.type === "artist") {

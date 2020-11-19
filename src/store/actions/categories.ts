@@ -79,7 +79,7 @@ export const getCategoryPlaylists = (categoryId: string) => {
     dispatch(setCategLoading(true))
     try {
       const res = await fetchCategoryPlaylists(categoryId, 0, accessToken);
-      console.log(res)
+     
       batch(() => {
         dispatch(setCategoryPlaylists(res.data.playlists.items, res.data.playlists.total))
         dispatch(setCategLoading(false))

@@ -90,7 +90,6 @@ export const getAlbumData: ActionCreator<AppThunk> = (
           Authorization: "Bearer " + accessToken,
         },
       });
-      console.log(data);
 
       const savedAlbumResponse = await checkCurrentUserSavedAlbums(
         albumId ? albumId : "",

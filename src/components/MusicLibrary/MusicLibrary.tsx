@@ -125,7 +125,7 @@ const MusicLibrary: React.FC<Props> = ({
       getUsersAlbums(true);
     }
     if (match.params.term === "tracks") {
-      console.log("dssdsadas");
+      
       getUserTracks(true);
     }
     if (match.params.term === "artists") {

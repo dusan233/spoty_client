@@ -83,7 +83,7 @@ const NowPlaying: React.FC<Props> = ({location, total, type, nextUpSongs, curren
         if(!audio.current) audio.current = new Audio();
 
         if(currentSelectedSong && currentSelectedSong.preview_url !== null) {
-            console.log('dadadaad')
+           
             audio.current.src = ((currentSelectedSong as TrackSimplified).preview_url) as string;
             setPlaying(true);
             

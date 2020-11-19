@@ -195,7 +195,7 @@ export const getCurrentUserPlaylists: ActionCreator<AppThunk> = () => {
     dispatch(setLibraryPlaylistsLoading(true));
     try {
       const res = await fetchCurrentUserPlaylists(0, accessToken);
-      console.log(res);
+      
       batch(() => {
         dispatch(setLibraryPlaylists(res.data.items, res.data.total));
         dispatch(setLibraryPlaylistsLoading(false));
@@ -219,7 +219,7 @@ export const getCurrentUserFollowedArtists = () => {
         );
         dispatch(setLibraryLoading(false));
       });
-      console.log(res);
+      
     } catch (err) {
       let errorMsg = "Opps! Something went wrong!";
       let subMsg = "Please refresh the page and try again";
@@ -252,7 +252,7 @@ export const getUserTracks: ActionCreator<AppThunk> = (loading: boolean) => {
         ? await checkCurrentUserSavedTracks(trackIds, accessToken)
         : { data: [] };
 
-      console.log(res.data);
+      
       batch(() => {
         dispatch(setLibraryTracks(res.data.items, res.data.total));
         dispatch(setTrackLikes([...savedAlbumsRes.data]));
@@ -290,7 +290,7 @@ export const getUsersAlbums: ActionCreator<AppThunk> = (loading: boolean) => {
         ? await checkCurrentUserSavedAlbums(albumIds, accessToken)
         : { data: [] };
 
-      console.log(res.data);
+      
       batch(() => {
         dispatch(setLibraryAlbums(res.data.items, res.data.total));
         dispatch(setAlbumLikes([...savedAlbumsRes.data]));
